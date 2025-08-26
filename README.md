@@ -69,7 +69,7 @@ Before you begin, ensure you have the following installed:
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/FitreeCodeConnext/backroom-Laravel-12.git
+git clone https://github.com/FitreeCodeConnextDev/Backroom-Web-L12.git
 cd backroom-Laravel-12
 ```
 
