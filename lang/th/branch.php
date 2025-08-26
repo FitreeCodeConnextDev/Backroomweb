@@ -1,0 +1,46 @@
+<?php
+
+    return [
+        'branch_id' => 'รหัสสาขา',
+        'branch_name' => 'ชื่อสาขา',
+        'branch_online' => 'Online',
+        'branch_addr1' => 'ที่อยู่สาขา',
+        'branch_addr2' => 'ที่อยู่สาขา',
+        'branch_tel' => 'โทรศัพท์',
+        'tax_id' => 'เลขประจำตัวผู้เสียภาษี',
+        'tax_name' => 'ชื่อผู้เสียภาษี',
+        'tax_addr1' => 'ที่อยู่',
+        'tax_name_e' => 'TAX NAME',
+        'tax_addr1_e' => 'Address',
+        'ipaddress' => 'IP Address',
+        'batchno' => 'หมายเลข Batch',
+        'businessdate' => 'วันที่ทำการ',
+        'deposit' => 'มัดจำ',
+        'vatrate' => 'อัตราภาษีมูลค่าเพิ่ม',
+        'message1' => 'Message 1',
+        'message2' => 'Message 2',
+        'message3' => 'Message 3',
+        'message4' => 'Message 4',
+
+
+        'branch_id_required' => 'โปรดกรอกรหัสสาขา',
+        'branch_id_max' => 'โปรดกรอกรหัสสาขาไม่เกิน 6 อักขระ',
+        'branch_id_unique' => 'รหัสสาขาซ้ำ',
+        'branch_name_required' => 'โปรดกรอกชื่อสาขา',
+        'branch_addr1_required' => 'โปรดกรอกที่อยู่สาขา',
+        'branch_tel_required' => 'โปรดกรอกหมายเลขโทรศัพท์',
+        'branch_tel_max' => 'โปรดกรอกหมายเลขโทรศัพท์ไม่เกิน 10 อักขระ',
+        'branch_tel_num' => 'โปรดกรอกหมายเลขโทรศัพท์เป็นตัวเลข',
+        'tax_id_required' => 'โปรดกรอกเลขประจำตัวผู้เสียภาษี',
+        'tax_id_max' => 'โปรดกรอกเลขประจำตัวผู้เสียภาษีไม่เกิน 13 อักขระ',
+        'tax_id_num' => 'โปรดกรอกเลขประจำตัวผู้เสียภาษีเป็นตัวเลข',
+        'tax_name_required' => 'โปรดกรอกชื่อผู้เสียภาษี',
+        'tax_addr1_required' => 'โปรดกรอกที่อยู่',
+        'ipaddress_required' => 'โปรดกรอก IP Address',
+        'batchno_required' => 'โปรดกรอกหมายเลข Batch',
+        'businessdate_required' => 'โปรดกรอกวันที่ทำการ',
+        'deposit_required' => 'โปรดกรอกมัดจำ',
+        'vatrate_required' => 'โปรดกรอกอัตราภาษีมูลค่าเพิ่ม',
+
+
+    ];

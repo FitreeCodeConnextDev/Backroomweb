@@ -1,0 +1,266 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+@source "../views";
+
+@theme {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+@import "flowbite/src/themes/default";
+@plugin "flowbite/plugin";
+@source "../../node_modules/flowbite";
+
+/* LOGIN */
+section.login_bg {
+    @apply bg-transparent;
+}
+
+div.log_2 {
+    @apply flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0;
+}
+
+div.log_3 {
+    @apply p-6 space-y-4 md:space-y-6 sm:p-8;
+}
+
+h1.title {
+    @apply text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl;
+}
+
+label.login-label {
+    @apply block mb-2 text-sm font-medium text-gray-900;
+}
+
+.login-input {
+    @apply bg-gray-50 border border-gray-600 text-gray-900 rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5;
+}
+
+button.login-btn {
+    @apply w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center;
+}
+
+/* LOGIN */
+
+body {
+    font-family: 'Anuphan', sans-serif;
+}
+
+.error {
+    @apply mt-2 text-sm text-red-600;
+}
+
+.active_menu {
+    @apply text-blue-600 bg-blue-100 border-blue-500;
+}
+
+/* Index-Page */
+div.card-body {
+    @apply relative overflow-x-auto;
+}
+
+div.index_header {
+    @apply p-5 text-lg mb-4 font-semibold text-left text-gray-900 bg-white border-b border-gray-200;
+}
+
+div.flex-between {
+    @apply flex justify-between;
+}
+
+caption.caption-title {
+    @apply text-lg font-semibold text-left text-gray-900 bg-white;
+}
+
+h1.text-title {
+    @apply text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl;
+}
+
+.add-button {
+    @apply flex items-center justify-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-xl text-sm px-5 py-2.5 me-2 mb-2;
+}
+
+table.table-data {
+    @apply w-full text-sm text-left text-gray-500;
+}
+
+thead {
+    @apply text-xs text-gray-700 uppercase bg-gray-50 border-b border-gray-200;
+}
+
+tbody tr {
+    @apply odd:bg-white even:bg-gray-50 border-b border-gray-200;
+}
+
+th {
+    @apply px-6 py-3;
+}
+
+td {
+    @apply px-6 py-4 text-black;
+}
+
+.edit-button {
+    @apply mt-1 px-2 py-2 text-xs font-medium text-center text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg me-2 mb-2;
+}
+
+.lock-button {
+    @apply mt-1 px-2 py-2 text-xs font-medium text-center text-gray-700 hover:text-white border border-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 rounded-lg me-2 mb-2;
+}
+
+.lockall-button {
+    @apply text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2.5 inline-flex items-center me-2 mb-2;
+}
+
+.show_button {
+    @apply mt-1 px-2 py-2 text-xs font-medium text-center text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 rounded-lg me-2 mb-2;
+}
+
+.del-button {
+    @apply mt-1 px-2 py-2 text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm text-center me-2 mb-2;
+}
+
+.alert_confirm_btn {
+    @apply relative right-[-1.75rem] text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center;
+}
+
+.alert_cancel_btn {
+    @apply text-white focus:outline-none bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm w-full sm:w-auto left-9 px-5 py-2.5 text-center;
+}
+
+/* End Index-Page */
+
+/* Create Page */
+ol {
+    @apply inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse;
+}
+
+.first_bc_a {
+    @apply inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600;
+}
+
+.second_bc_a {
+    @apply ms-1 text-sm font-medium text-gray-700 hover:text-blue-600;
+}
+
+.create_page_title {
+    @apply flex justify-between items-center pb-4 mb-4 rounded-t border-b border-gray-200 sm:mb-5;
+}
+
+.grid_create {
+    @apply grid gap-4 mb-4 sm:grid-cols-1;
+}
+
+.grid_page {
+    @apply grid gap-6 mb-4 md:grid-cols-2;
+}
+
+.time_svg {
+    @apply absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none;
+}
+
+.label_input {
+    @apply block mb-2 text-sm font-medium text-gray-900;
+}
+
+.input_text {
+    @apply bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full;
+}
+
+.input_time {
+    @apply bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5;
+}
+
+.label_checkbox {
+    @apply ms-2 text-sm font-medium text-gray-900;
+}
+
+.checkbox_input {
+    @apply w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500;
+}
+
+.file_input {
+    @apply block w-full mb-5 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50;
+}
+
+.textarea_input {
+    @apply block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500;
+}
+
+.radio_input {
+    @apply w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500;
+}
+
+button.submit_btn {
+    @apply text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center;
+}
+
+button.cancel_btn {
+    @apply text-white focus:outline-none bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center mt-2;
+}
+
+/* End Create Page */
+
+.text_h3 {
+    @apply text-lg font-semibold text-gray-900;
+}
+
+.error_alert {
+    @apply p-4 mb-4 text-xl text-center text-red-800 rounded-lg bg-red-100;
+}
+
+div.tab_div {
+    @apply mb-4 border-b border-gray-200;
+}
+
+ul.tab_ul {
+    @apply flex flex-wrap -mb-px text-sm font-medium text-center;
+}
+
+button.tab_button {
+    @apply inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300;
+}
+
+.tab_active {
+    @apply text-green-600 hover:text-green-600 border-green-600;
+}
+
+.tab_inactive {
+    @apply text-gray-900 hover:text-gray-600 border-gray-100 hover:border-gray-300;
+}
+
+/* Modal */
+.modal_button_add {
+    @apply px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300;
+}
+
+.modal_button_close {
+    @apply text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center;
+}
+
+.modal_button_cancel {
+    @apply ms-3 text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 rounded-lg border border-red-200 text-sm font-medium px-5 py-2.5 hover:text-white focus:z-10;
+}
+
+.excel_button {
+    @apply text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2;
+}
+
+.tab_ul-2 {
+    @apply flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:text-gray-400;
+}
+
+button.tab_button_2 {
+    @apply inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300;
+}
+
+.input_checkbox {
+    @apply w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500;
+}
+
+.reset_button {
+    @apply py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700;
+}

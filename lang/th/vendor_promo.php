@@ -1,0 +1,42 @@
+<?php
+
+return [
+    'promo_code' => 'รหัส Promotion',
+    'promo_desc' => 'รายละเอียด',
+    'promo_seq' => 'ลำดับการแสดง',
+    'start_date' => 'วันที่เริ่ม',
+    'start_time' => 'เวลาเริ่ม',
+    'end_date' => 'วันที่สิ้นสุด',
+    'end_time' => 'เวลาสิ้นสุด',
+    
+    'discount' => 'การให้ส่วนลด',
+    'use_discount' => 'ประเภทการใช้',
+    'use_discount_0' => 'ไม่ใช้',
+    'use_discount_1' => 'ใช้เป็นเปอร์เซ็นต์',
+    'use_discount_2' => 'ใช้เป็นเงินสด',
+    'discountrate' => '% การลด',
+    'discountamt' => 'จำนวนเงินการลด',
+
+    'use_p' => 'การเพิ่มมูลค่า',
+    'use_point' => 'ประเภทการใช้',
+    'use_point_N' => 'ไม่ใช้',
+    'use_point_Y' => 'ใช้',
+    'use_min' => 'ยอดการใช้จ่าย',
+    'add_point' => 'จำนวน Point',
+
+    'promo_code_valid' => 'กรุณากรอกรหัส Promotion',
+    'promo_code_max' => 'รหัส Promotion ต้องไม่เกิน 10 ตัวอักษร',
+    'promo_code_unique' => 'รหัส Promotion ต้องไม่น้อยกว่า',
+    'promo_desc_valid' => 'รหัส Promotion ซ้ำ',
+    'promo_seq_valid' => 'กรุณากรอกชื่อโปรโมชั่น',
+    'start_date_valid' => 'กรุณากรอกวันที่เริ่ม',
+    'start_time_valid' => 'กรุณากรอกเวลาเริ่ม',
+    'end_date_valid' => 'กรุณากรอกวันที่สิ้นสุด',
+    'end_time_valid' => 'กรุณากรอกเวลาสิ้นสุด',
+    'use_discount_valid' => 'กรุณาเลือกประเภทการใช้',
+    'discountrate_valid' => "กรุณากรอก % การลด",
+    'discountamt_valid' => "กรุณากรอกจำนวนเงินการลด",
+    'use_point_valid' => 'กรุณาเลือกประเภทการใช้', 
+    'use_min_valid' => "กรุณากรอกยอดการใช่จ่าย",
+    'add_point_valid' => "กรุณากรอกจำนวน Point",
+];
