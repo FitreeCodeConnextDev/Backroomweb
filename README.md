@@ -69,8 +69,8 @@ Before you begin, ensure you have the following installed:
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/FitreeCodeConnextDev/Backroom-Web-L12.git
-cd backroom-Laravel-12
+git clone https://github.com/FitreeCodeConnextDev/Backroomweb.git
+cd Backroomweb
 ```
 
 ### 2. Install Dependencies
@@ -98,24 +98,17 @@ php artisan key:generate
 Edit your `.env` file with your database credentials:
 
 ```env
-DB_CONNECTION=mysql
+DB_CONNECTION=pgsql 
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=backroom12
+DB_DATABASE=your_database
 DB_USERNAME=your_username
 DB_PASSWORD=your_password
 ```
 
-### 5. Run Migrations
-```bash
-# Run database migrations
-php artisan migrate
 
-# (Optional) Seed the database with sample data
-php artisan db:seed
-```
 
-### 6. Build Assets
+### 5. Build Assets
 ```bash
 # Compile assets
 npm run dev
@@ -130,9 +123,9 @@ npm run build
 bun run build
 ```
 
-### 7. Start the Application
+### 6. Start the Application
 ```bash
-# Start the development server
+# Start the development server 
 php artisan serve
 ```
 
