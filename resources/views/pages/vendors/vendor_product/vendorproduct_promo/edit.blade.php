@@ -346,7 +346,7 @@
                             </label>
                             <select name="gp_edc" class="input_text" id="">
                                 @foreach ($vendor_gp as $gp)
-                                    <option value="{{ $gp->gp_edc }} ">{{ $gp->gp_edc }}</option>
+                                    <option value="{{ $gp->gp_edc ?? '' }} ">{{ $gp->gp_edc ?? '' }}</option>
                                 @endforeach
                             </select>
                         </div>

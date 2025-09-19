@@ -103,13 +103,21 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($use_card as $item)
+                            @if ($use_card->isEmpty())
                                 <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                                    <td>ว่าง</td>
+                                    <td>ว่าง</td>
+                                    <td>ว่าง</td>
                                 </tr>
-                            @endforeach
+                            @else
+                                @foreach ($use_card as $item)
+                                    <tr>
+                                        <td>{{ $item->txndate }}</td>
+                                        <td>{{ $item->vendor_name }}</td>
+                                        <td>{{ $item->amount }}</td>
+                                    </tr>
+                                @endforeach
+                            @endif
                         </tbody>
                     </table>
                 </div>

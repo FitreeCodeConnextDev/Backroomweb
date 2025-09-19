@@ -11,6 +11,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@100..700&display=swap" rel="stylesheet">
     <link rel="shortcut icon" href="{{ asset('logo/CodeConnextLogo.png') }}">
+    
     <title>LOGIN | Backroom</title>
 </head>
 <style>
@@ -93,8 +94,7 @@
 
                         // If the error response is JSON, parse it and show the message
                         var response = xhr.responseJSON || {};
-                        var errorMessage = response.message ||
-                            'เกิดข้อผิดพลาดที่ไม่คาดคิด โปรดลองอีกครั้งในภายหลัง';
+                        var errorMessage = response.message || 'เกิดข้อผิดพลาดที่ไม่คาดคิด โปรดลองอีกครั้งในภายหลัง';
 
                         // Show error using SweetAlert2
                         Swal.fire({

@@ -63,6 +63,7 @@ class MemberController extends Controller
             'member_birthdate' => 'nullable',
             'member_addr' => 'nullable',
             'member_phone' => 'nullable|regex:/(0)[0-9]/|not_regex:/[a-z]/|min:10',
+            'card_no' => 'required|max:13',
 
         ], [
             'member_id.required' => __('member.member_id_valid'),
@@ -78,6 +79,7 @@ class MemberController extends Controller
             'member_addr.required' => __('member.member_addr_valid'),
             'member_phone.required' => __('member.member_phone_valid'),
             'member_phone.regex' => __('member.member_phone_valid_num'),
+            'card_no.required' => __('member.card_no_valid'),
 
         ]);
         // dd($valida_data);
@@ -92,6 +94,7 @@ class MemberController extends Controller
             'member_birthdate' => $member_birthdate,
             'member_addr' => $valida_data['member_addr'],
             'member_phone' => $valida_data['member_phone'],
+            'card_no' => $valida_data['card_no'],
             'activeflag' => 1,
         ]);
 

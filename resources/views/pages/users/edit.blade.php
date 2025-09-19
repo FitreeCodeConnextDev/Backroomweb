@@ -32,16 +32,16 @@
                     </p>
                 @enderror
             </div>
-            @if (session('auth_user.branch_id') == 000)
+            @if (session('auth_user.branch_id') == 000000)
                 @php
                     $branches = DB::table('branch_info')->where('activeflag', 1)->orderBy('branch_id', 'asc')->get();
                 @endphp
                 <div>
                     <label for="branch_id" class="label_input">{{ __('users.branch_id') }}</label>
                     <select name="branch_id" id="branch_id" class="input_text">
-                        @if ($user_data->user_id == session('auth_user.user_id') && $user_data->branch_id == 000)
+                        @if ($user_data->user_id == session('auth_user.user_id') && $user_data->branch_id == 000000)
                             <option value="000" selected>
-                                000</option>
+                                000000</option>
                         @endif
                         @foreach ($branches as $branch)
                             <option value="{{ $branch->branch_id }}" @if ($user_data->branch_id == $branch->branch_id) selected @endif>

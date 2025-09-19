@@ -30,7 +30,7 @@
                     </p>
                 @enderror
             </div>
-            @if (session('auth_user.branch_id') == 000)
+            @if (session('auth_user.branch_id') == 000000)
                 @php
                     $branches = DB::table('branch_info')->where('activeflag', 1)->orderBy('branch_id', 'asc')->get();
                 @endphp

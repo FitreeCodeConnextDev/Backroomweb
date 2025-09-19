@@ -28,7 +28,7 @@ class VendorController extends Controller
         // dd($user_session_id);
         $search = $request->input('search', '');
 
-        if ($user_branch == 000) {
+        if ($user_branch == 000000) {
             $vendor_data = DB::table('vendor_info')
                 ->select('vendor_id', 'vendor_name')
                 ->where('activeflag', '=', 1)
@@ -216,7 +216,7 @@ class VendorController extends Controller
             ->select('user_info.user_id', 'user_info.user_name')
             ->groupBy('user_info.user_id', 'user_info.user_name')
             ->get();
-        if ($branch_session == 000) {
+        if ($branch_session == 000000) {
             $terminal = DB::table('terminal_info')
                 ->select('term_id')
                 ->orderBy('branch_id', 'asc')

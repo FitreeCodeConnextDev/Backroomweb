@@ -61,6 +61,7 @@ class StaffController extends Controller
                 'staff_addr' => 'nullable',
                 'staff_phone' => 'nullable|regex:/(0)[0-9]/|not_regex:/[a-z]/|min:10',
                 'staff_limit' => 'nullable',
+                'card_no' => 'required|max:13',
             ],
             [
                 'staff_id' => __('staff.staff_id_required'),
@@ -76,6 +77,7 @@ class StaffController extends Controller
                 'staff_phone' => __('staff.staff_phone_required'),
                 'staff_phone.regex' => __('staff.staff_phone_num'),
                 'staff_limit' => __('staff.staff_limit_required'),
+                'card_no' => __('member.card_no_valid'),
             ]
         );
 
@@ -93,6 +95,7 @@ class StaffController extends Controller
                 'staff_addr' => $validate_data['staff_addr'],
                 'staff_phone' => $validate_data['staff_phone'],
                 'credit_limit' => $validate_data['staff_limit'],
+                'card_no' => $validate_data['card_no'],
                 'activeflag' => 1,
             ]);
 

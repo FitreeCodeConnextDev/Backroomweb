@@ -29,7 +29,7 @@
 @endphp
 
 {{-- @dd($promo_dis) --}}
-<div class="mt-3 grid lg:grid-cols-4 grid-cols-1 ">
+<div class="flex justify-between items-center">
     <section>
         <form action="{{ route('vendor_promo_dis', ['id' => $vendor_id]) }}" class="tabs_form" method="post">
             @csrf

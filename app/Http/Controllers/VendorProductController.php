@@ -63,8 +63,8 @@ class VendorProductController extends Controller
             'gp_sp4' => 'required',
             'pricesp5' => 'required',
             'gp_sp5' => 'required',
-            'priceedc' => 'required',
-            'gp_edc' => 'required',
+            'priceedc' => 'nullable',
+            'gp_edc' => 'nullable',
             'campaing_code' => 'nullable',
             'campaing_startdate' => 'nullable',
             'campaing_enddate' => 'nullable',
@@ -117,48 +117,56 @@ class VendorProductController extends Controller
         $campaing_start = Carbon::parse($campaing_startdate . ' ' . $form_vendor_product['campaing_starttime'])->format('Y-m-d H:i:s');
         $campaing_end = Carbon::parse($campaing_enddate . ' ' . $form_vendor_product['campaing_endtime'])->format('Y-m-d H:i:s');
         if ($form_vendor_product) {
+            $insertData = [
+                'vendor_id' => $form_vendor_product['vendor_id'],
+                'branch_id' => $form_vendor_product['branch_id'],
+                'term_id' => $form_vendor_product['term_id'],
+                'product_id' => $form_vendor_product['product_id'],
+                'product_free' => $form_vendor_product['product_free'],
+                'product_seq' => $form_vendor_product['product_seq'],
+                'groupvat' => $form_vendor_product['groupvate'],
+                'use_point' => $form_vendor_product['use_point'],
+                'add_point' => $form_vendor_product['add_point'],
+                'priceunit' => $form_vendor_product['priceunit'],
+                'gp_normal' => $form_vendor_product['gp_normal'],
+                'pricediscount' => $form_vendor_product['pricediscount'],
+                'gp_promotion' => $form_vendor_product['gp_promotion'],
+                'pricemember' => $form_vendor_product['pricemember'],
+                'gp_member' => $form_vendor_product['gp_member'],
+                'pricestaff' => $form_vendor_product['pricestaff'],
+                'gp_staff' => $form_vendor_product['gp_staff'],
+                'pricerabbit' => $form_vendor_product['pricerabbit'],
+                'gp_rabbit' => $form_vendor_product['gp_rabbit'],
+                'priceqr' => $form_vendor_product['priceqr'],
+                'gp_qr' => $form_vendor_product['gp_qr'],
+                'product_perunit' => $form_vendor_product['product_perunit'],
+                'vatrate' => $form_vendor_product['vatrate'],
+                'pricesp1' => $form_vendor_product['pricesp1'],
+                'gp_sp1' => $form_vendor_product['gp_sp1'],
+                'pricesp2' => $form_vendor_product['pricesp2'],
+                'gp_sp2' => $form_vendor_product['gp_sp2'],
+                'pricesp3' => $form_vendor_product['pricesp3'],
+                'gp_sp3' => $form_vendor_product['gp_sp3'],
+                'pricesp4' => $form_vendor_product['pricesp4'],
+                'gp_sp4' => $form_vendor_product['gp_sp4'],
+                'pricesp5' => $form_vendor_product['pricesp5'],
+                'gp_sp5' => $form_vendor_product['gp_sp5'],
+                'campaign_code' => $form_vendor_product['campaing_code'],
+                'campaign_startdate' => $campaing_start,
+                'campaign_enddate' => $campaing_end,
+                'activeflag' => 1,
+            ];
+
+            if ($form_vendor_product['priceedc'] !== null) {
+                $insertData['priceedc'] = $form_vendor_product['priceedc'];
+            }
+
+            if ($form_vendor_product['gp_edc'] !== null) {
+                $insertData['gp_edc'] = $form_vendor_product['gp_edc'];
+            }
+
             $vendor_product_insert = DB::table('vendorproduct_info')
-                ->insert([
-                    'vendor_id' => $form_vendor_product['vendor_id'],
-                    'branch_id' => $form_vendor_product['branch_id'],
-                    'term_id' => $form_vendor_product['term_id'],
-                    'product_id' => $form_vendor_product['product_id'],
-                    'product_free' => $form_vendor_product['product_free'],
-                    'product_seq' => $form_vendor_product['product_seq'],
-                    'groupvat' => $form_vendor_product['groupvate'],
-                    'use_point' => $form_vendor_product['use_point'],
-                    'add_point' => $form_vendor_product['add_point'],
-                    'priceunit' => $form_vendor_product['priceunit'],
-                    'gp_normal' => $form_vendor_product['gp_normal'],
-                    'pricediscount' => $form_vendor_product['pricediscount'],
-                    'gp_promotion' => $form_vendor_product['gp_promotion'],
-                    'pricemember' => $form_vendor_product['pricemember'],
-                    'gp_member' => $form_vendor_product['gp_member'],
-                    'pricestaff' => $form_vendor_product['pricestaff'],
-                    'gp_staff' => $form_vendor_product['gp_staff'],
-                    'pricerabbit' => $form_vendor_product['pricerabbit'],
-                    'gp_rabbit' => $form_vendor_product['gp_rabbit'],
-                    'priceqr' => $form_vendor_product['priceqr'],
-                    'gp_qr' => $form_vendor_product['gp_qr'],
-                    'product_perunit' => $form_vendor_product['product_perunit'],
-                    'vatrate' => $form_vendor_product['vatrate'],
-                    'pricesp1' => $form_vendor_product['pricesp1'],
-                    'gp_sp1' => $form_vendor_product['gp_sp1'],
-                    'pricesp2' => $form_vendor_product['pricesp2'],
-                    'gp_sp2' => $form_vendor_product['gp_sp2'],
-                    'pricesp3' => $form_vendor_product['pricesp3'],
-                    'gp_sp3' => $form_vendor_product['gp_sp3'],
-                    'pricesp4' => $form_vendor_product['pricesp4'],
-                    'gp_sp4' => $form_vendor_product['gp_sp4'],
-                    'pricesp5' => $form_vendor_product['pricesp5'],
-                    'gp_sp5' => $form_vendor_product['gp_sp5'],
-                    'priceedc' => $form_vendor_product['priceedc'],
-                    'gp_edc' => $form_vendor_product['gp_edc'],
-                    'campaign_code' => $form_vendor_product['campaing_code'],
-                    'campaign_startdate' => $campaing_start,
-                    'campaign_enddate' => $campaing_end,
-                    'activeflag' => 1,
-                ]);
+                ->insert($insertData);
             if ($vendor_product_insert) {
                 Log::channel('activity')->notice(session('auth_user.user_id') . ' created vendor product: ' . $form_vendor_product['product_id'], [
                     'vendor_id' => $form_vendor_product['vendor_id'],
@@ -243,47 +251,52 @@ class VendorProductController extends Controller
                 ->error(__('vendor_product.product_seq_unique'));
             return redirect()->back();
         } else {
+            $form_vendor_update = [
+                'product_seq' => $form_vendor_edit['product_seq'],
+                'groupvat' => $form_vendor_edit['groupvate'],
+                'use_point' => $form_vendor_edit['use_point'],
+                'add_point' => $form_vendor_edit['add_point'],
+                'priceunit' => $form_vendor_edit['priceunit'],
+                'gp_normal' => $form_vendor_edit['gp_normal'],
+                'pricediscount' => $form_vendor_edit['pricediscount'],
+                'gp_promotion' => $form_vendor_edit['gp_promotion'],
+                'pricemember' => $form_vendor_edit['pricemember'],
+                'gp_member' => $form_vendor_edit['gp_member'],
+                'pricestaff' => $form_vendor_edit['pricestaff'],
+                'gp_staff' => $form_vendor_edit['gp_staff'],
+                'pricerabbit' => $form_vendor_edit['pricerabbit'],
+                'gp_rabbit' => $form_vendor_edit['gp_rabbit'],
+                'priceqr' => $form_vendor_edit['priceqr'],
+                'gp_qr' => $form_vendor_edit['gp_qr'],
+                'product_perunit' => $form_vendor_edit['product_perunit'],
+                'vatrate' => $form_vendor_edit['vatrate'],
+                'pricesp1' => $form_vendor_edit['pricesp1'],
+                'gp_sp1' => $form_vendor_edit['gp_sp1'],
+                'pricesp2' => $form_vendor_edit['pricesp2'],
+                'gp_sp2' => $form_vendor_edit['gp_sp2'],
+                'pricesp3' => $form_vendor_edit['pricesp3'],
+                'gp_sp3' => $form_vendor_edit['gp_sp3'],
+                'pricesp4' => $form_vendor_edit['pricesp4'],
+                'gp_sp4' => $form_vendor_edit['gp_sp4'],
+                'pricesp5' => $form_vendor_edit['pricesp5'],
+                'gp_sp5' => $form_vendor_edit['gp_sp5'],
+                'campaign_code' => $form_vendor_edit['campaing_code'],
+                'campaign_startdate' => $campaing_start,
+                'campaign_enddate' => $campaing_end,
+            ];
+            if ($form_vendor_edit['priceedc'] !== null) {
+                $form_vendor_update['priceedc'] = $form_vendor_edit['priceedc'];
+            }
+            if ($form_vendor_edit['gp_edc'] !== null) {
+                $form_vendor_update['gp_edc'] = $form_vendor_edit['gp_edc'];
+            }
             $vendor_product_update = DB::table('vendorproduct_info')
                 ->where([
                     'vendor_id' => $vendor_id,
                     'branch_id' => $branch_id,
                     'product_seq' => $product_seq,
                 ])
-                ->update([
-                    'product_seq' => $form_vendor_edit['product_seq'],
-                    'groupvat' => $form_vendor_edit['groupvate'],
-                    'use_point' => $form_vendor_edit['use_point'],
-                    'add_point' => $form_vendor_edit['add_point'],
-                    'priceunit' => $form_vendor_edit['priceunit'],
-                    'gp_normal' => $form_vendor_edit['gp_normal'],
-                    'pricediscount' => $form_vendor_edit['pricediscount'],
-                    'gp_promotion' => $form_vendor_edit['gp_promotion'],
-                    'pricemember' => $form_vendor_edit['pricemember'],
-                    'gp_member' => $form_vendor_edit['gp_member'],
-                    'pricestaff' => $form_vendor_edit['pricestaff'],
-                    'gp_staff' => $form_vendor_edit['gp_staff'],
-                    'pricerabbit' => $form_vendor_edit['pricerabbit'],
-                    'gp_rabbit' => $form_vendor_edit['gp_rabbit'],
-                    'priceqr' => $form_vendor_edit['priceqr'],
-                    'gp_qr' => $form_vendor_edit['gp_qr'],
-                    'product_perunit' => $form_vendor_edit['product_perunit'],
-                    'vatrate' => $form_vendor_edit['vatrate'],
-                    'pricesp1' => $form_vendor_edit['pricesp1'],
-                    'gp_sp1' => $form_vendor_edit['gp_sp1'],
-                    'pricesp2' => $form_vendor_edit['pricesp2'],
-                    'gp_sp2' => $form_vendor_edit['gp_sp2'],
-                    'pricesp3' => $form_vendor_edit['pricesp3'],
-                    'gp_sp3' => $form_vendor_edit['gp_sp3'],
-                    'pricesp4' => $form_vendor_edit['pricesp4'],
-                    'gp_sp4' => $form_vendor_edit['gp_sp4'],
-                    'pricesp5' => $form_vendor_edit['pricesp5'],
-                    'gp_sp5' => $form_vendor_edit['gp_sp5'],
-                    'priceedc' => $form_vendor_edit['priceedc'],
-                    'gp_edc' => $form_vendor_edit['gp_edc'],
-                    'campaign_code' => $form_vendor_edit['campaing_code'],
-                    'campaign_startdate' => $campaing_start,
-                    'campaign_enddate' => $campaing_end,
-                ]);
+                ->update($form_vendor_update);
             if ($vendor_product_update !== false) {
                 Log::channel('activity')->notice(session('auth_user.user_id') . ' updated vendor product: ' . $product_seq, [
                     'vendor_id' => $vendor_id,
@@ -435,8 +448,8 @@ class VendorProductController extends Controller
             'gp_sp4' => 'required|numeric|min:0|max:100',
             'pricesp5' => 'required|numeric|min:0',
             'gp_sp5' => 'required|numeric|min:0|max:100',
-            'priceedc' => 'required|numeric|min:0',
-            'gp_edc' => 'required|numeric|min:0|max:100'
+            'priceedc' => 'nullable|numeric|min:0',
+            'gp_edc' => 'nullable|numeric|min:0|max:100'
         ], [
             'vendor_id.required' => __('vendor_product.vendor_id_required'),
             'branch_id.required' => __('vendor_product.branch_id_required'),
@@ -740,6 +753,61 @@ class VendorProductController extends Controller
             sweetalert()
                 ->error(__('menu.delete_is_failed'));
             return redirect()->back();
+        }
+    }
+
+    public function update_garantee(Request $request, $vendor_id)
+    {
+        // $form_garantee = $request->validate([
+        //     'min_garantee1' => 'required|numeric',
+        //     'min_garantee2' => 'required|numeric',
+        //     'min_garantee3' => 'required|numeric',
+        //     'dis_garantee' => 'required|numeric',
+
+        // ], [
+        //     'min_garantee1.required' => __('vendor_product.min_garantee1_required'),
+        //     'min_garantee1.numeric' => __('vendor_product.min_garantee1_numeric'),
+        //     'min_garantee2.required' => __('vendor_product.min_garantee2_required'),
+        //     'min_garantee2.numeric' => __('vendor_product.min_garantee2_numeric'),
+        //     'min_garantee3.required' => __('vendor_product.min_garantee3_required'),
+        //     'min_garantee3.numeric' => __('vendor_product.min_garantee3_numeric'),
+        //     'dis_garantee.required' => __('vendor_product.dis_garantee_required'),
+        //     'dis_garantee.numeric' => __('vendor_product.dis_garantee_numeric'),
+        // ]);
+        $form_garantee = [
+            'min_garantee1' => $request->input('min_garantee1'),
+            'min_garantee2' => $request->input('min_garantee2'),
+            'min_garantee3' => $request->input('min_garantee3'),
+            'dis_garantee' => $request->input('dis_garantee'),
+        ];
+        // dd($form_garantee);
+        $guarantee = [
+            'min_garantee1' => $form_garantee['min_garantee1'],
+            'min_garantee2' => $form_garantee['min_garantee2'],
+            'min_garantee3' => $form_garantee['min_garantee3'],
+            'dis_garantee' => $form_garantee['dis_garantee'],
+        ];
+        $update_guarantee = DB::table('vendor_info')
+            ->where([
+                'vendor_id' => $vendor_id,
+            ])
+            ->update($guarantee);
+        if ($update_guarantee !== false) {
+            Log::channel('activity')->notice(session('auth_user.user_id') . ' updated guarantee for vendor product: ' . $vendor_id, [
+                'vendor_id' => $vendor_id,
+                'action' => 'updated',
+                'updated_at' => now()->toDateTimeString(),
+                'updated_by' => session('auth_user.user_id'),
+            ]);
+            return response()->json(['success' => true, 'message' => __('menu.edit_is_success')]);
+        } else {
+            Log::channel('activity')->error(session('auth_user.user_id') . ' failed to update guarantee for vendor product: ' . $vendor_id, [
+
+                'action' => 'failed',
+                'updated_at' => now()->toDateTimeString(),
+                'updated_by' => session('auth_user.user_id'),
+            ]);
+            return response()->json(['success' => false, 'message' => __('menu.edit_is_failed')]);
         }
     }
 }

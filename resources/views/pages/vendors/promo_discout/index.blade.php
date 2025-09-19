@@ -1,16 +1,6 @@
 @vite(['resources/css/app.css', 'resources/js/app.js'])
 
 @php
-    // $promo_dis = DB::select(
-    //     "
-// SELECT VENDOR_ID, TYPEDISCOUNT, DISCOUNTAMT, CUR_DISCOUNT, DEF_DISCOUNT,
-//        USE_DISCOUNT, DISCOUNT_BDATE, DISCOUNT_BTIME,
-//        DISCOUNT_EDATE, DISCOUNT_ETIME
-// FROM VENDOR_INFO
-// WHERE VENDOR_ID = ?",
-    //     [$vendor_id],
-    // );
-    // $promo_dis = $promo_dis[0];
     $promo_dis = DB::table('vendor_info')
         ->select(
             'vendor_id',
@@ -29,12 +19,12 @@
 @endphp
 
 {{-- @dd($promo_dis) --}}
-<div class="mt-3 grid lg:grid-cols-4 grid-cols-1">
+<div class="flex justify-between items-center">
     <section>
         <form id="vendor_promo_f" method="post">
             @csrf
             @method('PUT')
-            <div class="grid grid-cols-1 gap-6 border border-gray-200 rounded-lg p-5">
+            <div class="grid grid-cols-1 gap-6 border border-gray-200 rounded-lg p-3">
                 <div class="w-full h-auto">
                     <section class="mt-4">
                         <label for="typediscount" class="label_input"> {{ __('vendor.typediscount') }} </label>

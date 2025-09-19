@@ -115,6 +115,28 @@
                 @enderror
             </div>
         </div>
+        <div class="p-2  border border-gray-200 rounded-md">
+            <div class="mb-4 border-b border-gray-200">
+                <ul class="tab_ul" id="member_tab" data-tabs-toggle="#member_tab_content" role="tablist">
+                    <li class="me-2" role="presentation">
+                        <button class="tab_button" id="use_card-tab" data-tabs-target="#use_card" type="button"
+                            role="tab" aria-controls="use_card" aria-selected="false"> {{ __('member.use_card') }}
+                        </button>
+                    </li>
+                </ul>
+            </div>
+            <div id="member_tab_content">
+                <div class="hidden p-4 rounded-lg " id="use_card" role="tabpanel" aria-labelledby="use_card_tab">
+                    <div class="my-5 flex space-x-3">
+                        <div>
+                            <label for="card_number" class="label_input"> {{ __('member.card_no') }} </label>
+                            <input type="text" name="card_no" class="input_text" id="card_number" maxlength="13">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
         <button type="submit" id="submit_button" class="submit_btn"> {{ __('menu.button.save') }} </button>
         <a href="{{ route('staff.index') }}" id="cancel_button">
             <button type="button" class="cancel_btn">

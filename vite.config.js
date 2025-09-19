@@ -9,6 +9,7 @@ export default defineConfig({
             'resources/js/app.js',
             'resources/js/vendor_tab.js',
             'resources/js/card_promo.js',
+            'resources/js/tom-select.complete.min.js',
         ]),
         tailwindcss(),
     ],

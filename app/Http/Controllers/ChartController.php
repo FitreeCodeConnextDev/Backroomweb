@@ -16,7 +16,36 @@ class ChartController extends Controller
         //     ->where('vendor_id', '=', '100088')
         //     ->get();
         // dd($product_details);
-        return view('pages.charts.daily');
+        $sale_terminal_daily = DB::table('sale_terminal_daily')->select('vendor_info.vendor_name', 'vendor_info.vendor_id', DB::raw('SUM(amount) as total_amount'))
+            ->join('vendor_info', 'vendor_info.vendor_id', '=', 'sale_terminal_daily.vendor_id')
+            ->where('void_flag', 0)
+            ->groupBy('vendor_info.vendor_id', 'vendor_name')
+            ->orderBy('total_amount', 'DESC')
+            ->get();
+
+        $data = [];
+        foreach ($sale_terminal_daily as $item) {
+            $data[] = [
+                'vendor_id' => $item->vendor_id,
+                'vendor_name' => $item->vendor_name,
+                'total_amount' => $item->total_amount
+            ];
+        }
+        $data_json = json_encode($data);
+        // dd($data);
+        $sale_terminal_daily_chart['vendor_name'] = " ";
+        $sale_terminal_daily_chart['total_amount'] = " ";
+        $sale_terminal_daily_chart['vendor_id'] = " ";
+        foreach ($data as $item) {
+            $sale_terminal_daily_chart['vendor_name'] .= "'" . $item['vendor_name'] . "'" . ', ';
+            $sale_terminal_daily_chart['total_amount'] .= $item['total_amount'] . ', ';
+            $sale_terminal_daily_chart['vendor_id'] .= $item['vendor_id'] . ', ';
+        }
+
+
+        // dd($data);
+
+        return view('pages.charts.daily', compact('sale_terminal_daily_chart'));
 
         // Daily report
         // Sale teminal daily
@@ -30,10 +59,10 @@ class ChartController extends Controller
     }
     public function chartDailyBackup(Request $request)
     {
-        // $start_date = date('Y-m-d', strtotime('yesterday'));
-        // $end_date = date('Y-m-d', strtotime('yesterday'));
-        $start_date = '2024-01-01';
-        $end_date = '2024-01-31';
+        $start_date = date('Y-m-d', strtotime('yesterday'));
+        $end_date = date('Y-m-d', strtotime('yesterday'));
+        // $start_date = '2024-01-01';
+        // $end_date = '2024-01-31';
 
         $sale_terminal_rpt = DB::table('sum_terminal_rpt')
             ->select('vendor_id', 'vendor_name', DB::raw('SUM(amount) as total_amount'))

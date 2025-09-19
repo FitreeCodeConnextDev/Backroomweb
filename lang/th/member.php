@@ -37,7 +37,7 @@ return [
     'member_phone_valid_max' => 'โปรดกรอกหมายโทรศัพท์ไม่เกิน 10 ตัวอักษร',
     'member_phone_valid_num' => 'โปรดกรอกหมายโทรศัพท์เป็นตัวเลข',
 
-    'card_no_valid' => 'โปรดกรอก',
+    'card_no_valid' => 'โปรดกรอกหมายเลขบัตร',
     'balance_valid' => 'โปรดกรอก',
     'use_card_valid' => 'โปรดกรอก',
     'card_desc_valid' => 'โปรดกรอก',

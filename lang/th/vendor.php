@@ -32,7 +32,7 @@ return [
     'vendor_user_id' => 'รหัสผู้ใช้ระบบ',
     'vendor_user_name' => 'ชื่อผู้ใช้ระบบ',
     'user_id_required' => 'รหัสผู้ใช้ระบบต้องไม่ว่าง',
-    
+
 
     'vendor_default' => 'กำหนดค่าเริ่มต้น',
     'def_1' => 'ใช้เป็นปุ่มราคา',
@@ -82,7 +82,7 @@ return [
     'valid_date' => 'ถึงวันที่',
     'start_time' => 'ตั้งแต่เวลา',
     'valid_time' => 'ถึงเวลา',
-    
+
     'day_use' => 'วันที่ใช้',
     'mon_day' => 'วันจันทร์',
     'tue_day' => 'วันอังคาร',
@@ -99,7 +99,7 @@ return [
     'gp_code' => 'GP CODE',
     'gp_start_date' => 'วันที่เริ่มต้น',
     'gp_valid_date' => 'วันที่สิ้นสุดใช้งาน',
-    'min_guarantee' => 'Min Guarantee', 
+    'min_guarantee' => 'Min Guarantee',
     'gp_min' => 'GP%',
     'gp_normal' => 'บัตรปกติ',
     'gp_promotion' => 'บัตรโปรโมชั่น',
@@ -116,10 +116,17 @@ return [
     'gp_valid_date_required' => 'โปรดกรอกวันที่สิ้นสุดใช้งาน',
     'min_guarantee_required' => 'โปรดกรอก Min Guarantee',
     'gp_min_required' => 'โปรดกรอก GP%',
-    'gp_normal_required' => 'โปรดกรอก GP% บัตรปกติ',  
+    'gp_normal_required' => 'โปรดกรอก GP% บัตรปกติ',
     'gp_promotion_required' => 'โปรดกรอก GP% บัตรโปรโมชั่น',
     'gp_member_required' => 'โปรดกรอก GP% บัตรสมาชิก',
     'gp_staff_required' => 'โปรดกรอก GP% บัตรพนักงาน',
+
+    'vendor_garantee_title' => 'คิดยอดขาย',
+    'vendor_garantee' => 'ยอดรับประกันส่วนต่าง',
+    'min_garantee1' => 'วันที่ 1-15',
+    'min_garantee2' => 'วันที่ 16-สิ้นเดือน',
+    'min_garantee3' => 'ทั้งเดือน',
+    'dis_garantee' => 'ส่วนลด',
 
 
     'vendor_id_required' => 'โปรดกรอกรหัสร้านค้า',
@@ -147,9 +154,9 @@ return [
     'vendor_billcount_required' => 'โปรดกรอก Bill Count',
 
 
-    
-    
-    
+
+
+
 
 
 

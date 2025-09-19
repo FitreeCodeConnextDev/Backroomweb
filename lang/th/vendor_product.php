@@ -149,6 +149,15 @@ return [
     'amount_check_numeric' => ' ยอดทำรายการต้องเป็นตัวเลข',
     'amount_check_min' => ' ยอดทำรายการต้องมากกว่าหรือเท่ากับ 0',
 
+    'min_garantee1_required' => 'โปรดกรอกวันที่ 1-15',
+    'min_garantee2_required' => 'โปรดกรอกวันที่ 16-สิ้นเดือน',
+    'min_garantee3_required' => 'โปรดกรอกวทั้งเดือน',
+    'dis_garantee_required' => 'โปรดกรอกส่วนลด',
+    'min_garantee1_numeric' => 'วันที่ 1-15 ต้องเป็นตัวเลข',
+    'min_garantee2_numeric' => 'วันที่ 16-สิ้นเดือน ต้องเป็นตัวเลข',
+    'min_garantee3_numeric' => 'วันที่ทั้งเดือน ต้องเป็นตัวเลข',
+    'dis_garantee_numeric' => 'ส่วนลด ต้องเป็นตัวเลข',
+
     'non_unit' => 'ไม่มีหน่วย'
 
 

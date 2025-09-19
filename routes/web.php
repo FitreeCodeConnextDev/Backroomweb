@@ -25,6 +25,8 @@ use App\Http\Controllers\VendorProductController;
 use App\Http\Controllers\VendorPromoController;
 use App\Http\Controllers\VendorTypeController;
 use Illuminate\Support\Facades\Route;
+use Jaspersoft\Client\Client;
+use Jaspersoft\Service\Criteria\RepositorySearchCriteria;
 
 // Route::get('/', function () {
 //     return view('login');
@@ -68,6 +70,8 @@ Route::middleware(['auth_user'])->group(function () {
         Route::post('/vendor-product-promotion-print', [VendorProductController::class, 'insert_promo_print'])->name('insert_promo_print');
         Route::put('/vendor-product-promotion-print-del/{vendor_id}/{promo_seq}', [VendorProductController::class, 'del_promo_print'])->name('del_promo_print');
         Route::put('/vendor-product-del-component/{vendor_id}/{productdetail_id}', [VendorProductController::class, 'del_component'])->name('del_component');
+
+        Route::put('/vendor-product-update-garantee/{vendor_id}', [VendorProductController::class, 'update_garantee'])->name('vendor_product_update_garantee');
 
 
         Route::get('/get-product-details/{product_id}', [VendorProductController::class, 'getProductDetails']);
@@ -123,4 +127,43 @@ Route::middleware(['auth_user'])->group(function () {
 
         Route::get('/index-report', [ReportController::class, 'index'])->name('report.index');
         Route::get('/report-testReport', [ReportController::class, 'testReport'])->name('report.testReport');
+
+        Route::get('/report-rpt_sum_daily', [ReportController::class, 'sum_daily_rpt'])->name('rpt_sum_daily');
+        Route::post('/report-gen_rpt_sum_daily', [ReportController::class, 'gen_sum_daily_rpt'])->name('gen_rpt_sum_daily');
+        Route::get('/report-rpt_sum_debt', [ReportController::class, 'sum_debt_rpt'])->name('rpt_sum_debt_daily');
+        Route::post('/report-gen_rpt_sum_debt', [ReportController::class, 'gen_sum_debt_rpt'])->name('gen_rpt_sum_debt');
+
+        Route::get('/jasper-test', function () {
+                $serverUrl = env('JASPER_URL');
+                $username  = env('JASPER_USER');
+                $password  = env('JASPER_PASSWORD');
+
+                try {
+                        $client = new Client($serverUrl, $username, $password);
+
+                        // สร้าง criteria เบื้องต้นเพื่อทดสอบ connection
+                        $criteria = new RepositorySearchCriteria([
+                                'folderUri'    => '/backroomweb',          // root folder
+                                'resourceType' => 'reportUnit',
+                                'limit'        => 1             // แค่ 1 เพื่อทดสอบ
+                        ]);
+
+                        $client->repositoryService()->searchResources($criteria);
+
+                        return response()->json([
+                                'connected' => true,
+                                'message'   => '✅ Connect Success',
+                                'serverUrl' => $serverUrl,
+                                'username'  => $username,
+                        ]);
+                } catch (\Exception $e) {
+                        return response()->json([
+                                'connected' => false,
+                                'message' => '❌ Connection failed',
+                                'error' => $e->getTraceAsString(),
+                                'serverUrl' => $serverUrl,
+                                'username' => $username,
+                        ]);
+                }
+        });
 });

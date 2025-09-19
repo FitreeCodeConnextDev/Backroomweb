@@ -198,6 +198,11 @@
                         data-tabs-target="#vendor_gp" type="button" role="tab" aria-controls="vendor_gp"
                         aria-selected="false"> {{ __('vendor.vendor_gp') }} </button>
                 </li>
+                <li role="presentation">
+                    <button class="tab_button hover:text-gray-600 hover:border-gray-300 " id="vender_garantee_tab"
+                        data-tabs-target="#vendor_garantee" type="button" role="tab" aria-controls="vendor_garantee"
+                        aria-selected="false"> {{ __('vendor.vendor_garantee_title') }} </button>
+                </li>
                 {{-- <li role="presentation">
                     <button class="tab_button hover:text-gray-600 hover:border-gray-300 " id="contacts-tab"
                         data-tabs-target="#contacts" type="button" role="tab" aria-controls="contacts"
@@ -210,7 +215,7 @@
         <div class="hidden p-4 rounded-lg " id="vendor_product" role="tabpanel" aria-labelledby="vendor_product_tab">
             @include('pages.vendors.vendor_product.index', [
                 'vendor_id' => $vendor_data->vendor_id,
-                'branch_id' => $vendor_data->branch_id
+                'branch_id' => $vendor_data->branch_id,
             ])
         </div>
         <div class="hidden p-4 rounded-lg " id="vendor_user" role="tabpanel" aria-labelledby="vendor_user_tab">
@@ -253,6 +258,11 @@
         </div>
         <div class="hidden p-4 rounded-lg " id="vendor_gp" role="tabpanel" aria-labelledby="vendor_gp_tab">
             @include('pages.vendors.vendor_gp.index', [
+                'vendor_id' => $vendor_data->vendor_id,
+            ])
+        </div>
+        <div class="hidden p-4 rounded-lg " id="vendor_garantee" role="tabpanel" aria-labelledby="vendor_garantee_tab">
+            @include('pages.vendors.vendor_garantee.index', [
                 'vendor_id' => $vendor_data->vendor_id,
             ])
         </div>

@@ -34,7 +34,7 @@
                     <label for="term_id" class="label_input">{{ __('vendor.term_id') }}</label>
                     {{-- <input type="text" id="term_id" class="input_text" value="{{ $vendor_data->term_id }}"> --}}
                     <select name="term_id" id="term_id" class="input_text">
-                        <option value="" @if ($vendor_data->term_id == 000) selected  disabled @endif>000</option>
+                        <option value="000000" @if ($vendor_data->term_id == 000000) selected @endif>000000</option>
                         @foreach ($terminal as $term_id)
                             <option value="{{ $term_id->term_id }}" @if ($vendor_data->term_id == $term_id->term_id) selected @endif>
                                 {{ $term_id->term_id }}
@@ -202,6 +202,12 @@
                         data-tabs-target="#vendor_gp" type="button" role="tab" aria-controls="vendor_gp"
                         aria-selected="false"> {{ __('vendor.vendor_gp') }} </button>
                 </li>
+                <li role="presentation">
+                    <button class="tab_button hover:text-gray-600 hover:border-gray-300 " id="vender_garantee_tab"
+                        data-tabs-target="#vendor_garantee" type="button" role="tab"
+                        aria-controls="vendor_garantee" aria-selected="false"> {{ __('vendor.vendor_garantee_title') }}
+                    </button>
+                </li>
                 {{-- <li role="presentation">
                     <button class="tab_button hover:text-gray-600 hover:border-gray-300 " id="contacts-tab"
                         data-tabs-target="#contacts" type="button" role="tab" aria-controls="contacts"
@@ -260,6 +266,12 @@
             </div>
             <div class="hidden p-4 rounded-lg " id="vendor_gp" role="tabpanel" aria-labelledby="vendor_gp_tab">
                 @include('pages.vendors.vendor_gp.edit', [
+                    'vendor_id' => $vendor_data->vendor_id,
+                ])
+            </div>
+            <div class="hidden p-4 rounded-lg " id="vendor_garantee" role="tabpanel"
+                aria-labelledby="vendor_garantee_tab">
+                @include('pages.vendors.vendor_garantee.edit', [
                     'vendor_id' => $vendor_data->vendor_id,
                 ])
             </div>

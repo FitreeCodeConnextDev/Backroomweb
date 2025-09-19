@@ -27,7 +27,7 @@ class UsersController extends Controller
                 return redirect()->back();
             }
             $session_branch_id = session('auth_user.branch_id');
-            if ($session_branch_id == 000) {
+            if ($session_branch_id == 000000) {
                 $user_data = DB::table('user_info')
                     ->select('user_id', 'user_name')
                     ->where('activeflag', 1)

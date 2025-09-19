@@ -22,7 +22,7 @@
         <form class="tabs_form" action="{{ route('vendor_invoice_update', ['id' => $vendor_id]) }}" method="post">
             @csrf
             @method('PUT')
-            <div class="mt-3 border border-gray-200 rounded-lg p-5 ">
+            <div class="lex justify-between items-center border border-gray-200 rounded-lg p-3">
                 <div class="grid grid-cols-1 gap-5 py-3">
                     <section>
                         <label for="invoicename" class="label_input"> {{ __('vendor.invoicename') }} </label>

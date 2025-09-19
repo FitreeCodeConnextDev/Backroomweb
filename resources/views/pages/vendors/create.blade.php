@@ -52,7 +52,7 @@
                     <div>
                         <label for="term_id" class="label_input">{{ __('vendor.term_id') }}</label>
                         <select name="term_id" id="term_id" class="input_text" required>
-                            <option value="000" selected>000</option>
+                            <option value="000000" selected>000000</option>
                         </select>
                         @error('term_id')
                             <p class="mt-2 text-sm text-red-600 "><span class="font-medium"> {{ __('menu.is_warning') }}

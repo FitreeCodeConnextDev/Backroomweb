@@ -29,7 +29,7 @@
             <table class="table-data">
                 <thead>
                     <tr>
-                        
+
                         <th scope="col"> {{ __('vendor_product.product_seq') }} </th>
                         <th scope="col"> {{ __('vendor_product.product_id') }} </th>
                         <th scope="col"> {{ __('vendor_product.product_desc') }} </th>
@@ -41,7 +41,7 @@
                 <tbody>
                     @foreach ($vendor_product as $vendor_p)
                         <tr>
-                            
+
                             <td> {{ $vendor_p->product_seq }} </td>
                             <td> {{ $vendor_p->product_id }} </td>
                             <td> {{ $vendor_p->product_desc }} </td>
@@ -137,7 +137,7 @@
                         <div>
                             <label for="product_barcode" class="label_input">
                                 {{ __('vendor_product.product_barcode') }} </label>
-                            <input type="number" id="product_barcode" name="product_barcode" class="input_text"
+                            <input type="text" id="product_barcode" name="product_barcode" class="input_text"
                                 required>
                         </div>
                         <div class="py-7">
@@ -437,15 +437,15 @@
                                     <label for="campaign_startdate" class="label_input">
                                         {{ __('vendor_product.product_campaing_startdate') }}
                                     </label>
-                                    <input type="date" pattern="\d{2}/\d{2}/\d{4}" id="campaign_startdate" name="campaing_startdate"
-                                        class="input_text">
+                                    <input type="date" pattern="\d{2}/\d{2}/\d{4}" id="campaign_startdate"
+                                        name="campaing_startdate" class="input_text">
                                 </div>
                                 <div>
                                     <label for="campaign_enddate" class="label_input">
                                         {{ __('vendor_product.product_campaing_enddate') }}
                                     </label>
-                                    <input type="date" pattern="\d{2}/\d{2}/\d{4}" id="campaign_enddate" name="campaing_enddate"
-                                        class="input_text">
+                                    <input type="date" pattern="\d{2}/\d{2}/\d{4}" id="campaign_enddate"
+                                        name="campaing_enddate" class="input_text">
                                 </div>
                                 <div>
                                     <label for="campaign_starttime"
@@ -503,14 +503,11 @@
     </div>
 </section>
 
-<link href="https://cdn.jsdelivr.net/npm/tom-select@2.4.3/dist/css/tom-select.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/tom-select@2.4.3/dist/js/tom-select.complete.min.js"></script>
-<script>
-    new TomSelect("#product_id", {
-        create: true,
-        sortField: {
-            field: "selected",
-        }
+{{-- <link href="https://cdn.jsdelivr.net/npm/tom-select@2.4.3/dist/css/tom-select.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/tom-select@2.4.3/dist/js/tom-select.complete.min.js"></script> --}}
+<script type="module">
+    new TomSelect('#product_id', {
+        plugins: ['dropdown_input'],
     });
 </script>
 <script type="module">
