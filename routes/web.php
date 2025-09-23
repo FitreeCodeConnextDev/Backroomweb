@@ -132,38 +132,5 @@ Route::middleware(['auth_user'])->group(function () {
         Route::post('/report-gen_rpt_sum_daily', [ReportController::class, 'gen_sum_daily_rpt'])->name('gen_rpt_sum_daily');
         Route::get('/report-rpt_sum_debt', [ReportController::class, 'sum_debt_rpt'])->name('rpt_sum_debt_daily');
         Route::post('/report-gen_rpt_sum_debt', [ReportController::class, 'gen_sum_debt_rpt'])->name('gen_rpt_sum_debt');
-
-        Route::get('/jasper-test', function () {
-                $serverUrl = env('JASPER_URL');
-                $username  = env('JASPER_USER');
-                $password  = env('JASPER_PASSWORD');
-
-                try {
-                        $client = new Client($serverUrl, $username, $password);
-
-                        // สร้าง criteria เบื้องต้นเพื่อทดสอบ connection
-                        $criteria = new RepositorySearchCriteria([
-                                'folderUri'    => '/backroomweb',          // root folder
-                                'resourceType' => 'reportUnit',
-                                'limit'        => 1             // แค่ 1 เพื่อทดสอบ
-                        ]);
-
-                        $client->repositoryService()->searchResources($criteria);
-
-                        return response()->json([
-                                'connected' => true,
-                                'message'   => '✅ Connect Success',
-                                'serverUrl' => $serverUrl,
-                                'username'  => $username,
-                        ]);
-                } catch (\Exception $e) {
-                        return response()->json([
-                                'connected' => false,
-                                'message' => '❌ Connection failed',
-                                'error' => $e->getTraceAsString(),
-                                'serverUrl' => $serverUrl,
-                                'username' => $username,
-                        ]);
-                }
-        });
+        Route::get('/report-checkConnection', [ReportController::class, 'checkConnection'])->name('report.checkConnection');
 });
