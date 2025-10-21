@@ -3,6 +3,7 @@
 return [
     'report_title' => 'รายงาน (Report)',
     'report_desc' => 'สร้างและดูรายงานต่างๆ',
+    'select_report' => 'เลือกรายงาน',
     
     'report_sales' => 'รายงานการขาย (Sales Report)',
     'report_sales_desc' => 'ดูรายงานการขายในช่วงเวลาที่กำหนด',

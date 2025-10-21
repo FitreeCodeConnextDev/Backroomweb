@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Log;
+
 if (!function_exists('jasper_generate')) {
     /**
      * Generate Jasper report
@@ -56,7 +58,7 @@ if (!function_exists('jasper_generate')) {
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch, CURLOPT_TIMEOUT, config('jasper.jrs_timeout', 10));
+            curl_setopt($ch, CURLOPT_TIMEOUT, config('jasper.jrs_timeout',));
 
             $content = curl_exec($ch);
             $curlErr = curl_error($ch);
@@ -64,14 +66,15 @@ if (!function_exists('jasper_generate')) {
             curl_close($ch);
 
             if ($curlErr) {
+                Log::error("JasperReportHelper::jasper_generate - cURL error: $curlErr, URL: $url");
                 return [
                     'status'  => 500,
                     'content' => null,
                     'error'   => $curlErr,
                     'url'     => $url,
+                    'message' => response()->json(['error' => $curlErr], 500)->content(),
                 ];
             }
-
             return [
                 'status'  => $httpCode,
                 'content' => ($httpCode === 200) ? $content : null,
@@ -80,6 +83,7 @@ if (!function_exists('jasper_generate')) {
                 'url'     => $url,
             ];
         } catch (\Exception $e) {
+            Log::error("JasperReportHelper::jasper_generate - Exception: " . $e->getMessage() . ", URL: $url");
             return [
                 'status'  => 500,
                 'content' => null,

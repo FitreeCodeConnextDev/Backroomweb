@@ -5,9 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Jaspersoft\Client\Client;
-use JSRClient;
-use App\Helpers\JasperReportHelper;
+
 
 class ReportController extends Controller
 {
@@ -17,7 +15,33 @@ class ReportController extends Controller
         // $filters = DB::table('closeendday')->orderBy('batch', 'desc')->get();
         // dd($filters);
         $report_name = DB::table('reportname_info')->get();
-        return view('pages.reports.index', compact('report_name'));
+        $filters = DB::table('closeendday')->orderBy('batch', 'desc')->get();
+        return view('pages.reports.index', compact('report_name', 'filters'));
+    }
+    public function toReportName(Request $request)
+    {
+        $report = $request->input('report_name');
+        if ($report == 'rpt_sum_daily') {
+            $start_date = $request->input('start_date');
+            $end_date = $request->input('end_date');
+            $format = $request->input('format');
+            return redirect()->route('rpt_sum_daily', ['start_date' => $start_date, 'end_date' => $end_date, 'format' => $format]);
+        } elseif ($report == 'rpt_sum_debt_daily') {
+            $start_date = $request->input('start_date');
+            $end_date = $request->input('end_date');
+            $format = $request->input('format');
+            return redirect()->route('rpt_sum_debt_daily', ['start_date' => $start_date, 'end_date' => $end_date, 'format' => $format]);
+        } elseif ($report == 'rpt_sum_vendor_daily') {
+            $start_date = $request->input('start_date');
+            $end_date = $request->input('end_date');
+            $format = $request->input('format');
+            // dd($start_date, $end_date, $format);
+            return redirect()->route('rpt_sum_vendor_daily', ['start_date' => $start_date, 'end_date' => $end_date, 'format' => $format]);
+        } else {
+            sweetalert()
+                ->error('ไม่พบรายงานนี้' . ' กรุณาเลือกใหม่อีกครั้ง');
+            return redirect()->back();
+        }
     }
 
     public function sum_daily_rpt()
@@ -25,11 +49,9 @@ class ReportController extends Controller
         $filters = DB::table('closeendday')->orderBy('batch', 'desc')->get();
         return view('pages.reports.sum_daily.index', compact('filters'));
     }
-    public function gen_sum_daily_rpt(Request $request)
+    public function gen_sum_daily_rpt(Request $request, $start_date, $end_date, $format)
     {
-        $start_date = $request->input('start_date');
-        $end_date = $request->input('end_date');
-        $format = $request->input('format');
+
         $b_start = DB::table('closeendday')->select('businessdate')->where('batch', $start_date)->first();
         $b_end = DB::table('closeendday')->select('businessdate')->where('batch', $end_date)->first();
         // dd($b_start,$b_end);
@@ -52,6 +74,15 @@ class ReportController extends Controller
             ], $format);
 
             if ($client['status'] === 200 && !empty($client['content'])) {
+                Log::channel('activity')->info('Generated daily summary report', [
+                    'branch_id' => session('auth_user.branch_id'),
+                    'user_id' => session('auth_user.user_id'),
+                    'start_date' => date('d/m/Y', strtotime($b_start->businessdate)),
+                    'end_date' => date('d/m/Y', strtotime($b_end->businessdate)),
+                    'batch_start' => $start_date,
+                    'batch_end' => $end_date,
+                    'output_format' => $format,
+                ]);
                 return response($client['content'], 200, [
                     'Content-Type'        => $client['mime'],
                     'Content-Disposition' => "inline; filename=$filename.$format",
@@ -77,11 +108,9 @@ class ReportController extends Controller
         $filters = DB::table('closeendday')->orderBy('batch', 'desc')->get();
         return view('pages.reports.sum_debt.index', compact('filters'));
     }
-    public function gen_sum_debt_rpt(Request $request)
+    public function gen_sum_debt_rpt(Request $request, $start_date, $end_date, $format)
     {
-        $start_date = $request->input('start_date');
-        $end_date = $request->input('end_date');
-        $format = $request->input('format');
+
         $b_start = DB::table('closeendday')->select('businessdate')->where('batch', $start_date)->first();
         $b_end = DB::table('closeendday')->select('businessdate')->where('batch', $end_date)->first();
         $branch_name = DB::table('branch_info')->select('branch_name')->where('branch_id', session('auth_user.branch_id'))->first();
@@ -103,6 +132,70 @@ class ReportController extends Controller
             ], $format);
 
             if ($client['status'] === 200 && !empty($client['content'])) {
+                Log::channel('activity')->info('Generated debt daily report', [
+                    'branch_id' => session('auth_user.branch_id'),
+                    'user_id' => session('auth_user.user_id'),
+                    'start_date' => date('d/m/Y', strtotime($b_start->businessdate)),
+                    'end_date' => date('d/m/Y', strtotime($b_end->businessdate)),
+                    'batch_start' => $start_date,
+                    'batch_end' => $end_date,
+                    'output_format' => $format,
+                ]);
+                return response($client['content'], 200, [
+                    'Content-Type'        => $client['mime'],
+                    'Content-Disposition' => "inline; filename=$filename.$format",
+                ]);
+            }
+        } catch (\Exception $e) {
+            Log::error('Error generating report: ' . $e->getMessage(), [
+                'report_path' => $reportPath,
+                'output_format' => $format,
+                'error' => $e->getMessage()
+            ]);
+            return response()->json([
+                'error'      => 'Failed to fetch report',
+                'status'     => $client['status'],
+                'curl_error' => $client['error'],
+                'url'        => $client['url'],
+            ], 500);
+        }
+    }
+
+    public function gen_rpt_sum_vendor_daily($start_date, $end_date, $format)
+    {
+        $b_start = DB::table('closeendday')->select('businessdate')->where('batch', $start_date)->first();
+        $b_end = DB::table('closeendday')->select('businessdate')->where('batch', $end_date)->first();
+        $branch_name = DB::table('branch_info')->select('branch_name')->where('branch_id', session('auth_user.branch_id'))->first();
+        if ($branch_name == null) {
+            $branch_name = (object) ['branch_name' => 'All Branch'];
+        }
+        // dd($branch_name);
+        $reportPath = '/rpt_sum_vendor_daily'; // JasperReports Server path
+        $filename  = 'sum_vendor_daily_report_' . date('Y-m-d');
+
+        try {
+            $client = jasper_generate($reportPath, [
+                'branch_id' => session('auth_user.branch_id'),
+                'branch_name' => $branch_name->branch_name,
+                'user_name' => session('auth_user.user_name'),
+                'user_id' => session('auth_user.user_id'),
+                'start_date' => date('d/m/Y', strtotime($b_start->businessdate)),
+                'end_date' => date('d/m/Y', strtotime($b_end->businessdate)),
+                'batch_start' => $start_date,
+                'batch_end' => $end_date,
+            ], $format);
+            // dd($client);
+
+            if ($client['status'] === 200 && !empty($client['content'])) {
+                Log::channel('activity')->info('Generated vendor daily report', [
+                    'branch_id' => session('auth_user.branch_id'),
+                    'user_id' => session('auth_user.user_id'),
+                    'start_date' => date('d/m/Y', strtotime($b_start->businessdate)),
+                    'end_date' => date('d/m/Y', strtotime($b_end->businessdate)),
+                    'batch_start' => $start_date,
+                    'batch_end' => $end_date,
+                    'output_format' => $format,
+                ]);
                 return response($client['content'], 200, [
                     'Content-Type'        => $client['mime'],
                     'Content-Disposition' => "inline; filename=$filename.$format",
@@ -170,12 +263,12 @@ class ReportController extends Controller
 
     // public function daily()
     // {
-    //     $branch_id  = "000973";
-    //     $start_date = "1";
-    //     $end_date   = "3";
+    // $branch_id  = "000973";
+    // $start_date = "1";
+    // $end_date   = "3";
 
-    //     $url = "http://10.10.1.81:8088/jasperserver/rest_v2/reports/backroomweb/rpt_sum_daily.pdf"
-    //         . "?branch_id={$branch_id}&start_date={$start_date}&end_date={$end_date}"
+    //     $url = "http://10.10.1.81:8088/jasperserver/rest_v2/reports/backroomweb/test_report.pdf?"
+    // . "?branch_id={$branch_id}&start_date={$start_date}&end_date={$end_date}"
     //         . "&j_username=code&j_password=ccooddee";
 
     //     $ch = curl_init();

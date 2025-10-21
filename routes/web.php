@@ -127,10 +127,13 @@ Route::middleware(['auth_user'])->group(function () {
 
         Route::get('/index-report', [ReportController::class, 'index'])->name('report.index');
         Route::get('/report-testReport', [ReportController::class, 'testReport'])->name('report.testReport');
+        Route::post('/report-toReportName', [ReportController::class, 'toReportName'])->name('report.getReportName');
 
-        Route::get('/report-rpt_sum_daily', [ReportController::class, 'sum_daily_rpt'])->name('rpt_sum_daily');
-        Route::post('/report-gen_rpt_sum_daily', [ReportController::class, 'gen_sum_daily_rpt'])->name('gen_rpt_sum_daily');
-        Route::get('/report-rpt_sum_debt', [ReportController::class, 'sum_debt_rpt'])->name('rpt_sum_debt_daily');
-        Route::post('/report-gen_rpt_sum_debt', [ReportController::class, 'gen_sum_debt_rpt'])->name('gen_rpt_sum_debt');
+        // Route::get('/report-rpt_sum_daily', [ReportController::class, 'sum_daily_rpt'])->name('rpt_sum_daily');
+        Route::get('/report-gen_rpt_sum_daily/{start_date}/{end_date}/{format}', [ReportController::class, 'gen_sum_daily_rpt'])->name('rpt_sum_daily');
+        // Route::get('/report-rpt_sum_debt', [ReportController::class, 'sum_debt_rpt'])->name('rpt_sum_debt_daily');
+        Route::get('/report-gen_rpt_sum_debt/{start_date}/{end_date}/{format}', [ReportController::class, 'gen_sum_debt_rpt'])->name('rpt_sum_debt_daily');
+        Route::get('/report-gen_rpt_sum_vendor_daily/{start_date}/{end_date}/{format}', [ReportController::class, 'gen_rpt_sum_vendor_daily'])->name('rpt_sum_vendor_daily');
+
         Route::get('/report-checkConnection', [ReportController::class, 'checkConnection'])->name('report.checkConnection');
 });
