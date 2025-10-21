@@ -21,6 +21,7 @@
             <tr>
                 <th scope="col">{{ __('users.user_id') }}</th>
                 <th scope="col">{{ __('users.user_name') }}</th>
+                <th scope="col">{{ __('users.branch_id') }}</th>
                 <th scope="col">Action</th>
             </tr>
         </thead>
@@ -29,6 +30,7 @@
                 <tr>
                     <td> {{ $user->user_id }} </td>
                     <td> {{ $user->user_name }} </td>
+                    <td> {{ $user->branch_id }} </td>
                     <td>
                         <div class="flex space-x-3">
                             <div>

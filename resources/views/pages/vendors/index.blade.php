@@ -32,6 +32,7 @@
             <tr>
                 <th scope="col">{{ __('vendor.vendor_id') }}</th>
                 <th scope="col">{{ __('vendor.vendor_name') }}</th>
+                <th scope="col"> {{ __('vendor.branch_id') }} </th>
                 <th scope="col">Action</th>
 
             </tr>
@@ -42,6 +43,7 @@
                 <tr>
                     <td> {{ $vendor->vendor_id }} </td>
                     <td> {{ $vendor->vendor_name }} </td>
+                    <td> {{ $vendor->branch_id}} </td>
                     <td>
                         <div class="flex space-x-3">
                             <div>

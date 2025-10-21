@@ -40,7 +40,7 @@
                     <label for="branch_id" class="label_input">{{ __('users.branch_id') }}</label>
                     <select name="branch_id" id="branch_id" class="input_text">
                         @if ($user_data->user_id == session('auth_user.user_id') && $user_data->branch_id == 000000)
-                            <option value="000" selected>
+                            <option value="000000" selected>
                                 000000</option>
                         @endif
                         @foreach ($branches as $branch)

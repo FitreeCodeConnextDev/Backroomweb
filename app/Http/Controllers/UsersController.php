@@ -29,7 +29,7 @@ class UsersController extends Controller
             $session_branch_id = session('auth_user.branch_id');
             if ($session_branch_id == 000000) {
                 $user_data = DB::table('user_info')
-                    ->select('user_id', 'user_name')
+                    ->select('user_id', 'user_name', 'branch_id')
                     ->where('activeflag', 1)
                     ->orderBy('user_id', 'DESC')
                     ->get();

@@ -1,7 +1,7 @@
 @vite(['resources/css/app.css', 'resources/js/app.js'])
 @php
     $branch_id = session('auth_user.branch_id');
-    if ($branch_id == '000') {
+    if ($branch_id == '000000') {
         $vendor_product = DB::table('vendorproduct_info')
             ->join('product_info', 'vendorproduct_info.product_id', '=', 'product_info.product_id')
             ->where('vendor_id', '=', $vendor_id)

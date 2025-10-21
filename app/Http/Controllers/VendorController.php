@@ -30,7 +30,7 @@ class VendorController extends Controller
 
         if ($user_branch == 000000) {
             $vendor_data = DB::table('vendor_info')
-                ->select('vendor_id', 'vendor_name')
+                ->select('vendor_id', 'vendor_name','branch_id')
                 ->where('activeflag', '=', 1)
                 ->where(function ($query) use ($search) {
                     // If search term is provided, filter by product description or product id
