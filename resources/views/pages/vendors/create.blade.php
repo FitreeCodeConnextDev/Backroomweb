@@ -26,7 +26,7 @@
                 <div class="grid grid-cols-1 lg:grid-cols-6 gap-3 p-7 w-full ">
                     @php
                         $select_vendor_id = DB::table('vendor_info')->max('vendor_id');
-                        $vendor_ids = $select_vendor_id + 1;
+                        $vendor_ids = str_pad(($select_vendor_id ?? 0) + 1, 6, '0', STR_PAD_LEFT);
                     @endphp
                     <div>
                         <label for="vendor_id" class="label_input"> {{ __('vendor.vendor_id') }} </label>
