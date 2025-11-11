@@ -145,7 +145,7 @@
     </form>
 @endsection
 @section('js-scripts')
-    <script>
+    <script type="module">
         $('#product_form').validate({
             rules: {
                 product_id: "required",

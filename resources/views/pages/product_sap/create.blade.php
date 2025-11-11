@@ -69,7 +69,7 @@
     </form>
 @endsection
 @section('js-scripts')
-    <script>
+    <script type="module">
         $('#product_sap').validate({
             rules: {
                 catproduct_group: {

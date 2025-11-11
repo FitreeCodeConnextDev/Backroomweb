@@ -21,8 +21,8 @@
         <div class="grid_page">
             <div>
                 <label for="subno" class="label_input"> {{ __('card_type.subno') }} </label>
-                <input type="text" id="subno" maxlength="3" name="subno" placeholder="..." class="input_text" value=""
-                    required />
+                <input type="text" id="subno" maxlength="3" name="subno" placeholder="..." class="input_text"
+                    value="" required />
                 @error('subno')
                     <p class="mt-2 text-sm text-red-600 "><span class="font-medium"> {{ __('menu.is_warning') }} </span>
                         {{ $message }}
@@ -67,32 +67,34 @@
     </form>
 @endsection
 @section('js-scripts')
-    <script>
-        $('#card_type').validate({
-            rules: {
-                subno: {
-                    required: true,
+    <script type="module">
+        $(document).ready(function() {
+            $('#card_type').validate({
+                rules: {
+                    subno: {
+                        required: true,
+                    },
+                    subdesc: {
+                        required: true,
+                    },
+                    expire_day: {
+                        required: true,
+                        number: true
+                    },
+                    deposit: {
+                        required: true,
+                    },
                 },
-                subdesc: {
-                    required: true,
-                },
-                expire_day: {
-                    required: true,
-                    number: true
-                },
-                deposit: {
-                    required: true,
-                },
-            },
-            messages: {
-                subno: `{{ __('card_type.subno_valid') }}`,
-                subdesc: `{{ __('card_type.subdesc_valid') }}`,
-                expire_day: {
-                    required: `{{ __('card_type.expire_day_valid') }}`,
-                    number: `{{ __('card_type.expire_num_valid') }}`
-                },
-                deposit: `{{ __('card_type.deposit_valid') }}`,
-            }
+                messages: {
+                    subno: `{{ __('card_type.subno_valid') }}`,
+                    subdesc: `{{ __('card_type.subdesc_valid') }}`,
+                    expire_day: {
+                        required: `{{ __('card_type.expire_day_valid') }}`,
+                        number: `{{ __('card_type.expire_num_valid') }}`
+                    },
+                    deposit: `{{ __('card_type.deposit_valid') }}`,
+                }
+            });
         });
     </script>
 @endsection

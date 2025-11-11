@@ -91,7 +91,7 @@
     </form>
 @endsection
 @section('js-scripts')
-    <script>
+    <script type="module">
         $('#product_group').validate({
             rules: {
                 groupproduct_id : "required",

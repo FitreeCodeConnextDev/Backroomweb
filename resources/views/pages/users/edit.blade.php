@@ -159,7 +159,7 @@
     </form>
 @endsection
 @section('js-scripts')
-    <script>
+    <script type="module">
         $('#users_form').validate({
             rules: {
                 user_id: {

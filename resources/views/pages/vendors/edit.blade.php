@@ -284,7 +284,7 @@
     <script src="/js/delet_sweet.js"></script>
     <script src="/js/vendor_tab.js"></script>
 
-    <script>
+    <script type="module">
         $('#vendor_form').validate({
             rules: {
                 branch_id: "required",
@@ -317,6 +317,8 @@
                 billcount: `{{ __('vendor.vendor_billcount_required') }}`
             }
         });
+    </script>
+    <script>
         document.querySelectorAll('.del-button').forEach(button => {
             button.addEventListener('click', function(e) {
                 e.preventDefault();

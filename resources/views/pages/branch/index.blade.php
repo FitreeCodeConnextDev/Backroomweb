@@ -33,8 +33,7 @@
                         <div class="flex space-x-3">
                             <div>
                                 <a href="{{ route('branch.edit', $branch->branch_id) }}">
-                                    <button type="button" data-popover-target="popover-description"
-                                        data-popover-placement="bottom-end" class="edit-button">
+                                    <button type="button" class="edit-button">
                                         <svg class="w-[16px] h-[16px]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                             width="24" height="24" fill="none" viewBox="0 0 24 24">
                                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -69,46 +68,48 @@
 @endsection
 @section('js-scripts')
     <script>
-        if (document.getElementById("branch_table") && typeof simpleDatatables.DataTable !== 'undefined') {
-            const dataTable = new simpleDatatables.DataTable("#branch_table", {
-                searchable: true,
-                sortable: false
-            });
-        }
-    </script>
-    <script>
-        document.querySelectorAll('.del-button').forEach(button => {
-            button.addEventListener('click', function(e) {
-                e.preventDefault();
-                const itemId = this.getAttribute('data-item-id');
-                const itemName = this.getAttribute('data-name');
-                const form = document.getElementById(`delete-form-${itemId}`);
-                const swalWithBootstrapButtons = Swal.mixin({
-                    customClass: {
-                        confirmButton: "alert_confirm_btn",
-                        cancelButton: "alert_cancel_btn"
-                    },
-                    buttonsStyling: false
+        document.addEventListener("DOMContentLoaded", function() {
+            const table = document.querySelector("#branch_table");
+            if (table) {
+                new DataTable(table, {
+                    searchable: true,
+                    sortable: true,
+                    perPage: 5,
+                    perPageSelect: [5, 10, 20]
                 });
+            }
 
-                swalWithBootstrapButtons.fire({
-                    title: "คุณแน่ใจเหรอ?",
-                    html: `ว่าจะลบ <b>` + itemName + `</b>`,
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonText: "ใช่ ลบเลย",
-                    cancelButtonText: "ไม่ ยกเลิก!",
-                    reverseButtons: true
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        // Swal.fire({
-                        //     title: "ลบแล้ว!",
-                        //     html: `ข้อมูลถูกลบแล้ว`,
-                        //     icon: "success"
-                        // });
-                        form.submit(); // Submit the form to delete the item
-                    }
-                });
+            // ✅ ใช้ event delegation แทน
+            document.addEventListener('click', function(e) {
+                const button = e.target.closest('.del-button');
+                if (button) {
+                    e.preventDefault();
+                    const itemId = button.getAttribute('data-item-id');
+                    const itemName = button.getAttribute('data-name');
+                    const form = document.getElementById(`delete-form-${itemId}`);
+
+                    const swalWithBootstrapButtons = Swal.mixin({
+                        customClass: {
+                            confirmButton: "alert_confirm_btn",
+                            cancelButton: "alert_cancel_btn"
+                        },
+                        buttonsStyling: false
+                    });
+
+                    swalWithBootstrapButtons.fire({
+                        title: "คุณแน่ใจเหรอ?",
+                        html: `ว่าจะลบ <b>${itemName}</b>`,
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonText: "ใช่ ลบเลย",
+                        cancelButtonText: "ไม่ ยกเลิก!",
+                        reverseButtons: true
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
+                    });
+                }
             });
         });
     </script>

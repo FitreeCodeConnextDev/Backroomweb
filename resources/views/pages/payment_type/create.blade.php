@@ -211,7 +211,7 @@
         rabbitRadio.addEventListener('change', handleRadioChange);
         qrRadio.addEventListener('change', handleRadioChange);
     </script>
-    <script>
+    <script type="module">
         $('#payment_form').validate({
             rules: {
                 payment_code: "required",

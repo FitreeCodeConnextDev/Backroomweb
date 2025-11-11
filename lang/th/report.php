@@ -25,6 +25,11 @@ return [
     'rpt_sum_daily' => 'รายงานยอดขายรวม-ประจำวัน',
     'rpt_sum_debt_daily' => 'รายงานยอดขายรวมบัตรลูกค้า-ประจำวัน',
 
+    'select_report_date' => 'เลือกประเภทบัตร',
+    'rpt_allday' => 'ทั้งหมด',
+    'rpt_inday' => 'ในวัน',
+    'rpt_crossday' => 'ข้ามวัน',
+
     'format' => 'รูปแบบ',
     'select_format' => 'เลือกไฟล์รูปแบบ',
 

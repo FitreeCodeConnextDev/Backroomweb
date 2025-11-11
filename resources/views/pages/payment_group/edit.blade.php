@@ -61,7 +61,7 @@
     </form>
 @endsection
 @section('js-scripts')
-    <script>
+    <script type="module">
         $('#payment_groups').validate({
             rules: {
                 payment_group: "required",

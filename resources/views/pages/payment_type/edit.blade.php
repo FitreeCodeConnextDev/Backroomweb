@@ -254,7 +254,7 @@
         // Call the function once on page load to initialize the state
         handleRadioChange();
     </script>
-    <script>
+    <script type="module">
         $('#payment_form').validate({
             rules: {
                 payment_code: "required",

@@ -21,8 +21,8 @@
         <div class="grid_page">
             <div>
                 <label for="payment_group" class="label_input">{{ __('payment_group.payment_group') }}</label>
-                <input type="text" id="payment_group" name="payment_group" maxlength="2" placeholder="01, 02 ..." class="input_text"
-                    value="{{ old('payment_group') }}" required />
+                <input type="text" id="payment_group" name="payment_group" maxlength="2" placeholder="01, 02 ..."
+                    class="input_text" value="{{ old('payment_group') }}" required />
                 @error('payment_group')
                     <p class="mt-2 text-sm text-red-600 "><span class="font-medium"> {{ __('menu.is_warning') }} </span>
                         {{ $message }}
@@ -64,18 +64,20 @@
     </form>
 @endsection
 @section('js-scripts')
-    <script>
-        $('#payment_groups').validate({
-            rules: {
-                payment_group: "required",
-                description: "required",
-                show_tender: "required",
-            },
-            messages: {
-                payment_group: `{{ __('payment_group.payment_group_valid') }}`,
-                description: `{{ __('payment_group.description_valid') }}`,
-                show_tender: `{{ __('payment_group.show_tender_valid') }}`,
-            }
+    <script type="module">
+        $(document).ready(function() {
+            $('#payment_groups').validate({
+                rules: {
+                    payment_group: "required",
+                    description: "required",
+                    show_tender: "required",
+                },
+                messages: {
+                    payment_group: `{{ __('payment_group.payment_group_valid') }}`,
+                    description: `{{ __('payment_group.description_valid') }}`,
+                    show_tender: `{{ __('payment_group.show_tender_valid') }}`,
+                }
+            });
         });
     </script>
 @endsection

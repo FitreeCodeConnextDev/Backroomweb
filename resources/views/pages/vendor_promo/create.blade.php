@@ -182,7 +182,7 @@
     </form>
 @endsection
 @section('js-scripts')
-    <script>
+    <script type="module">
         $('#vendor_promo').validate({
             rules: {
                 promo_code: "required",

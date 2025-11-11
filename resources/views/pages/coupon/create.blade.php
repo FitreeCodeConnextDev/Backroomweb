@@ -161,60 +161,62 @@
     </form>
 @endsection
 @section('js-scripts')
-    <script>
-        $('#coupon_form').validate({
-            rules: {
-                coupon_id: {
-                    required: true
+    <script type="module">
+        $(document).ready(function() {
+            $('#coupon_form').validate({
+                rules: {
+                    coupon_id: {
+                        required: true
+                    },
+                    coupon_name: {
+                        required: true
+                    },
+                    start_date: {
+                        required: true
+                    },
+                    valid_date: {
+                        required: true
+                    },
+                    coupon_countday: {
+                        required: true
+                    },
+                    coupon_countall: {
+                        required: true
+                    },
+                    coupon_limitqty: {
+                        required: true
+                    },
+                    coupon_limitallqty: {
+                        required: true
+                    }
                 },
-                coupon_name: {
-                    required: true
-                },
-                start_date: {
-                    required: true
-                },
-                valid_date: {
-                    required: true
-                },
-                coupon_countday: {
-                    required: true
-                },
-                coupon_countall: {
-                    required: true
-                },
-                coupon_limitqty: {
-                    required: true
-                },
-                coupon_limitallqty: {
-                    required: true
+                messages: {
+                    coupon_id: {
+                        required: "{{ __('coupon.coupon_id_required') }}"
+                    },
+                    coupon_name: {
+                        required: "{{ __('coupon.coupon_name_required') }}"
+                    },
+                    start_date: {
+                        required: "{{ __('coupon.coupon_start_date_required') }}"
+                    },
+                    valid_date: {
+                        required: "{{ __('coupon.coupon_valid_date_required') }}"
+                    },
+                    coupon_countday: {
+                        required: "{{ __('coupon.coupon_countday_required') }}"
+                    },
+                    coupon_countall: {
+                        required: "{{ __('coupon.coupon_countall_required') }}"
+                    },
+                    coupon_limitqty: {
+                        required: "{{ __('coupon.coupon_limitqty_required') }}"
+                    },
+                    coupon_limitallqty: {
+                        required: "{{ __('coupon.coupon_limitallqty_required') }}"
+                    }
                 }
-            },
-            messages: {
-                coupon_id: {
-                    required: "{{ __('coupon.coupon_id_required') }}"
-                },
-                coupon_name: {
-                    required: "{{ __('coupon.coupon_name_required') }}"
-                },
-                start_date: {
-                    required: "{{ __('coupon.coupon_start_date_required') }}"
-                },
-                valid_date: {
-                    required: "{{ __('coupon.coupon_valid_date_required') }}"
-                },
-                coupon_countday: {
-                    required: "{{ __('coupon.coupon_countday_required') }}"
-                },
-                coupon_countall: {
-                    required: "{{ __('coupon.coupon_countall_required') }}"
-                },
-                coupon_limitqty: {
-                    required: "{{ __('coupon.coupon_limitqty_required') }}"
-                },
-                coupon_limitallqty: {
-                    required: "{{ __('coupon.coupon_limitallqty_required') }}"
-                }
-            }
-        })
+            });
+        });
     </script>
 @endsection

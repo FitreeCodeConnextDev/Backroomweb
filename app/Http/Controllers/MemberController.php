@@ -55,6 +55,7 @@ class MemberController extends Controller
 
     public function store(Request $request)
     {
+        // dd($request->all());
         $valida_data = $request->validate([
             'member_id' => 'required|max:10|unique:member_info,member_id',
             'member_name' => 'required',
@@ -82,7 +83,7 @@ class MemberController extends Controller
             'card_no.required' => __('member.card_no_valid'),
 
         ]);
-        // dd($valida_data);
+        
         $member_expire = Carbon::parse($valida_data['member_expire'])->format('Y-m-d');
         $member_birthdate = Carbon::parse($valida_data['member_birthdate'])->format('Y-m-d');
 

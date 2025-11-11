@@ -266,7 +266,7 @@
     @endsection
     @section('js-scripts')
         <script src="/js/vendor_create.js"></script>
-        <script>
+        <script type="module">
             $('#vendor_form').validate({
                 rules: {
 

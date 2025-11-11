@@ -66,7 +66,7 @@
     @endif --}}
 @endsection
 @section('scripts')
-    <script>
+    <script type="module">
         $('#product_unit').validate({
             rules: {
                 unit_id: {

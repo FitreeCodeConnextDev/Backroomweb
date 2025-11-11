@@ -361,38 +361,40 @@
     @endif
 @endsection
 @section('js-scripts')
-    <script>
-        $('#promo_form').validate({
-            rules: {
-                promo_code: "required",
-                promo_desc: "required",
-                promo_seq: "required",
-                start_date: "required",
-                end_date: "required",
-                start_time: "required",
-                end_time: "required",
-                buy_amt: "required",
-                get_amt: "required",
-                get_point: "required",
-                adj_amt: "required",
-                adjget_amt: "required",
-                adjget_point: "required",
-            },
-            messages: {
-                promo_code: `{{ __('card_promo.promo_code_valid') }}`,
-                promo_desc: `{{ __('card_promo.promo_desc_valid') }}`,
-                promo_seq: `{{ __('card_promo.promo_seq_valid') }}`,
-                start_date: `{{ __('card_promo.start_date_valid') }}`,
-                end_date: `{{ __('card_promo.end_date_valid') }}`,
-                start_time: `{{ __('card_promo.start_time_valid') }}`,
-                end_time: `{{ __('card_promo.end_time_valid') }}`,
-                buy_amt: `{{ __('card_promo.buy_amt_valid') }}`,
-                get_amt: `{{ __('card_promo.get_amt_valid') }}`,
-                get_point: `{{ __('card_promo.get_point_valid') }}`,
-                adj_amt: `{{ __('card_promo.adj_amt_valid') }}`,
-                adjget_amt: `{{ __('card_promo.adjget_amt_valid') }}`,
-                adjget_point: `{{ __('card_promo.adjget_point_valid') }}`,
-            }
+    <script type="module">
+        $(document).ready(function() {
+            $('#promo_form').validate({
+                rules: {
+                    promo_code: "required",
+                    promo_desc: "required",
+                    promo_seq: "required",
+                    start_date: "required",
+                    end_date: "required",
+                    start_time: "required",
+                    end_time: "required",
+                    buy_amt: "required",
+                    get_amt: "required",
+                    get_point: "required",
+                    adj_amt: "required",
+                    adjget_amt: "required",
+                    adjget_point: "required",
+                },
+                messages: {
+                    promo_code: `{{ __('card_promo.promo_code_valid') }}`,
+                    promo_desc: `{{ __('card_promo.promo_desc_valid') }}`,
+                    promo_seq: `{{ __('card_promo.promo_seq_valid') }}`,
+                    start_date: `{{ __('card_promo.start_date_valid') }}`,
+                    end_date: `{{ __('card_promo.end_date_valid') }}`,
+                    start_time: `{{ __('card_promo.start_time_valid') }}`,
+                    end_time: `{{ __('card_promo.end_time_valid') }}`,
+                    buy_amt: `{{ __('card_promo.buy_amt_valid') }}`,
+                    get_amt: `{{ __('card_promo.get_amt_valid') }}`,
+                    get_point: `{{ __('card_promo.get_point_valid') }}`,
+                    adj_amt: `{{ __('card_promo.adj_amt_valid') }}`,
+                    adjget_amt: `{{ __('card_promo.adjget_amt_valid') }}`,
+                    adjget_point: `{{ __('card_promo.adjget_point_valid') }}`,
+                }
+            });
         });
     </script>
     {{-- @vite(['resources/js/card_promo.js']) --}}

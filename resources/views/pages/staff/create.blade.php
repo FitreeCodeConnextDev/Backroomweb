@@ -131,6 +131,12 @@
                         <div>
                             <label for="card_number" class="label_input"> {{ __('member.card_no') }} </label>
                             <input type="text" name="card_no" class="input_text" id="card_number" maxlength="13">
+                            @error('card_no')
+                                <p class="mt-2 text-sm text-red-600 "><span
+                                        class="font-medium">{{ __('menu.is_warning') }}</span>
+                                    {{ $message }}
+                                </p>
+                            @enderror
                         </div>
                     </div>
                 </div>
@@ -146,7 +152,7 @@
     </form>
 @endsection
 @section('js-scripts')
-    <script>
+    <script type="module">
         $('#staff_form').validate({
             rules: {
                 staff_id: {

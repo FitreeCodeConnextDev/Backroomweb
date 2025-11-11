@@ -358,7 +358,7 @@
         <div class="relative p-4 w-full max-w-md max-h-full">
             <div class="bg-white rounded-lg shadow-sm">
                 <!-- Modal header -->
-                <div class="flex items-center justify-between p-4 md:p-5 border-b  rounded-t border-gray-200">
+                <div class="flex items-center justify-between p-4 md:p-5 border-b rounded border-gray-200">
                     <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
                         {{ __('card_promo.expireprint_title') }}
                     </h3>

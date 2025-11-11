@@ -5,13 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@100..700&display=swap" rel="stylesheet">
+    {{-- @vite(['resources/css/app.css', 'resources/js/app.js']) --}}
+    @vite('resources/css/app.css')
     <link rel="shortcut icon" href="{{ asset('logo/CodeConnextLogo.png') }}">
-    
+
     <title>LOGIN | Backroom</title>
 </head>
 <style>
@@ -48,10 +45,9 @@
             </div>
         </div>
     </section>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @vite('resources/js/app.js')
 
-    <script type="text/javascript">
+    <script type="module">
         $(document).ready(function() {
             $('#login-form').on('submit', function(e) {
                 e.preventDefault(); // Prevent the form from submitting the traditional way
@@ -94,7 +90,8 @@
 
                         // If the error response is JSON, parse it and show the message
                         var response = xhr.responseJSON || {};
-                        var errorMessage = response.message || 'เกิดข้อผิดพลาดที่ไม่คาดคิด โปรดลองอีกครั้งในภายหลัง';
+                        var errorMessage = response.message ||
+                            'เกิดข้อผิดพลาดที่ไม่คาดคิด โปรดลองอีกครั้งในภายหลัง';
 
                         // Show error using SweetAlert2
                         Swal.fire({

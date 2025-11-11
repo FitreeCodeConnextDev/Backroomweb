@@ -17,25 +17,35 @@
     </div>
 @endsection
 @section('table-section')
-    <table class="table-data" id="card_promo">
+    <table id="card_promo_table" class="table-data">
         <thead>
             <tr>
-                <th scope="col"> {{ __('card_promo.promo_code') }} </th>
-                <th scope="col">{{ __('card_promo.promo_desc') }}</th>
-                <th scope="col">Action</th>
+                <th scope="col">
+                    {{ __('card_promo.promo_code') }}
+                </th>
+                <th scope="col">
+                    {{ __('card_promo.promo_desc') }}
+                </th>
+                <th scope="col">
+                    Action
+                </th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($card_promo as $promo)
+            @foreach ($card_promo as $item)
                 <tr>
-                    <td>{{ $promo->promo_code }}</td>
-                    <td>{{ $promo->promo_desc }}</td>
+                    <td>
+                        {{ $item->promo_code }}
+                    </td>
+                    <td>
+                        {{ $item->promo_desc }}
+                    </td>
                     <td>
                         <div class="flex space-x-3">
                             <div>
-                                <a href="{{ route('card-promotion.edit', $promo->promo_code) }}">
+                                <a href="{{ route('card-promotion.edit', $item->promo_code) }}">
                                     <button type="button" data-popover-target="popover-description"
-                                        data-popover-placement="bottom-end" class="edit-button">
+                                        data-popover-placement="bottom-end" type="button" class="edit-button">
                                         <svg class="w-[16px] h-[16px]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                             width="24" height="24" fill="none" viewBox="0 0 24 24">
                                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -46,12 +56,12 @@
                                 </a>
                             </div>
                             <div>
-                                <form action="{{ route('card-promotion.destroy', $promo->promo_code) }}" method="post"
-                                    id="delete-form-{{ $promo->promo_code }}">
+                                <form action="{{ route('card-promotion.destroy', $item->promo_code) }}" method="post"
+                                    id="delete-form-{{ $item->promo_code }}">
                                     @csrf
                                     @method('DELETE')
-                                    <button id="del-button" class="del-button" data-item-id="{{ $promo->promo_code }}"
-                                        data-name="{{ $promo->promo_desc }}">
+                                    <button id="del-button" class="del-button" data-item-id="{{ $item->promo_code }}"
+                                        data-name="{{ $item->promo_desc }}">
                                         <svg class="w-[16px] h-[16px]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                             width="24" height="24" fill="none" viewBox="0 0 24 24">
                                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -62,6 +72,7 @@
                                 </form>
                             </div>
                         </div>
+
                     </td>
                 </tr>
             @endforeach
@@ -70,46 +81,48 @@
 @endsection
 @section('js-scripts')
     <script>
-        if (document.getElementById("card_promo") && typeof simpleDatatables.DataTable !== 'undefined') {
-            const dataTable = new simpleDatatables.DataTable("#card_promo", {
-                searchable: true,
-                sortable: false
-            });
-        }
-    </script>
-    <script>
-        document.querySelectorAll('.del-button').forEach(button => {
-            button.addEventListener('click', function(e) {
-                e.preventDefault();
-                const itemId = this.getAttribute('data-item-id');
-                const itemName = this.getAttribute('data-name');
-                const form = document.getElementById(`delete-form-${itemId}`);
-                const swalWithBootstrapButtons = Swal.mixin({
-                    customClass: {
-                        confirmButton: "alert_confirm_btn",
-                        cancelButton: "alert_cancel_btn"
-                    },
-                    buttonsStyling: false
+        document.addEventListener("DOMContentLoaded", function() {
+            const table = document.querySelector("#card_promo_table");
+            if (table) {
+                new DataTable(table, {
+                    searchable: true,
+                    sortable: true,
+                    perPage: 5,
+                    perPageSelect: [5, 10, 20]
                 });
+            }
 
-                swalWithBootstrapButtons.fire({
-                    title: "คุณแน่ใจเหรอ?",
-                    html: `ว่าจะลบ <b>` + itemName + `</b>`,
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonText: "ใช่ ลบเลย",
-                    cancelButtonText: "ไม่ ยกเลิก!",
-                    reverseButtons: true
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        // Swal.fire({
-                        //     title: "ลบแล้ว!",
-                        //     html: `ข้อมูลถูกลบแล้ว`,
-                        //     icon: "success"
-                        // });
-                        form.submit(); // Submit the form to delete the item
-                    }
-                });
+            // ✅ ใช้ event delegation แทน
+            document.addEventListener('click', function(e) {
+                const button = e.target.closest('.del-button');
+                if (button) {
+                    e.preventDefault();
+                    const itemId = button.getAttribute('data-item-id');
+                    const itemName = button.getAttribute('data-name');
+                    const form = document.getElementById(`delete-form-${itemId}`);
+
+                    const swalWithBootstrapButtons = Swal.mixin({
+                        customClass: {
+                            confirmButton: "alert_confirm_btn",
+                            cancelButton: "alert_cancel_btn"
+                        },
+                        buttonsStyling: false
+                    });
+
+                    swalWithBootstrapButtons.fire({
+                        title: "คุณแน่ใจเหรอ?",
+                        html: `ว่าจะลบ <b>${itemName}</b>`,
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonText: "ใช่ ลบเลย",
+                        cancelButtonText: "ไม่ ยกเลิก!",
+                        reverseButtons: true
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
+                    });
+                }
             });
         });
     </script>

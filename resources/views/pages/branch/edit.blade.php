@@ -72,7 +72,7 @@
             <div>
                 <label for="branch_tel" class=" label_input">{{ __('branch.branch_tel') }}</label>
                 <input type="text" id="branch_tel" maxlength="10" name="branch_tel" placeholder="000-000-0000"
-                    class="input_text " value="{{ $branch->branch_tel }}" required />
+                    class="input_text " value="{{ $branch->branch_tel }}" />
                 @error('branch_tel')
                     <p class="mt-2 text-sm text-red-600"><span class=" font-medium"> {{ __(__('menu.is_warning')) }} </span>
                         {{ $message }} </p>
@@ -154,8 +154,9 @@
             </div>
             <div>
                 <label for="businessdate" class="label_input">{{ __('branch.businessdate') }}</label>
-                <input type="date" pattern="\d{2}/\d{2}/\d{4}" id="businessdate" name="businessdate"
-                    class="input_text" value="{{ date('Y-m-d', strtotime($branch->businessdate)) }}" />
+                <input type="date" id="businessdate" name="businessdate" class="input_text"
+                    value="{{ date('Y-m-d', strtotime($branch->businessdate)) }}" /> {{-- pattern="\d{2}/\d{2}/\d{4}" --}}
+
                 @error('businessdate')
                     <p class="mt-2 text-sm text-red-600"><span class=" font-medium"> {{ __(__('menu.is_warning')) }} </span>
                         {{ $message }} </p>
@@ -216,72 +217,74 @@
 @endsection
 
 @section('js-scripts')
-    <script>
-        $('#branch_form').validate({
-            rules: {
-                branch_id: {
-                    required: true,
-                    maxlength: 6
+    <script type="module">
+        $(document).ready(function() {
+            $('#branch_form').validate({
+                rules: {
+                    branch_id: {
+                        required: true,
+                        maxlength: 6
+                    },
+                    branch_name: {
+                        required: true
+                    },
+                    branch_addr1: {
+                        required: true
+                    },
+                    // branch_tel: {
+                    //     required: true,
+                    //     maxlength: 10,
+                    //     number: true
+                    // },
+                    tax_id: {
+                        required: true
+                    },
+                    tax_name: {
+                        required: true
+                    },
+                    tax_addr1: {
+                        required: true
+                    },
+                    batchno: {
+                        required: true
+                    },
+                    // businessdate: {
+                    //     required: true
+                    // },
                 },
-                branch_name: {
-                    required: true
-                },
-                branch_addr1: {
-                    required: true
-                },
-                branch_tel: {
-                    required: true,
-                    maxlength: 10,
-                    number: true
-                },
-                tax_id: {
-                    required: true
-                },
-                tax_name: {
-                    required: true
-                },
-                tax_addr1: {
-                    required: true
-                },
-                batchno: {
-                    required: true
-                },
-                businessdate: {
-                    required: true
-                },
-            },
-            messages: {
-                branch_id: {
-                    required: `{{ __('branch.branch_id_required') }}`,
-                    maxlength: `{{ __('branch.branch_id_max') }}`
-                },
-                branch_name: {
-                    required: `{{ __('branch.branch_name_required') }}`
-                },
-                branch_addr1: {
-                    required: `{{ __('branch.branch_addr1_required') }}`
-                },
-                branch_tel: {
-                    required: `{{ __('branch.branch_tel_required') }}`,
-                    maxlength: `{{ __('branch.branch_tel_max') }}`,
-                    number: `{{ __('branch.branch_tel_num') }}`
-                },
-                tax_id: {
-                    required: `{{ __('branch.tax_id_required') }}`
-                },
-                tax_name: {
-                    required: `{{ __('branch.tax_name_required') }}`
-                },
-                tax_addr1: {
-                    required: `{{ __('branch.tax_addr1_required') }}`
-                },
-                batchno: {
-                    required: `{{ __('branch.batchno_required') }}`
-                },
-                businessdate: {
-                    required: `{{ __('branch.businessdate_required') }}`
-                },
-            }
-        })
+                messages: {
+                    branch_id: {
+                        required: `{{ __('branch.branch_id_required') }}`,
+                        maxlength: `{{ __('branch.branch_id_max') }}`
+                    },
+                    branch_name: {
+                        required: `{{ __('branch.branch_name_required') }}`
+                    },
+                    branch_addr1: {
+                        required: `{{ __('branch.branch_addr1_required') }}`
+                    },
+                    // branch_tel: {
+                    //     required: `{{ __('branch.branch_tel_required') }}`,
+                    //     maxlength: `{{ __('branch.branch_tel_max') }}`,
+                    //     number: `{{ __('branch.branch_tel_num') }}`
+                    // },
+                    tax_id: {
+                        required: `{{ __('branch.tax_id_required') }}`
+                    },
+                    tax_name: {
+                        required: `{{ __('branch.tax_name_required') }}`
+                    },
+                    tax_addr1: {
+                        required: `{{ __('branch.tax_addr1_required') }}`
+                    },
+                    batchno: {
+                        required: `{{ __('branch.batchno_required') }}`
+                    },
+                    // businessdate: {
+                    //     required: `{{ __('branch.businessdate_required') }}`
+                    // },
+                }
+            })
+        });
     </script>
 @endsection

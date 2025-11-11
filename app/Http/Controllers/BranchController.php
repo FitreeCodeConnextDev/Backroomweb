@@ -209,7 +209,7 @@ class BranchController extends Controller
             'online' => 'required',
             'branch_addr1' => 'required',
             'branch_addr2' => 'nullable',
-            'branch_tel' => 'required',
+            'branch_tel' => 'nullable',
             'tax_id' => 'required',
             'tax_name' => 'required',
             'tax_addr1' => 'required',

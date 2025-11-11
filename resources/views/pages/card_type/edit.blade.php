@@ -76,26 +76,28 @@
     @endif --}}
 @endsection
 @section('js-scripts')
-    <script>
-        $('#card_type').validate({
-            rules: {
-                subno: "required",
-                subdesc: "required",
-                expire_day: {
-                    required: true,
-                    number: true
+    <script type="module">
+        $(document).ready(function() {
+            $('#card_type').validate({
+                rules: {
+                    subno: "required",
+                    subdesc: "required",
+                    expire_day: {
+                        required: true,
+                        number: true
+                    },
+                    deposit: "required",
                 },
-                deposit: "required",
-            },
-            messages: {
-                subno: `{{ __('card_type.subno_valid') }}`,
-                subdesc: `{{ __('card_type.subdesc_valid') }}`,
-                expire_day: {
-                    required: `{{ __('card_type.expire_day_valid') }}`,
-                    number: `{{ __('card_type.expire_num_valid') }}`
-                },
-                deposit: `{{ __('card_type.deposit_valid') }}`,
-            }
+                messages: {
+                    subno: `{{ __('card_type.subno_valid') }}`,
+                    subdesc: `{{ __('card_type.subdesc_valid') }}`,
+                    expire_day: {
+                        required: `{{ __('card_type.expire_day_valid') }}`,
+                        number: `{{ __('card_type.expire_num_valid') }}`
+                    },
+                    deposit: `{{ __('card_type.deposit_valid') }}`,
+                }
+            });
         });
     </script>
 @endsection

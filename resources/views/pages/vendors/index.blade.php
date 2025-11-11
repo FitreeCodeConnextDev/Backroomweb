@@ -73,13 +73,3 @@
         {{ $vendor_data->appends(['search' => $search])->links() }}
     </div>
 @endsection
-@section('scripts')
-    <script>
-        if (document.getElementById("vendor-table") && typeof simpleDatatables.DataTable !== 'undefined') {
-            const dataTable = new simpleDatatables.DataTable("#vendor-table", {
-                searchable: true,
-                sortable: false
-            });
-        }
-    </script>
-@endsection

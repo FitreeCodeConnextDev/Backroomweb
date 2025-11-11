@@ -51,8 +51,7 @@
             </div>
             <div>
                 <label for="member_expire" class="label_input">{{ __('member.member_expire') }}</label>
-                <input type="date" pattern="\d{2}/\d{2}/\d{4}" id="member_expire" name="member_expire"
-                    class="input_text" />
+                <input type="date" id="member_expire" name="member_expire" class="input_text" />
                 @error('member_expire')
                     <p class="mt-2 text-sm text-red-600 "><span class="font-medium">{{ __('menu.is_warning') }}</span>
                         {{ $message }}
@@ -62,8 +61,7 @@
 
             <div>
                 <label for="member_birthdate" class="label_input">{{ __('member.member_birthdate') }}</label>
-                <input type="date" pattern="\d{2}/\d{2}/\d{4}" id="member_birthdate" name="member_birthdate"
-                    class="input_text" />
+                <input type="date" id="member_birthdate" name="member_birthdate" class="input_text" />
                 @error('member_birthdate')
                     <p class="mt-2 text-sm text-red-600 "><span class="font-medium">{{ __('menu.is_warning') }}</span>
                         {{ $message }}
@@ -114,6 +112,12 @@
                         <div>
                             <label for="card_number" class="label_input"> {{ __('member.card_no') }} </label>
                             <input type="text" name="card_no" class="input_text" id="card_number" maxlength="13">
+                            @error('card_no')
+                                <p class="mt-2 text-sm text-red-600 "><span
+                                        class="font-medium">{{ __('menu.is_warning') }}</span>
+                                    {{ $message }}
+                                </p>
+                            @enderror
                         </div>
                         {{-- <div>
                             <label for="card_number" class="label_input"> {{ __('member.balance') }} </label>
@@ -137,64 +141,66 @@
     @endif --}}
 @endsection
 @section('js-scripts')
-    <script>
-        $('#member_form').validate({
-            rules: {
-                member_id: {
-                    required: true,
-                    maxlength: 10
+    <script type="module">
+        $(document).ready(function() {
+            $('#member_form').validate({
+                rules: {
+                    member_id: {
+                        required: true,
+                        maxlength: 10
+                    },
+                    member_name: {
+                        required: true
+                    },
+                    // member_license: {
+                    //     required: true,
+                    //     minlength: 13,
+                    //     maxlength: 13,
+                    //     number: true
+                    // },
+                    // member_expire: {
+                    //     required: true,
+                    //     date: true,
+                    // },
+                    // member_birthdate: {
+                    //     required: true
+                    // },
+                    // member_phone: {
+                    //     required: true,
+                    //     minlength: 10,
+                    //     maxlength: 10,
+                    //     number: true
+                    // },
+                    // member_addr: {
+                    //     required: true
+                    // }
                 },
-                member_name: {
-                    required: true
-                },
-                // member_license: {
-                //     required: true,
-                //     minlength: 13,
-                //     maxlength: 13,
-                //     number: true
-                // },
-                // member_expire: {
-                //     required: true,
-                //     date: true,
-                // },
-                // member_birthdate: {
-                //     required: true
-                // },
-                // member_phone: {
-                //     required: true,
-                //     minlength: 10,
-                //     maxlength: 10,
-                //     number: true
-                // },
-                // member_addr: {
-                //     required: true
-                // }
-            },
-            messages: {
-                member_id: {
-                    required: `{{ __('member.member_id_valid') }}`,
-                    maxlength: `{{ __('member.member_id_valid_max') }}`
-                },
-                member_name: `{{ __('member.member_name_valid') }}`,
-                // member_license: {
-                //     required: `{{ __('member.member_license_valid') }}`,
-                //     minlength: `{{ __('member.member_license_valid_min') }}`,
-                //     maxlength: `{{ __('member.member_license_valid_max') }}`,
-                //     number: `{{ __('member.member_license_valid_num') }}`
-                // },
-                // member_expire: {
-                //     required: `{{ __('member.member_expire_valid') }}`,
-                //     date: `{{ __('member.member_expire_valid_date') }}`
-                // },
-                // member_birthdate: `{{ __('member.member_birthdate_valid') }}`,
-                // member_phone: {
-                //     required: `{{ __('member.member_phone_valid') }}`,
-                //     minlength: `{{ __('member.member_phone_valid_min') }}`,
-                //     maxlength: `{{ __('member.member_phone_valid_max') }}`,
-                //     number: `{{ __('member.member_phone_valid_num') }}`
-                // },
-                // member_addr: `{{ __('member.member_addr_valid') }}`
-            }
-        })
+                messages: {
+                    member_id: {
+                        required: `{{ __('member.member_id_valid') }}`,
+                        maxlength: `{{ __('member.member_id_valid_max') }}`
+                    },
+                    member_name: `{{ __('member.member_name_valid') }}`,
+                    // member_license: {
+                    //     required: `{{ __('member.member_license_valid') }}`,
+                    //     minlength: `{{ __('member.member_license_valid_min') }}`,
+                    //     maxlength: `{{ __('member.member_license_valid_max') }}`,
+                    //     number: `{{ __('member.member_license_valid_num') }}`
+                    // },
+                    // member_expire: {
+                    //     required: `{{ __('member.member_expire_valid') }}`,
+                    //     date: `{{ __('member.member_expire_valid_date') }}`
+                    // },
+                    // member_birthdate: `{{ __('member.member_birthdate_valid') }}`,
+                    // member_phone: {
+                    //     required: `{{ __('member.member_phone_valid') }}`,
+                    //     minlength: `{{ __('member.member_phone_valid_min') }}`,
+                    //     maxlength: `{{ __('member.member_phone_valid_max') }}`,
+                    //     number: `{{ __('member.member_phone_valid_num') }}`
+                    // },
+                    // member_addr: `{{ __('member.member_addr_valid') }}`
+                }
+            })
+        });
     </script>
 @endsection
