@@ -398,36 +398,70 @@
 @endsection
 @section('js-scripts')
     <script>
-        if (document.getElementById("coupons-table") && typeof simpleDatatables.DataTable !== 'undefined') {
-            const dataTable = new simpleDatatables.DataTable("#coupons-table", {
-                searchable: true,
-                perPage: 10,
-                perPageSelect: [10, 15, 20, 'All'],
-                sortable: true
+        document.addEventListener("DOMContentLoaded", function() {
+            const table = document.querySelector("#coupons-table");
+            if (table) {
+                new DataTable(table, {
+                    searchable: true,
+                    sortable: true,
+                    perPage: 5,
+                    perPageSelect: [5, 10, 20, 'All']
+                });
+            }
+            document.addEventListener('click', function(e) {
+                const button = e.target.closest('.del-button');
+                if (button) {
+                    e.preventDefault();
+                    const itemId = button.getAttribute('data-item-id');
+                    const itemName = button.getAttribute('data-name');
+                    const form = document.getElementById(`delete-form-${itemId}`);
+
+                    const swalWithBootstrapButtons = Swal.mixin({
+                        customClass: {
+                            confirmButton: "alert_confirm_btn",
+                            cancelButton: "alert_cancel_btn"
+                        },
+                        buttonsStyling: false
+                    });
+
+                    swalWithBootstrapButtons.fire({
+                        title: "คุณแน่ใจเหรอ?",
+                        html: `ว่าจะลบ <b>${itemName}</b>`,
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonText: "ใช่ ลบเลย",
+                        cancelButtonText: "ไม่ ยกเลิก!",
+                        reverseButtons: true
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
+                    });
+                }
             });
-        }
+        });
 
         // Function to export table data to CSV
         function exportTableToCSV() {
             const table = document.getElementById('coupons-table');
             const headers = Array.from(table.querySelectorAll('thead th')).slice(0, 4); // Get first 4 headers
             const rows = table.querySelectorAll('tbody tr');
-            
+
             // Add BOM for UTF-8
             let csvContent = '\ufeff';
-            
+
             // Add headers
             csvContent += headers.map(header => {
                 // Wrap headers in quotes to handle special characters
                 return `"${header.textContent.trim()}"`;
             }).join(',') + '\n';
-            
+
             // Add data rows
             rows.forEach(row => {
                 const cells = row.querySelectorAll('td');
                 const rowData = Array.from(cells).slice(0, 4).map((cell, index) => {
                     let cellContent = cell.textContent.trim();
-                    
+
                     // Format amount column (index 1) as float with 2 decimal places
                     if (index === 1) {
                         // Remove any non-numeric characters except decimal point
@@ -436,18 +470,21 @@
                         const num = parseFloat(cellContent);
                         cellContent = isNaN(num) ? '0.00' : num.toFixed(2);
                     }
-                    
+
                     // Wrap content in quotes if it contains commas or special characters
-                    if (cellContent.includes(',') || cellContent.includes('"') || cellContent.includes('\n')) {
+                    if (cellContent.includes(',') || cellContent.includes('"') || cellContent.includes(
+                            '\n')) {
                         cellContent = `"${cellContent.replace(/"/g, '""')}"`;
                     }
                     return cellContent;
                 });
                 csvContent += rowData.join(',') + '\n';
             });
-            
+
             // Create and trigger download with UTF-8 encoding
-            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8' });
+            const blob = new Blob([csvContent], {
+                type: 'text/csv;charset=utf-8'
+            });
             const link = document.createElement('a');
             const url = URL.createObjectURL(blob);
             link.setAttribute('href', url);
@@ -590,40 +627,5 @@
                 $('#vedor_product_info').addClass('hidden');
             });
         });
-        document.querySelectorAll('.del-button').forEach(button => {
-            button.addEventListener('click', function(e) {
-                e.preventDefault();
-                const itemId = this.getAttribute('data-item-id');
-                const itemName = this.getAttribute('data-name');
-                const form = document.getElementById(`delete-form-${itemId}`);
-                const swalWithBootstrapButtons = Swal.mixin({
-                    customClass: {
-                        confirmButton: "alert_confirm_btn",
-                        cancelButton: "alert_cancel_btn"
-                    },
-                    buttonsStyling: false
-                });
-
-                swalWithBootstrapButtons.fire({
-                    title: `{{ __('menu.deleted_title') }}`,
-                    html: `{{ __('menu.deleted_text') }} <b>` + itemName + `</b>`,
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonText: `{{ __('menu.deleted_yes') }}`,
-                    cancelButtonText: `{{ __('menu.deleted_no') }}`,
-                    reverseButtons: true
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        // Swal.fire({
-                        //     title: "ลบแล้ว!",
-                        //     html: `ข้อมูลถูกลบแล้ว`,
-                        //     icon: "success"
-                        // });
-                        form.submit(); // Submit the form to delete the item
-                    }
-                });
-            });
-        });
-
     </script>
 @endsection
