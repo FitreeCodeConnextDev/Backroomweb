@@ -9,7 +9,7 @@
     @vite('resources/css/app.css')
     <link rel="shortcut icon" href="{{ asset('logo/CodeConnextLogo.png') }}">
 
-    <title>LOGIN | Backroom</title>
+    <title>{{ __('menu.login_web_title') }}</title>
 </head>
 <style>
     body {
@@ -31,12 +31,12 @@
                         <div>
                             <label for="user_id" class="login-label">{{ __('menu.input.username') }}</label>
                             <input type="text" name="user_id" id="user_id" class="login-input "
-                                value="{{ old('user_id') }}" required="">
+                                value="{{ old('user_id') }}" required>
                         </div>
                         <div>
                             <label for="user_pass" class="login-label">{{ __('menu.input.password') }}</label>
                             <input type="password" name="user_pass" id="user_pass" placeholder="••••••••"
-                                class="login-input" required="">
+                                class="login-input" required>
                         </div>
                         <button type="submit" class="login-btn"> {{ __('menu.button.login') }} </button>
 
@@ -68,7 +68,7 @@
                         if (response.success) {
                             Swal.fire({
                                 title: 'Loading...',
-                                html: 'โปรดรอสักครู่...',
+                                html: `{{ __('menu.is_loading') }}`,
                                 allowEscapeKey: false,
                                 allowOutsideClick: false,
                                 didOpen: () => {
@@ -79,10 +79,10 @@
                         } else {
                             // Handle errors or show a message to the user
                             Swal.fire({
-                                title: 'การเข้าสู่ระบบล้มเหลว',
+                                title: `{{ __('menu.is_login_fail') }}`,
                                 text: response.message,
                                 icon: 'error',
-                                confirmButtonText: 'ตกลง'
+                                confirmButtonText: `{{ __('menu.button.confirm') }}`
                             });
                         }
                     },
@@ -91,7 +91,7 @@
                         // If the error response is JSON, parse it and show the message
                         var response = xhr.responseJSON || {};
                         var errorMessage = response.message ||
-                            'เกิดข้อผิดพลาดที่ไม่คาดคิด โปรดลองอีกครั้งในภายหลัง';
+                            `{{ __('menu.is_error_f') }}`;
 
                         // Show error using SweetAlert2
                         Swal.fire({

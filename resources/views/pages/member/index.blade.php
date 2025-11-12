@@ -96,12 +96,12 @@
                     });
 
                     swalWithBootstrapButtons.fire({
-                        title: "คุณแน่ใจเหรอ?",
-                        html: `ว่าจะลบ <b>${itemName}</b>`,
+                        title: `{{ __('menu.deleted_title') }}`,
+                        html: `{{ __('menu.deleted_text') }} <b>${itemName}</b>`,
                         icon: "warning",
                         showCancelButton: true,
-                        confirmButtonText: "ใช่ ลบเลย",
-                        cancelButtonText: "ไม่ ยกเลิก!",
+                        confirmButtonText: `{{ __('menu.deleted_yes') }}`,
+                        cancelButtonText: `{{ __('menu.deleted_no') }}`,
                         reverseButtons: true
                     }).then((result) => {
                         if (result.isConfirmed) {

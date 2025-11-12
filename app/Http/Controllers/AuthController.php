@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Storage;
 
 class AuthController extends Controller
 {
@@ -86,7 +85,7 @@ class AuthController extends Controller
         } else {
             return response()->json([
                 'success' => false,
-                'message' => 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง',
+                'message' => __('menu.is_userpass_invalid'),
             ], 401);
         }
     }
