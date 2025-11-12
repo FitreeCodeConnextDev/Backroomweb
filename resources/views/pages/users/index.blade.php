@@ -33,7 +33,7 @@
                     <td> {{ $user->user_id }} </td>
                     <td> {{ $user->user_name }} </td>
                     @if (session('auth_user.branch_id') == 000000)
-                        <td> {{ $vendor->branch_id }} </td>
+                        <td> {{ $user->branch_id }} </td>
                     @endif
                     <td>
                         <div class="flex space-x-3">
