@@ -21,7 +21,9 @@
             <tr>
                 <th scope="col">{{ __('users.user_id') }}</th>
                 <th scope="col">{{ __('users.user_name') }}</th>
-                <th scope="col">{{ __('users.branch_id') }}</th>
+                @if (session('auth_user.branch_id') == 000000)
+                    <th scope="col"> {{ __('users.branch_id') }} </th>
+                @endif
                 <th scope="col">Action</th>
             </tr>
         </thead>
@@ -30,7 +32,9 @@
                 <tr>
                     <td> {{ $user->user_id }} </td>
                     <td> {{ $user->user_name }} </td>
-                    <td> {{ $user->branch_id }} </td>
+                    @if (session('auth_user.branch_id') == 000000)
+                        <td> {{ $vendor->branch_id }} </td>
+                    @endif
                     <td>
                         <div class="flex space-x-3">
                             <div>
