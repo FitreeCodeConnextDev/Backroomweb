@@ -88,7 +88,7 @@ class CardTypeController extends Controller
         ]);
 
         if (isset($card_type)) {
-            Log::channel('card_type')->notice(session('auth_user.user_id') . ' Card Type Created: ' . $validateData['subdesc'], [
+            Log::channel('activity')->notice(session('auth_user.user_id') . ' Card Type Created: ' . $validateData['subdesc'], [
                 'subno' => $validateData['subno'],
                 'subdesc' => $validateData['subdesc'],
                 'action' => 'create',
@@ -102,7 +102,7 @@ class CardTypeController extends Controller
                 ->success(__('menu.save_is_success'));
             return redirect()->route('card-type.index');
         } else {
-            Log::channel('card_type')->error(session('auth_user.user_id') . ' Card Type Create Failed: ' . $validateData['subdesc'], [
+            Log::channel('activity')->error(session('auth_user.user_id') . ' Card Type Create Failed: ' . $validateData['subdesc'], [
                 'subno' => $validateData['subno'],
                 'subdesc' => $validateData['subdesc'],
                 'action' => 'create',
