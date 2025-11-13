@@ -151,5 +151,14 @@
                 {{ __('users.back_17') }} </label>
         </div>
         {{-- PaymentType ทะเบียนข้อมูลประเภทชำระเงิน --}}
+        {{-- Report Permissions --}}
+        <div class="flex items-center mb-6">
+            <input type="hidden" name="back_21" id="default-checkbox" value="0">
+            <input id="back_21" name="back_21" type="checkbox" value="1"
+                @if (isset($back_permiss_edit) && $back_permiss_edit[20] == 1) checked @endif class="checkbox_input">
+            <label for="back_21" class="label_checkbox">
+                {{ __('users.back_21') }} </label>
+        </div>
+        {{-- Report Permissions --}}
     </div>
 </div>

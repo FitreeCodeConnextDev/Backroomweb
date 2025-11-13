@@ -140,6 +140,7 @@ class UsersController extends Controller
             'back_18' => $request->input('back_18') ?? 0, // 17
             'back_19' => $request->input('back_19') ?? 0, // 18
             'back_20' => $request->input('back_20') ?? 0, // 19
+            // Report Permissions
             'back_21' => $request->input('back_21') ?? 0, // 20
             'back_22' => $request->input('back_22') ?? 0, // 21
             'back_23' => $request->input('back_23') ?? 0, // 22
@@ -430,6 +431,7 @@ class UsersController extends Controller
             'back_18' => $request->input('back_18') ?? 0, // 17
             'back_19' => $request->input('back_19') ?? 0, // 18
             'back_20' => $request->input('back_20') ?? 0, // 19
+            // Report Permissions
             'back_21' => $request->input('back_21') ?? 0, // 20
             'back_22' => $request->input('back_22') ?? 0, // 21
             'back_23' => $request->input('back_23') ?? 0, // 22

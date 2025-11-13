@@ -43,9 +43,9 @@
                         </select>
                     </div>
                     <div id="select_day" style="display: none">
-                        <label for="report_date" class="label_input"> {{ __('report.select_report_date') }} </label>
-                        <select name="report_date" class="input_text">
-                            <option value="All_DAY">{{ __('report.rpt_allday') }}</option>
+                        <label for="type_date" class="label_input"> {{ __('report.select_report_date') }} </label>
+                        <select name="type_date" class="input_text">
+                            <option value="ALL_DAY">{{ __('report.rpt_allday') }}</option>
                             <option value="IN_DAY">{{ __('report.rpt_inday') }}</option>
                             <option value="CROSS_DAY">{{ __('report.rpt_crossday') }}</option>
                         </select>
@@ -73,8 +73,15 @@
             var selectedValue = document.getElementById("report_name").value;
             var selectday = document.getElementById("select_day");
 
-            // เปรียบเทียบค่าที่เลือกจาก <select>
-            if (selectedValue == "rpt_sum_balance_advancecard_daily") {
+            if (
+                [
+                    "rpt_sum_use_card_daily",
+                    "rpt_sum_balance_advancecard_daily",
+                    "rpt_sum_refund_card_daily",
+                    "rpt_cardexpire"
+                ].includes(
+                    selectedValue)
+            ) {
                 selectday.style.display = "block";
             } else {
                 selectday.style.display = "none";

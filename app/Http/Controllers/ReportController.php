@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
+use function Symfony\Component\String\s;
 
 class ReportController extends Controller
 {
@@ -14,7 +15,7 @@ class ReportController extends Controller
     {
         // $filters = DB::table('closeendday')->orderBy('batch', 'desc')->get();
         // dd($filters);
-        $report_name = DB::table('reportname_info')->get();
+        $report_name = DB::table('reportname_info')->where('report_group', '=', '1')->get();
         $filters = DB::table('closeendday')->orderBy('batch', 'desc')->get();
         return view('pages.reports.index', compact('report_name', 'filters'));
     }
@@ -31,25 +32,68 @@ class ReportController extends Controller
             $end_date = $request->input('end_date');
             $format = $request->input('format');
             return redirect()->route('rpt_sum_debt_daily', ['start_date' => $start_date, 'end_date' => $end_date, 'format' => $format]);
+        } elseif ($report == 'rpt_sum_cashier_daily') {
+            $start_date = $request->input('start_date');
+            $end_date = $request->input('end_date');
+            $format = $request->input('format');
+            return redirect()->route('rpt_sum_cashier_daily', ['start_date' => $start_date, 'end_date' => $end_date, 'format' => $format]);
         } elseif ($report == 'rpt_sum_vendor_daily') {
             $start_date = $request->input('start_date');
             $end_date = $request->input('end_date');
             $format = $request->input('format');
             // dd($start_date, $end_date, $format);
             return redirect()->route('rpt_sum_vendor_daily', ['start_date' => $start_date, 'end_date' => $end_date, 'format' => $format]);
+        } elseif ($report == 'rpt_sum_use_card_daily') {
+            $start_date = $request->input('start_date');
+            $end_date = $request->input('end_date');
+            $type_date = $request->input('type_date');
+            $format = $request->input('format');
+            return redirect()->route('rpt_sum_use_card_daily', ['start_date' => $start_date, 'end_date' => $end_date, 'type_date' => $type_date, 'format' => $format]);
+        } elseif ($report == 'rpt_sum_refund_card_daily') {
+            $start_date = $request->input('start_date');
+            $end_date = $request->input('end_date');
+            $type_date = $request->input('type_date');
+            $format = $request->input('format');
+            return redirect()->route('rpt_sum_refund_card_daily', ['start_date' => $start_date, 'end_date' => $end_date, 'type_date' => $type_date, 'format' => $format]);
+        } elseif ($report == 'rpt_sum_balance_advancecard_daily') {
+            $start_date = $request->input('start_date');
+            $end_date = $request->input('end_date');
+            $type_date = $request->input('type_date');
+            $format = $request->input('format');
+            return redirect()->route('rpt_sum_balance_advancecard_daily', ['start_date' => $start_date, 'end_date' => $end_date, 'type_date' => $type_date, 'format' => $format]);
+        } elseif ($report == 'rpt_invoicevendor_daily') {
+            $start_date = $request->input('start_date');
+            $end_date = $request->input('end_date');
+            $format = $request->input('format');
+            return redirect()->route('rpt_invoicevendor_daily', ['start_date' => $start_date, 'end_date' => $end_date, 'format' => $format]);
+        } elseif ($report == 'rpt_sum_cardnotreturn') {
+            $start_date = $request->input('start_date');
+            $end_date = $request->input('end_date');
+            $format = $request->input('format');
+            return redirect()->route('rpt_sum_cardnotreturn', ['start_date' => $start_date, 'end_date' => $end_date, 'format' => $format]);
+        } elseif ($report == 'rpt_cardexpire') {
+            $start_date = $request->input('start_date');
+            $end_date = $request->input('end_date');
+            $type_date = $request->input('type_date');
+            $format = $request->input('format');
+            return redirect()->route('rpt_cardexpire', ['start_date' => $start_date, 'end_date' => $end_date, 'type_date' => $type_date, 'format' => $format]);
+        } elseif ($report == 'rpt_stockcard') {
+            $start_date = $request->input('start_date');
+            $end_date = $request->input('end_date');
+            $format = $request->input('format');
+            return redirect()->route('rpt_stockcard', ['start_date' => $start_date, 'end_date' => $end_date, 'format' => $format]);
+        } elseif ($report == 'rpt_sum_promotioncard_daily') {
+            $start_date = $request->input('start_date');
+            $end_date = $request->input('end_date');
+            $format = $request->input('format');
+            return redirect()->route('rpt_sum_promotioncard_daily', ['start_date' => $start_date, 'end_date' => $end_date, 'format' => $format]);
         } else {
             sweetalert()
-                ->error('ไม่พบรายงานนี้' . ' กรุณาเลือกใหม่อีกครั้ง');
+                ->error(__('report.report_not_found') . __('report.report_select_again'));
             return redirect()->back();
         }
     }
-
-    public function sum_daily_rpt()
-    {
-        $filters = DB::table('closeendday')->orderBy('batch', 'desc')->get();
-        return view('pages.reports.sum_daily.index', compact('filters'));
-    }
-    public function gen_sum_daily_rpt(Request $request, $start_date, $end_date, $format)
+    public function gen_sum_daily_rpt($start_date, $end_date, $format)
     {
 
         $b_start = DB::table('closeendday')->select('businessdate')->where('batch', $start_date)->first();
@@ -59,7 +103,7 @@ class ReportController extends Controller
         if ($branch_name == null) {
             $branch_name = (object) ['branch_name' => 'All Branch'];
         }
-        $reportPath = '/rpt_sum_daily'; // JasperReports Server path
+        $reportPath = '/daily/rpt_sum_daily'; // JasperReports Server path
         $filename  = 'sum_daily_rpt_report_' . date('Y-m-d');
         // dd($reportPath);
         try {
@@ -92,23 +136,13 @@ class ReportController extends Controller
             Log::error('Error generating report: ' . $e->getMessage(), [
                 'report_path' => $reportPath,
                 'output_format' => $format,
+                'error_title'      => 'Failed to fetch report',
                 'error' => $e->getMessage()
             ]);
-            return response()->json([
-                'error'      => 'Failed to fetch report',
-                'status'     => $client['status'],
-                'curl_error' => $client['error'],
-                'url'        => $client['url'],
-            ], 500);
+            return redirect()->back();
         }
     }
-
-    public function sum_debt_rpt()
-    {
-        $filters = DB::table('closeendday')->orderBy('batch', 'desc')->get();
-        return view('pages.reports.sum_debt.index', compact('filters'));
-    }
-    public function gen_sum_debt_rpt(Request $request, $start_date, $end_date, $format)
+    public function gen_sum_debt_rpt($start_date, $end_date, $format)
     {
 
         $b_start = DB::table('closeendday')->select('businessdate')->where('batch', $start_date)->first();
@@ -117,7 +151,7 @@ class ReportController extends Controller
         if ($branch_name == null) {
             $branch_name = (object) ['branch_name' => 'All Branch'];
         }
-        $reportPath = '/rpt_sum_debt_daily'; // JasperReports Server path
+        $reportPath = '/daily/rpt_sum_debt_daily'; // JasperReports Server path
         $filename  = 'sum_debt_rpt_report_' . date('Y-m-d');
 
         try {
@@ -150,14 +184,59 @@ class ReportController extends Controller
             Log::error('Error generating report: ' . $e->getMessage(), [
                 'report_path' => $reportPath,
                 'output_format' => $format,
+                'error_title'      => 'Failed to fetch report',
                 'error' => $e->getMessage()
             ]);
-            return response()->json([
-                'error'      => 'Failed to fetch report',
-                'status'     => $client['status'],
-                'curl_error' => $client['error'],
-                'url'        => $client['url'],
-            ], 500);
+            return redirect()->back();
+        }
+    }
+    public function gen_rpt_sum_cashier_daily($start_date, $end_date, $format)
+    {
+        $b_start = DB::table('closeendday')->select('businessdate')->where('batch', $start_date)->first();
+        $b_end = DB::table('closeendday')->select('businessdate')->where('batch', $end_date)->first();
+        $branch_name = DB::table('branch_info')->select('branch_name')->where('branch_id', session('auth_user.branch_id'))->first();
+        if ($branch_name == null) {
+            $branch_name = (object) ['branch_name' => 'All Branch'];
+        }
+
+        $reportPath = '/daily/rpt_sum_cashier_daily'; // JasperReports Server path
+        $filename  = 'sum_cashier_daily_report_' . date('Y-m-d');
+
+        try {
+            $client = jasper_generate($reportPath, [
+                'branch_id' => session('auth_user.branch_id'),
+                'branch_name' => $branch_name->branch_name,
+                'user_name' => session('auth_user.user_name'),
+                'user_id' => session('auth_user.user_id'),
+                'b_start' => date('d/m/Y', strtotime($b_start->businessdate)),
+                'b_end' => date('d/m/Y', strtotime($b_end->businessdate)),
+                'batch_start' => $start_date,
+                'batch_end' => $end_date,
+            ], $format);
+
+            if ($client['status'] === 200 && !empty($client['content'])) {
+                Log::channel('activity')->info('Generated cashier daily report', [
+                    'branch_id' => session('auth_user.branch_id'),
+                    'user_id' => session('auth_user.user_id'),
+                    'b_start' => date('d/m/Y', strtotime($b_start->businessdate)),
+                    'b_end' => date('d/m/Y', strtotime($b_end->businessdate)),
+                    'batch_start' => $start_date,
+                    'batch_end' => $end_date,
+                    'output_format' => $format,
+                ]);
+                return response($client['content'], 200, [
+                    'Content-Type'        => $client['mime'],
+                    'Content-Disposition' => "inline; filename=$filename.$format",
+                ]);
+            }
+        } catch (\Exception $e) {
+            Log::error('Error generating report: ' . $e->getMessage(), [
+                'report_path' => $reportPath,
+                'output_format' => $format,
+                'error_title'      => 'Failed to fetch report',
+                'error' => $e->getMessage()
+            ]);
+            return redirect()->back();
         }
     }
 
@@ -170,7 +249,7 @@ class ReportController extends Controller
             $branch_name = (object) ['branch_name' => 'All Branch'];
         }
         // dd($branch_name);
-        $reportPath = '/rpt_sum_vendor_daily'; // JasperReports Server path
+        $reportPath = '/daily/rpt_sum_vendor_daily'; // JasperReports Server path
         $filename  = 'sum_vendor_daily_report_' . date('Y-m-d');
 
         try {
@@ -205,14 +284,403 @@ class ReportController extends Controller
             Log::error('Error generating report: ' . $e->getMessage(), [
                 'report_path' => $reportPath,
                 'output_format' => $format,
+                'error_title'      => 'Failed to fetch report',
                 'error' => $e->getMessage()
             ]);
-            return response()->json([
-                'error'      => 'Failed to fetch report',
-                'status'     => $client['status'],
-                'curl_error' => $client['error'],
-                'url'        => $client['url'],
-            ], 500);
+            return redirect()->back();
+        }
+    }
+
+    public function gen_rpt_sum_use_card_daily($start_date, $end_date, $type_date, $format)
+    {
+        $b_start = DB::table('closeendday')->select('businessdate')->where('batch', $start_date)->first();
+        $b_end = DB::table('closeendday')->select('businessdate')->where('batch', $end_date)->first();
+        $branch_name = DB::table('branch_info')->select('branch_name')->where('branch_id', session('auth_user.branch_id'))->first();
+        if ($branch_name == null) {
+            $branch_name = (object) ['branch_name' => 'All Branch'];
+        }
+
+        $reportPath = '/daily/rpt_sum_use_card_daily'; // JasperReports Server path
+        $filename  = 'sum_use_card_daily_report_' . date('Y-m-d');
+        try {
+            $client = jasper_generate($reportPath, [
+                'branch_id' => session('auth_user.branch_id'),
+                'branch_name' => $branch_name->branch_name,
+                'user_name' => session('auth_user.user_name'),
+                'user_id' => session('auth_user.user_id'),
+                'b_start' => date('d/m/Y', strtotime($b_start->businessdate)),
+                'b_end' => date('d/m/Y', strtotime($b_end->businessdate)),
+                'batch_start' => $start_date,
+                'batch_end' => $end_date,
+                'type_date' => $type_date,
+            ], $format);
+
+            if ($client['status'] === 200 && !empty($client['content'])) {
+                Log::channel('activity')->info('Generated use card daily report', [
+                    'branch_id' => session('auth_user.branch_id'),
+                    'user_id' => session('auth_user.user_id'),
+                    'start_date' => date('d/m/Y', strtotime($b_start->businessdate)),
+                    'end_date' => date('d/m/Y', strtotime($b_end->businessdate)),
+                    'batch_start' => $start_date,
+                    'batch_end' => $end_date,
+                    'output_format' => $format,
+                ]);
+                return response($client['content'], 200, [
+                    'Content-Type'        => $client['mime'],
+                    'Content-Disposition' => "inline; filename=$filename.$format",
+                ]);
+            }
+        } catch (\Exception $e) {
+            Log::error('Error generating report: ' . $e->getMessage(), [
+                'report_path' => $reportPath,
+                'output_format' => $format,
+                'error_title'      => 'Failed to fetch report',
+                'error' => $e->getMessage()
+            ]);
+            return redirect()->back();
+        }
+    }
+
+    public function gen_rpt_sum_refund_card_daily($start_date, $end_date, $type_date, $format)
+    {
+        $b_start = DB::table('closeendday')->select('businessdate')->where('batch', $start_date)->first();
+        $b_end = DB::table('closeendday')->select('businessdate')->where('batch', $end_date)->first();
+        $branch_name = DB::table('branch_info')->select('branch_name')->where('branch_id', session('auth_user.branch_id'))->first();
+        if ($branch_name == null) {
+            $branch_name = (object) ['branch_name' => 'All Branch'];
+        }
+        $reportPath = '/daily/rpt_sum_refund_card_daily'; // JasperReports Server path
+        $filename  = 'sum_refund_card_daily_report_' . date('Y-m-d');
+        try {
+            $client = jasper_generate($reportPath, [
+                'branch_id' => session('auth_user.branch_id'),
+                'branch_name' => $branch_name->branch_name,
+                'user_name' => session('auth_user.user_name'),
+                'user_id' => session('auth_user.user_id'),
+                'batch_start' => $start_date,
+                'batch_end' => $end_date,
+                'b_start' => date('d/m/Y', strtotime($b_start->businessdate)),
+                'b_end' => date('d/m/Y', strtotime($b_end->businessdate)),
+                'type_date' => $type_date,
+                'format_limit' => $format
+            ], $format);
+
+            if ($client['status'] === 200 && !empty($client['content'])) {
+                Log::channel('activity')->info('Generated refund card daily report', [
+                    'branch_id' => session('auth_user.branch_id'),
+                    'user_id' => session('auth_user.user_id'),
+                    'start_date' => date('d/m/Y', strtotime($b_start->businessdate)),
+                    'end_date' => date('d/m/Y', strtotime($b_end->businessdate)),
+                    'batch_start' => $start_date,
+                    'batch_end' => $end_date,
+                    'output_format' => $format,
+                ]);
+                return response($client['content'], 200, [
+                    'Content-Type'        => $client['mime'],
+                    'Content-Disposition' => "inline; filename=$filename.$format",
+                ]);
+            }
+        } catch (\Exception $e) {
+            Log::error('Error generating report: ' . $e->getMessage(), [
+                'report_path' => $reportPath,
+                'output_format' => $format,
+                'error_title'      => 'Failed to fetch report',
+                'error' => $e->getMessage()
+            ]);
+            return redirect()->back();
+        }
+    }
+    public function gen_rpt_sum_balance_advancecard_daily($start_date, $end_date, $type_date, $format)
+    {
+        $b_start = DB::table('closeendday')->select('businessdate')->where('batch', $start_date)->first();
+        $b_end = DB::table('closeendday')->select('businessdate')->where('batch', $end_date)->first();
+        $branch_name = DB::table('branch_info')->select('branch_name')->where('branch_id', session('auth_user.branch_id'))->first();
+        if ($branch_name == null) {
+            $branch_name = (object) ['branch_name' => 'All Branch'];
+        }
+        // dd($branch_name);
+        $reportPath = '/daily/rpt_sum_balance_advancecard_daily'; // JasperReports Server path
+        $filename  = 'sum_balance_advancecard_daily_report_' . date('Y-m-d');
+        // dd($start_date, $end_date, $type_date, $format);    
+
+        try {
+            $client = jasper_generate($reportPath, [
+                'branch_id' => session('auth_user.branch_id'),
+                'branch_name' => $branch_name->branch_name,
+                'user_name' => session('auth_user.user_name'),
+                'user_id' => session('auth_user.user_id'),
+                'batch_start' => $start_date,
+                'batch_end' => $end_date,
+                'b_start' => date('d/m/Y', strtotime($b_start->businessdate)),
+                'b_end' => date('d/m/Y', strtotime($b_end->businessdate)),
+                'type_date' => $type_date,
+                'format_limit' => $format
+            ], $format);
+            // dd($client);
+            if ($client['status'] === 200 && !empty($client['content'])) {
+                Log::channel('activity')->info('Generated advancecard daily report', [
+                    'branch_id' => session('auth_user.branch_id'),
+                    'user_id' => session('auth_user.user_id'),
+                    'start_date' => date('d/m/Y', strtotime($b_start->businessdate)),
+                    'end_date' => date('d/m/Y', strtotime($b_end->businessdate)),
+                    'batch_start' => $start_date,
+                    'batch_end' => $end_date,
+                    'output_format' => $format,
+                ]);
+                return response($client['content'], 200, [
+                    'Content-Type'        => $client['mime'],
+                    'Content-Disposition' => "inline; filename=$filename.$format",
+                ]);
+            }
+        } catch (\Exception $e) {
+            Log::error('Error generating report: ' . $e->getMessage(), [
+                'report_path' => $reportPath,
+                'output_format' => $format,
+                'error_title'      => 'Failed to fetch report',
+                'error' => $e->getMessage()
+            ]);
+            return redirect()->back();
+        }
+    }
+
+    public function gen_rpt_invoicevendor_daily($start_date, $end_date, $format)
+    {
+        $b_start = DB::table('closeendday')->select('businessdate')->where('batch', $start_date)->first();
+        $b_end = DB::table('closeendday')->select('businessdate')->where('batch', $end_date)->first();
+        $branch_name = DB::table('branch_info')->select('branch_name')->where('branch_id', session('auth_user.branch_id'))->first();
+        if ($branch_name == null) {
+            $branch_name = (object) ['branch_name' => 'All Branch'];
+        }
+        $reportPath = '/daily/rpt_invoicevendor_daily'; // JasperReports Server path
+        $filename  = 'invoice_vendor_daily_report_' . date('Y-m-d');
+
+        try {
+            $client = jasper_generate($reportPath, [
+                'branch_id' => session('auth_user.branch_id'),
+                'branch_name' => $branch_name->branch_name,
+                'user_name' => session('auth_user.user_name'),
+                'user_id' => session('auth_user.user_id'),
+                'b_start' => date('d/m/Y', strtotime($b_start->businessdate)),
+                'b_end' => date('d/m/Y', strtotime($b_end->businessdate)),
+                'batch_start' => $start_date,
+                'batch_end' => $end_date,
+            ], $format);
+
+            if ($client['status'] === 200 && !empty($client['content'])) {
+                Log::channel('activity')->info('Generated invoice vendor daily report', [
+                    'branch_id' => session('auth_user.branch_id'),
+                    'user_id' => session('auth_user.user_id'),
+                    'start_date' => date('d/m/Y', strtotime($b_start->businessdate)),
+                    'end_date' => date('d/m/Y', strtotime($b_end->businessdate)),
+                    'batch_start' => $start_date,
+                    'batch_end' => $end_date,
+                    'output_format' => $format,
+                ]);
+                return response($client['content'], 200, [
+                    'Content-Type'        => $client['mime'],
+                    'Content-Disposition' => "inline; filename=$filename.$format",
+                ]);
+            }
+        } catch (\Exception $e) {
+            Log::error('Error generating report: ' . $e->getMessage(), [
+                'report_path' => $reportPath,
+                'output_format' => $format,
+                'error_title'      => 'Failed to fetch report',
+                'error' => $e->getMessage()
+            ]);
+            return redirect()->back();
+        }
+    }
+
+    public function gen_rpt_sum_cardnotreturn($start_date, $end_date, $format)
+    {
+        try {
+            $b_start = DB::table('closeendday')->select('businessdate')->where('batch', $start_date)->first();
+            $b_end = DB::table('closeendday')->select('businessdate')->where('batch', $end_date)->first();
+            $branch_name = DB::table('branch_info')->select('branch_name')->where('branch_id', session('auth_user.branch_id'))->first();
+            if ($branch_name == null) {
+                $branch_name = (object) ['branch_name' => 'All Branch'];
+            }
+            $reportPath = '/daily/rpt_sum_cardnotreturn'; // JasperReports Server path
+            $filename  = 'sum_cardnotreturn_report_' . date('Y-m-d');
+            $client = jasper_generate($reportPath, [
+                'branch_id' => session('auth_user.branch_id'),
+                'branch_name' => $branch_name->branch_name,
+                'user_name' => session('auth_user.user_name'),
+                'user_id' => session('auth_user.user_id'),
+                'b_start' => date('d/m/Y', strtotime($b_start->businessdate)),
+                'b_end' => date('d/m/Y', strtotime($b_end->businessdate)),
+                'batch_start' => $start_date,
+                'batch_end' => $end_date,
+            ], $format);
+            if ($client['status'] === 200 && !empty($client['content'])) {
+                Log::channel('activity')->info('Generated card not return report', [
+                    'branch_id' => session('auth_user.branch_id'),
+                    'user_id' => session('auth_user.user_id'),
+                    'start_date' => date('d/m/Y', strtotime($b_start->businessdate)),
+                    'end_date' => date('d/m/Y', strtotime($b_end->businessdate)),
+                    'batch_start' => $start_date,
+                    'batch_end' => $end_date,
+                    'output_format' => $format,
+                ]);
+                return response($client['content'], 200, [
+                    'Content-Type'        => $client['mime'],
+                    'Content-Disposition' => "inline; filename=$filename.$format",
+                ]);
+            }
+        } catch (\Exception $e) {
+            Log::error('Error generating report: ' . $e->getMessage(), [
+                'report_path' => $reportPath,
+                'output_format' => $format,
+                'error_title'      => 'Failed to fetch report',
+                'error' => $e->getMessage()
+            ]);
+            return redirect()->back();
+        }
+    }
+
+    public function gen_rpt_cardexpire($start_date, $end_date, $type_date, $format)
+    {
+        $b_start = DB::table('closeendday')->select('businessdate')->where('batch', $start_date)->first();
+        $b_end = DB::table('closeendday')->select('businessdate')->where('batch', $end_date)->first();
+        $branch_name = DB::table('branch_info')->select('branch_name')->where('branch_id', session('auth_user.branch_id'))->first();
+        if ($branch_name == null) {
+            $branch_name = (object) ['branch_name' => 'All Branch'];
+        }
+        $reportPath = '/daily/rpt_cardexpire'; // JasperReports Server path
+        $filename  = 'card_expire_report_' . date('Y-m-d');
+        try {
+            $client = jasper_generate($reportPath, [
+                'branch_id' => session('auth_user.branch_id'),
+                'branch_name' => $branch_name->branch_name,
+                'user_name' => session('auth_user.user_name'),
+                'user_id' => session('auth_user.user_id'),
+                'b_start' => date('d/m/Y', strtotime($b_start->businessdate)),
+                'b_end' => date('d/m/Y', strtotime($b_end->businessdate)),
+                'batch_start' => $start_date,
+                'batch_end' => $end_date,
+                'type_date' => $type_date,
+                'format_limit' => $format
+            ], $format);
+            if ($client['status'] === 200 && !empty($client['content'])) {
+                Log::channel('activity')->info('Generated card expire report', [
+                    'branch_id' => session('auth_user.branch_id'),
+                    'user_id' => session('auth_user.user_id'),
+                    'start_date' => date('d/m/Y', strtotime($b_start->businessdate)),
+                    'end_date' => date('d/m/Y', strtotime($b_end->businessdate)),
+                    'batch_start' => $start_date,
+                    'batch_end' => $end_date,
+                    'output_format' => $format,
+                ]);
+                return response($client['content'], 200, [
+                    'Content-Type'        => $client['mime'],
+                    'Content-Disposition' => "inline; filename=$filename.$format",
+                ]);
+            }
+        } catch (\Exception $e) {
+            Log::error('Error generating report: ' . $e->getMessage(), [
+                'report_path' => $reportPath,
+                'output_format' => $format,
+                'error_title'      => 'Failed to fetch report',
+                'error' => $e->getMessage()
+            ]);
+            return redirect()->back();
+        }
+    }
+
+    public function gen_rpt_stockcard($start_date, $end_date, $format)
+    {
+        $b_start = DB::table('closeendday')->select('businessdate')->where('batch', $start_date)->first();
+        $b_end = DB::table('closeendday')->select('businessdate')->where('batch', $end_date)->first();
+        $branch_name = DB::table('branch_info')->select('branch_name')->where('branch_id', session('auth_user.branch_id'))->first();
+        if ($branch_name == null) {
+            $branch_name = (object) ['branch_name' => 'All Branch'];
+        }
+        $reportPath = '/daily/rpt_stockcard'; // JasperReports Server path
+        $filename  = 'stock_card_report_' . date('Y-m-d');
+        try {
+            $client = jasper_generate($reportPath, [
+                'branch_id' => session('auth_user.branch_id'),
+                'branch_name' => $branch_name->branch_name,
+                'user_name' => session('auth_user.user_name'),
+                'user_id' => session('auth_user.user_id'),
+                'b_start' => date('d/m/Y', strtotime($b_start->businessdate)),
+                'b_end' => date('d/m/Y', strtotime($b_end->businessdate)),
+                'batch_start' => $start_date,
+                'batch_end' => $end_date,
+            ], $format);
+            if ($client['status'] === 200 && !empty($client['content'])) {
+                Log::channel('activity')->info('Generated stock card report', [
+                    'branch_id' => session('auth_user.branch_id'),
+                    'user_id' => session('auth_user.user_id'),
+                    'start_date' => date('d/m/Y', strtotime($b_start->businessdate)),
+                    'end_date' => date('d/m/Y', strtotime($b_end->businessdate)),
+                    'batch_start' => $start_date,
+                    'batch_end' => $end_date,
+                    'output_format' => $format,
+                ]);
+                return response($client['content'], 200, [
+                    'Content-Type'        => $client['mime'],
+                    'Content-Disposition' => "inline; filename=$filename.$format",
+                ]);
+            }
+        } catch (\Exception $e) {
+            Log::error('Error generating report: ' . $e->getMessage(), [
+                'report_path' => $reportPath,
+                'output_format' => $format,
+                'error_title'      => 'Failed to fetch report',
+                'error' => $e->getMessage()
+            ]);
+            return redirect()->back();
+        }
+    }
+
+    public function gen_rpt_sum_promotioncard_daily($start_date, $end_date, $format)
+    {
+        $b_start = DB::table('closeendday')->select('businessdate')->where('batch', $start_date)->first();
+        $b_end = DB::table('closeendday')->select('businessdate')->where('batch', $end_date)->first();
+        $branch_name = DB::table('branch_info')->select('branch_name')->where('branch_id', session('auth_user.branch_id'))->first();
+        if ($branch_name == null) {
+            $branch_name = (object) ['branch_name' => 'All Branch'];
+        }
+        $reportPath = '/daily/rpt_sum_promotioncard_daily'; // JasperReports Server path
+        $filename  = 'sum_promotioncard_daily_report_' . date('Y-m-d');
+
+        try {
+            $client = jasper_generate($reportPath, [
+                'branch_id' => session('auth_user.branch_id'),
+                'branch_name' => $branch_name->branch_name,
+                'user_name' => session('auth_user.user_name'),
+                'user_id' => session('auth_user.user_id'),
+                'b_start' => date('d/m/Y', strtotime($b_start->businessdate)),
+                'b_end' => date('d/m/Y', strtotime($b_end->businessdate)),
+                'batch_start' => $start_date,
+                'batch_end' => $end_date,
+            ], $format);
+
+            if ($client['status'] === 200 && !empty($client['content'])) {
+                Log::channel('activity')->info('Generated promotion card daily report', [
+                    'branch_id' => session('auth_user.branch_id'),
+                    'user_id' => session('auth_user.user_id'),
+                    'start_date' => date('d/m/Y', strtotime($b_start->businessdate)),
+                    'end_date' => date('d/m/Y', strtotime($b_end->businessdate)),
+                    'batch_start' => $start_date,
+                    'batch_end' => $end_date,
+                    'output_format' => $format,
+                ]);
+                return response($client['content'], 200, [
+                    'Content-Type'        => $client['mime'],
+                    'Content-Disposition' => "inline; filename=$filename.$format",
+                ]);
+            }
+        } catch (\Exception $e) {
+            Log::error('Error generating report: ' . $e->getMessage(), [
+                'report_path' => $reportPath,
+                'output_format' => $format,
+                'error_title'      => 'Failed to fetch report',
+                'error' => $e->getMessage()
+            ]);
+            return redirect()->back();
         }
     }
 
@@ -256,37 +724,9 @@ class ReportController extends Controller
             'url' => $res['url'],
         ], 500);
     }
+
     public function checkConnection()
     {
         return jasper_test_connection();
     }
-
-    // public function daily()
-    // {
-    // $branch_id  = "000973";
-    // $start_date = "1";
-    // $end_date   = "3";
-
-    //     $url = "http://10.10.1.81:8088/jasperserver/rest_v2/reports/backroomweb/test_report.pdf?"
-    // . "?branch_id={$branch_id}&start_date={$start_date}&end_date={$end_date}"
-    //         . "&j_username=code&j_password=ccooddee";
-
-    //     $ch = curl_init();
-    //     curl_setopt($ch, CURLOPT_URL, $url);
-    //     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    //     curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-    //     $pdfContent = curl_exec($ch);
-    //     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    //     curl_close($ch);
-
-    //     if ($httpCode == 200 && !empty($pdfContent)) {
-
-    //         header("Content-Type: application/pdf");
-    //         header("Content-Disposition: inline; filename=report.pdf");
-    //         echo $pdfContent;
-    //     } else {
-
-    //         echo "Cannot connect to JasperServer or report not found. (HTTP Code: $httpCode)";
-    //     }
-    // }
 }

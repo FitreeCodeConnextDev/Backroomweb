@@ -369,30 +369,32 @@
             </ul>
         </ul>
         <div class=" mt-3"></div>
-        <ul class="space-y-2 font-medium">
-            <button type="button"
-                class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group"
-                aria-controls="report" data-collapse-toggle="report">
+        @if ($user_back[20] == 1)
+            <ul class="space-y-2 font-medium">
+                <button type="button"
+                    class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group"
+                    aria-controls="report" data-collapse-toggle="report">
 
-                <span
-                    class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">{{ __('report.report_title') }}</span>
-                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                    viewBox="0 0 10 6">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="m1 1 4 4 4-4" />
-                </svg>
-            </button>
-            <ul id="report" class=" py-2 space-y-2">
-                <li>
-                    <div class=" bg-white border-b border-gray-200 ">
-                        <a href="{{ route('report.index') }}"
-                            class="flex items-center w-full p-2 mb-2 text-gray-900 transition duration-75 hover:bg-gray-100 rounded-lg pl-5 group {{ request()->routeIs('report.index') ? 'active_menu' : 'text-gray-500' }}">
-                            <span class="ms-3"> {{ __('report.report_title') }} </span>
-                        </a>
-                    </div>
-                </li>
+                    <span
+                        class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">{{ __('report.report_title') }}</span>
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 10 6">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="m1 1 4 4 4-4" />
+                    </svg>
+                </button>
+                <ul id="report" class=" py-2 space-y-2">
+                    <li>
+                        <div class=" bg-white border-b border-gray-200 ">
+                            <a href="{{ route('report.index') }}"
+                                class="flex items-center w-full p-2 mb-2 text-gray-900 transition duration-75 hover:bg-gray-100 rounded-lg pl-5 group {{ request()->routeIs('report.index') ? 'active_menu' : 'text-gray-500' }}">
+                                <span class="ms-3"> {{ __('report.report_title') }} </span>
+                            </a>
+                        </div>
+                    </li>
+                </ul>
             </ul>
-        </ul>
+        @endif
         @if (session('auth_user.profile_code') == '00')
             <hr class=" my-8 border border-y-gray-950">
             <ul class="space-y-2 font-medium">

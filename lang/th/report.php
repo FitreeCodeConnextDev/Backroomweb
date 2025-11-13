@@ -19,6 +19,8 @@ return [
 
     'report_error' => 'เกิดข้อผิดพลาดในการสร้างรายงาน',
     'report_error_desc' => 'กรุณาตรวจสอบข้อมูลและลองอีกครั้ง',
+    'report_not_found' =>'ไม่พบรายงานนี้',
+    'report_select_again' => 'กรุณาเลือกใหม่อีกครั้ง',
     
     'report_format' => 'รูปแบบไฟล์ที่รองรับคือ PDF และ CSV',
 
