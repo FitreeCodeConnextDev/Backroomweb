@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Jaspersoft\Client\Client;
 
 use function Symfony\Component\String\s;
 
@@ -723,6 +724,35 @@ class ReportController extends Controller
             'curl_error' => $res['error'],
             'url' => $res['url'],
         ], 500);
+    }
+
+    public function test_report_client()
+    {
+        $client = new Client(
+            env('JRS_BASE_URL'),
+            env('JRS_USERNAME'),
+            env('JRS_PASSWORD')
+        );
+        $reportPath = '/backroomweb/test_report'; // JasperReports Server path
+        $outputFormat = 'pdf';
+
+        try {
+            $report = $client->reportService()->runReport($reportPath, $outputFormat, null, null, [
+                'branch_id' => '000000',
+            ]);
+            $filename = storage_path('app/reports/test_report_client_' . time() . '.pdf');
+
+            file_put_contents($filename, $report);
+            return response()->file($filename);
+        } catch (\Exception $e) {
+            Log::error('Error generating report with client: ' . $e->getMessage(), [
+                'report_path' => $reportPath,
+                'output_format' => $outputFormat,
+                'error_title'      => 'Failed to fetch report using client',
+                'error' => $e->getMessage()
+            ]);
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
     public function checkConnection()

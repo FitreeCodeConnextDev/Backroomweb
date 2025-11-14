@@ -147,4 +147,5 @@ Route::middleware(['auth_user'])->group(function () {
         Route::get('/report-rpt_sum_promotioncard_daily/{start_date}/{end_date}/{format}', [ReportController::class, 'gen_rpt_sum_promotioncard_daily'])->name('rpt_sum_promotioncard_daily');
 
         Route::get('/report-checkConnection', [ReportController::class, 'checkConnection'])->name('report.checkConnection');
+        Route::get('/reportnameclient', [ReportController::class, 'test_report_client'])->name('report.test_report_client');
 });
