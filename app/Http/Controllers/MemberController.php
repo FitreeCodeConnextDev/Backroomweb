@@ -162,11 +162,11 @@ class MemberController extends Controller
     {
         $valida_data = $request->validate([
             'member_name' => 'required',
-            'member_license' => 'required|min:13|max:13',
-            'member_expire' => 'required',
-            'member_birthdate' => 'required',
-            'member_addr' => 'required',
-            'member_phone' => 'required|regex:/(0)[0-9]/|not_regex:/[a-z]/|min:10',
+            'member_license' => 'nullable|min:13|max:13',
+            'member_expire' => 'nullable',
+            'member_birthdate' => 'nullable',
+            'member_addr' => 'nullable',
+            'member_phone' => 'nullable|regex:/(0)[0-9]/|not_regex:/[a-z]/|min:10',
 
         ], [
             'member_name.required' => __('member.member_name_valid'),

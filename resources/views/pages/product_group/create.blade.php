@@ -33,7 +33,7 @@
             <div>
                 <label for="text" class=" label_input">{{ __('product_group.groupproduct_desc') }}</label>
                 <input type="text" id="groupproduct_desc" name="groupproduct_desc" placeholder="ของหวาน, ของคาว ..."
-                    class="input_text" value="" required />
+                    class="input_text" maxlength="128" value="" required />
                 @error('groupproduct_desc')
                     <p class="mt-2 text-sm text-red-600 "><span class="font-medium">คำเตือน</span> {{ $message }}
                     </p>
@@ -41,7 +41,7 @@
             </div>
             <div>
                 <label for="text" class=" label_input">{{ __('product_group.vatrate') }}</label>
-                <input type="text" id="vatrate" name="vatrate" value="7.00" placeholder="0.00" class="input_text"
+                <input type="number" id="vatrate" name="vatrate" value="7.00" placeholder="0.00" class="input_text"
                     required />
                 @error('vatrate')
                     <p class="mt-2 text-sm text-red-600 "><span class="font-medium">คำเตือน</span> {{ $message }}
@@ -50,7 +50,7 @@
             </div>
             <div>
                 <label for="text" class=" label_input">{{ __('product_group.discountrate') }}</label>
-                <input type="text" id="discountrate" name="discountrate" value="0.00" placeholder="0.00"
+                <input type="number" id="discountrate" name="discountrate" value="0.00" placeholder="0.00"
                     class="input_text" required />
                 @error('discountrate')
                     <p class="mt-2 text-sm text-red-600 "><span class="font-medium">คำเตือน</span> {{ $message }}
@@ -74,7 +74,7 @@
             <div>
                 <label for="text"
                     class=" mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ __('product_group.add_point') }}</label>
-                <input type="text" id="add_point" name="add_point" placeholder="0.00" class="input_text" value="0.00"
+                <input type="number" id="add_point" name="add_point" placeholder="0.00" class="input_text" value="0.00"
                     required />
                 @error('add_point')
                     <p class="mt-2 text-sm text-red-600 "><span class="font-medium">คำเตือน</span> {{ $message }}

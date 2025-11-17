@@ -42,7 +42,7 @@
                 </div>
                 <div>
                     <label for="text" class=" label_input">{{ __('product_group.vatrate') }}</label>
-                    <input type="text" id="text" name="vatrate" placeholder="0.00" class="input_text"
+                    <input type="number" id="text" name="vatrate" placeholder="0.00" class="input_text"
                         value="{{ $groupproduct_info->vatrate }}" required />
                     @error('vatrate')
                         <p class="mt-2 text-sm text-red-600 "><span class="font-medium">คำเตือน</span> {{ $message }}
@@ -51,7 +51,7 @@
                 </div>
                 <div>
                     <label for="text" class=" label_input">{{ __('product_group.discountrate') }}</label>
-                    <input type="text" id="text" name="discountrate" value="{{ $groupproduct_info->discountrate }}"
+                    <input type="number" id="text" name="discountrate" value="{{ $groupproduct_info->discountrate }}"
                         placeholder="0.00" class="input_text" required />
                     @error('discountrate')
                         <p class="mt-2 text-sm text-red-600 "><span class="font-medium">คำเตือน</span> {{ $message }}
@@ -75,7 +75,7 @@
                 <div>
                     <label for="text"
                         class=" mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ __('product_group.add_point') }}</label>
-                    <input type="text" id="text" name="add_point" class="input_text"
+                    <input type="number" id="text" name="add_point" class="input_text"
                         value="{{ $groupproduct_info->add_point }}" required />
                     @error('add_point')
                         <p class="mt-2 text-sm text-red-600 "><span class="font-medium">คำเตือน</span> {{ $message }}

@@ -24,28 +24,53 @@
                 <label for="member_id" class="label_input"> {{ __('member.member_id') }} </label>
                 <input type="text" id="member_id" name="member_id" placeholder="..." class="input_text"
                     value="{{ $member_data->member_id }}" readonly />
+                @error('member_id')
+                    <p class="mt-2 text-sm text-red-600 "><span class="font-medium">{{ __('menu.is_warning') }}</span>
+                        {{ $message }}
+                    </p>
+                @enderror
             </div>
             <div>
                 <label for="member_name" class="label_input">{{ __('member.member_name') }}</label>
                 <input type="text" id="member_name" name="member_name" placeholder=" Kevin, David" class="input_text "
                     value="{{ $member_data->member_name }}" required />
+                @error('member_name')
+                    <p class="mt-2 text-sm text-red-600 "><span class="font-medium">{{ __('menu.is_warning') }}</span>
+                        {{ $message }}
+                    </p>
+                @enderror
             </div>
             <div>
                 <label for="member_license" class="label_input">{{ __('member.member_license') }}</label>
                 <input type="text" id="member_license" name="member_license" maxlength="13"
                     placeholder="0-0000-00000-00-0" class="input_text " value="{{ $member_data->member_license }}"
                     required />
+                @error('member_license')
+                    <p class="mt-2 text-sm text-red-600 "><span class="font-medium">{{ __('menu.is_warning') }}</span>
+                        {{ $message }}
+                    </p>
+                @enderror
             </div>
             <div>
                 <label for="member_expire" class="label_input">{{ __('member.member_expire') }}</label>
                 <input type="date" pattern="\d{2}/\d{2}/\d{4}" id="member_expire" name="member_expire"
                     value="{{ date('Y-m-d', strtotime($member_data->member_expiredate)) }}" class="input_text" />
+                @error('member_expire')
+                    <p class="mt-2 text-sm text-red-600 "><span class="font-medium">{{ __('menu.is_warning') }}</span>
+                        {{ $message }}
+                    </p>
+                @enderror
             </div>
 
             <div>
                 <label for="member_birthdate" class="label_input">{{ __('member.member_birthdate') }}</label>
                 <input type="date" pattern="\d{2}/\d{2}/\d{4}" id="member_birthdate" name="member_birthdate"
                     class="input_text" value="{{ date('Y-m-d', strtotime($member_data->member_birthdate)) }}" />
+                @error('member_birthdate')
+                    <p class="mt-2 text-sm text-red-600 "><span class="font-medium">{{ __('menu.is_warning') }}</span>
+                        {{ $message }}
+                    </p>
+                @enderror
             </div>
             {{-- <div>
                 <label for="member_picture" class="label_input">รูปภาพ</label>
@@ -55,11 +80,21 @@
             <div>
                 <label for="member_addr" class="label_input">{{ __('member.member_addr') }}</label>
                 <textarea id="member_addr" name="member_addr" rows="4" class="textarea_input">{{ $member_data->member_addr }}</textarea>
+                @error('member_addr')
+                    <p class="mt-2 text-sm text-red-600 "><span class="font-medium">{{ __('menu.is_warning') }}</span>
+                        {{ $message }}
+                    </p>
+                @enderror
             </div>
             <div>
                 <label for="member_phone" class="label_input">{{ __('member.member_phone') }}</label>
                 <input type="text" id="member_phone" name="member_phone" maxlength="10" class="input_text "
-                    value="{{ $member_data->member_phone }}" required />
+                    value="{{ $member_data->member_phone }}" />
+                @error('member_phone')
+                    <p class="mt-2 text-sm text-red-600 "><span class="font-medium">{{ __('menu.is_warning') }}</span>
+                        {{ $message }}
+                    </p>
+                @enderror
             </div>
 
         </div>
@@ -148,11 +183,11 @@
             </button>
         </a>
     </form>
-    @if ($errors->any())
+    {{-- @if ($errors->any())
         <div class="error_alert" role="alert">
             <span class="font-medium text-xl">!คำเตือน</span> {{ $errors->first() }}
         </div>
-    @endif
+    @endif --}}
 @endsection
 @section('js-scripts')
     <script type="module">
@@ -161,60 +196,58 @@
                 rules: {
                     member_id: {
                         required: true,
-                        minlength: 10,
                         maxlength: 10
                     },
                     member_name: {
                         required: true
                     },
-                    member_license: {
-                        required: true,
-                        minlength: 13,
-                        maxlength: 13,
-                        number: true
-                    },
-                    member_expire: {
-                        required: true,
-                        date: true,
-                    },
-                    member_birthdate: {
-                        required: true
-                    },
-                    member_phone: {
-                        required: true,
-                        minlength: 10,
-                        maxlength: 10,
-                        number: true
-                    },
-                    member_addr: {
-                        required: true
-                    }
+                    // member_license: {
+                    //     required: true,
+                    //     minlength: 13,
+                    //     maxlength: 13,
+                    //     number: true
+                    // },
+                    // member_expire: {
+                    //     required: true,
+                    //     date: true,
+                    // },
+                    // member_birthdate: {
+                    //     required: true
+                    // },
+                    // member_phone: {
+                    //     required: true,
+                    //     minlength: 10,
+                    //     maxlength: 10,
+                    //     number: true
+                    // },
+                    // member_addr: {
+                    //     required: true
+                    // }
                 },
                 messages: {
                     member_id: {
                         required: `{{ __('member.member_id_valid') }}`,
-                        minlength: `{{ __('member.member_id_valid_min') }}`,
                         maxlength: `{{ __('member.member_id_valid_max') }}`
                     },
                     member_name: `{{ __('member.member_name_valid') }}`,
-                    member_license: {
-                        required: `{{ __('member.member_license_valid') }}`,
-                        minlength: `{{ __('member.member_license_valid_min') }}`,
-                        maxlength: `{{ __('member.member_license_valid_max') }}`,
-                        number: `{{ __('member.member_license_valid_num') }}`
-                    },
-                    member_expire: {
-                        required: `{{ __('member.member_expire_valid') }}`,
-                        date: `{{ __('member.member_expire_valid_date') }}`
-                    },
-                    member_birthdate: `{{ __('member.member_birthdate_valid') }}`,
-                    member_phone: {
-                        required: `{{ __('member.member_phone_valid') }}`,
-                        minlength: `{{ __('member.member_phone_valid_min') }}`,
-                        maxlength: `{{ __('member.member_phone_valid_max') }}`,
-                        number: `{{ __('member.member_phone_valid_num') }}`
-                    },
-                    member_addr: `{{ __('member.member_addr_valid') }}`
+                    // member_license: {
+                    //     required: `{{ __('member.member_license_valid') }}`,
+                    //     minlength: `{{ __('member.member_license_valid_min') }}`,
+                    //     maxlength: `{{ __('member.member_license_valid_max') }}`,
+                    //     number: `{{ __('member.member_license_valid_num') }}`
+                    // },
+                    // member_expire: {
+                    //     required: `{{ __('member.member_expire_valid') }}`,
+                    //     date: `{{ __('member.member_expire_valid_date') }}`
+                    // },
+                    // member_birthdate: `{{ __('member.member_birthdate_valid') }}`,
+                    // member_phone: {
+                    //     required: `{{ __('member.member_phone_valid') }}`,
+                    //     minlength: `{{ __('member.member_phone_valid_min') }}`,
+                    //     maxlength: `{{ __('member.member_phone_valid_max') }}`,
+                    //     number: `{{ __('member.member_phone_valid_num') }}`
+                    // },
+                    // member_addr: `{{ __('member.member_addr_valid') }}`
                 }
             })
         });

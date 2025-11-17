@@ -175,12 +175,12 @@ class StaffController extends Controller
             [
                 'staff_name' => 'required',
                 'staff_type' => 'required',
-                'staff_license' => 'required|max:13',
-                'staff_birthdate' => 'required',
-                'staff_expiredate' => 'required',
-                'staff_addr' => 'required',
-                'staff_phone' => 'required|regex:/(0)[0-9]/|not_regex:/[a-z]/|min:10',
-                'staff_limit' => 'required',
+                'staff_license' => 'nullable|max:13',
+                'staff_birthdate' => 'nullable',
+                'staff_expiredate' => 'nullable',
+                'staff_addr' => 'nullable',
+                'staff_phone' => 'nullable|regex:/(0)[0-9]/|not_regex:/[a-z]/|min:10',
+                'staff_limit' => 'nullable',
             ],
             [
                 'staff_name' => __('staff.staff_name_required'),

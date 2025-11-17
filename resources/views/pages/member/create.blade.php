@@ -21,7 +21,7 @@
         <div class="mb-4 grid lg:grid-cols-2 grid-cols-1 gap-6 ">
             <div>
                 <label for="member_id" class="label_input"> {{ __('member.member_id') }} </label>
-                <input type="text" id="member_id" name="member_id" maxlength="10" placeholder="..." class="input_text"
+                <input type="text" id="member_id" name="member_id" maxlength="6" placeholder="..." class="input_text"
                     value="" required />
                 @error('member_id')
                     <p class="mt-2 text-sm text-red-600 "><span class="font-medium">{{ __('menu.is_warning') }}</span>

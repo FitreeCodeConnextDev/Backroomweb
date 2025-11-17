@@ -19,7 +19,7 @@
         <div class="grid_page">
             <div>
                 <label for="promo_code" class="label_input">{{ __('vendor_promo.promo_code') }}</label>
-                <input type="text" id="promo_code" name="promo_code" maxlength="10" placeholder="..." class="input_text"
+                <input type="text" id="promo_code" name="promo_code" maxlength="2" placeholder="..." class="input_text"
                     value="{{ old('promo_code') }}" required />
                 @error('promo_code')
                     <p class="mt-2 text-sm text-red-600 "><span class="font-medium">{{ __('menu.is_warning') }}</span>
@@ -39,7 +39,7 @@
             </div>
             <div>
                 <label for="start_date" class="label_input">{{ __('vendor_promo.start_date') }}</label>
-                <input type="date" pattern="\d{2}/\d{2}/\d{4}" id="start_date" name="start_date" class="input_text" />
+                <input type="date" id="start_date" name="start_date" class="input_text" />
                 @error('start_date')
                     <p class="mt-2 text-sm text-red-600 "><span class="font-medium">{{ __('menu.is_warning') }}</span>
                         {{ $message }}
@@ -48,7 +48,7 @@
             </div>
             <div>
                 <label for="end_date" class="label_input">{{ __('vendor_promo.end_date') }}</label>
-                <input type="date" pattern="\d{2}/\d{2}/\d{4}" id="end_date" name="end_date" class="input_text" />
+                <input type="date" id="end_date" name="end_date" class="input_text" />
                 @error('end_date')
                     <p class="mt-2 text-sm text-red-600 "><span class="font-medium">{{ __('menu.is_warning') }}</span>
                         {{ $message }}

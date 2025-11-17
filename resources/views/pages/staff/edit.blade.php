@@ -58,7 +58,7 @@
             <div>
                 <label for="staff_license" class="label_input"> {{ __('staff.staff_license') }} </label>
                 <input type="text" id="staff_license" maxlength="13" name="staff_license" placeholder="0-0000-00000-00-0"
-                    class="input_text " value="{{ $staff_data->staff_license }}" required />
+                    class="input_text " value="{{ $staff_data->staff_license }}"  />
                 @error('staff_license')
                     <p class="mt-2 text-sm text-red-600 "><span class="font-medium"> {{ __('menu.is_warning') }} </span>
                         {{ $message }}
@@ -67,7 +67,7 @@
             </div>
             <div>
                 <label for="staff_expiredate" class="label_input"> {{ __('staff.staff_expiredate') }} </label>
-                <input type="date" pattern="\d{2}/\d{2}/\d{4}" id="staff_expiredate" name="staff_expiredate"
+                <input type="date" id="staff_expiredate" name="staff_expiredate"
                     class="input_text" value="{{ date('Y-m-d', strtotime($staff_data->staff_expiredate)) }}" />
                 @error('staff_expiredate')
                     <p class="mt-2 text-sm text-red-600 "><span class="font-medium"> {{ __('menu.is_warning') }} </span>
@@ -78,7 +78,7 @@
 
             <div>
                 <label for="staff_birthdate" class="label_input"> {{ __('staff.staff_birthdate') }} </label>
-                <input type="date" pattern="\d{2}/\d{2}/\d{4}" id="staff_birthdate" name="staff_birthdate"
+                <input type="date" id="staff_birthdate" name="staff_birthdate"
                     class="input_text" value="{{ date('Y-m-d', strtotime($staff_data->staff_birthdate)) }}" />
                 @error('staff_birthdate')
                     <p class="mt-2 text-sm text-red-600 "><span class="font-medium"> {{ __('menu.is_warning') }} </span>
@@ -103,7 +103,7 @@
             <div>
                 <label for="staff_phone" class="label_input"> {{ __('staff.staff_phone') }} </label>
                 <input type="text" id="staff_phone" maxlength="10" name="staff_phone" placeholder="000-000-0000"
-                    class="input_text " required value="{{ $staff_data->staff_phone }}" />
+                    class="input_text "  value="{{ $staff_data->staff_phone }}" />
                 @error('staff_phone')
                     <p class="mt-2 text-sm text-red-600 "><span class="font-medium"> {{ __('menu.is_warning') }} </span>
                         {{ $message }}
@@ -113,7 +113,7 @@
             <div>
                 <label for="staff_limit" class="label_input"> {{ __('staff.staff_limit') }} </label>
                 <input type="number" id="staff_limit" value="{{ $staff_data->credit_limit }}" name="staff_limit"
-                    class="input_text" va required />
+                    class="input_text"  />
                 @error('staff_limit')
                     <p class="mt-2 text-sm text-red-600 "><span class="font-medium"> {{ __('menu.is_warning') }} </span>
                         {{ $message }}
@@ -215,4 +215,65 @@
             </button>
         </a>
     </form>
+@endsection
+@section('js-scripts')
+    <script type="module">
+        $('#staff_form').validate({
+            rules: {
+                staff_id: {
+                    required: true,
+                    maxlength: 10
+                },
+                staff_name: {
+                    required: true
+                },
+                // staff_license: {
+                //     required: true,
+                //     minlength: 13,
+                //     maxlength: 13,
+                //     number: true
+                // },
+                // staff_expiredate: {
+                //     required: true,
+                //     date: true,
+                // },
+                // staff_birthdate: {
+                //     required: true
+                // },
+                // staff_phone: {
+                //     required: true,
+                //     minlength: 10,
+                //     maxlength: 10,
+                //     number: true
+                // },
+                // staff_addr: {
+                //     required: true
+                // }
+            },
+            messages: {
+                staff_id: {
+                    required: `{{ __('staff.staff_id_required') }}`,
+                    maxlength: `{{ __('staff.staff_id_valid_max') }}`
+                },
+                staff_name: `{{ __('staff.staff_name_required') }}`,
+                // staff_license: {
+                //     required: `{{ __('staff.staff_license_required') }}`,
+                //     minlength: `{{ __('staff.staff_license_min') }}`,
+                //     maxlength: `{{ __('staff.staff_license_max') }}`,
+                //     number: `{{ __('staff.staff_license_num') }}`
+                // },
+                // staff_expiredate: {
+                //     required: `{{ __('staff.staff_expiredate_required') }}`,
+                // },
+                // staff_birthdate: `{{ __('staff.staff_birthdate_required') }}`,
+                // staff_phone: {
+                //     required: `{{ __('staff.staff_phone_required') }}`,
+                //     minlength: `{{ __('staff.staff_phone_min') }}`,
+                //     maxlength: `{{ __('staff.staff_phone_max') }}`,
+                //     number: `{{ __('staff.staff_phone_num') }}`
+                // },
+                // staff_addr: `{{ __('staff.staff_addr_required') }}`
+            }
+        })
+    </script>
 @endsection
