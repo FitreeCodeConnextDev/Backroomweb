@@ -59,17 +59,26 @@ class ChartController extends Controller
     }
     public function chartDailyBackup(Request $request)
     {
-        $start_date = date('Y-m-d', strtotime('yesterday'));
-        $end_date = date('Y-m-d', strtotime('yesterday'));
+        // $start_date = date('Y-m-d', strtotime('yesterday'));
+        // $end_date = date('Y-m-d', strtotime('yesterday'));
         // $start_date = '2024-01-01';
         // $end_date = '2024-01-31';
+        // get the min and max batch values (scalars) to use in whereBetween
+        $start_date = DB::table('closeendday')->max('batch');
+        $end_date = DB::table('closeendday')->max('batch');
+        $day_filter = DB::table('closeendday')->orderBy('batch', 'desc')->get();
 
-        $sale_terminal_rpt = DB::table('sum_terminal_rpt')
-            ->select('vendor_id', 'vendor_name', DB::raw('SUM(amount) as total_amount'))
-            ->whereBetween('businessdate', [$start_date, $end_date])
-            ->groupBy('vendor_id', 'vendor_name')
-            ->orderBy('total_amount', 'DESC')
-            ->get();
+        // if no batch values exist, return an empty collection to avoid errors
+        if (is_null($start_date) || is_null($end_date)) {
+            $sale_terminal_rpt = collect();
+        } else {
+            $sale_terminal_rpt = DB::table('sum_terminal_rpt')
+                ->select('vendor_id', 'vendor_name', DB::raw('SUM(amount) as total_amount'))
+                ->whereBetween('batch', [$start_date, $end_date])
+                ->groupBy('vendor_id', 'vendor_name')
+                ->orderBy('total_amount', 'DESC')
+                ->get();
+        }
 
         // เตรียมข้อมูลที่ส่งกลับ
         $data = [];
@@ -94,7 +103,7 @@ class ChartController extends Controller
 
         // dd($data_json);
 
-        return view('pages.charts.backupDaily', compact('data_json', 'start_date', 'end_date', 'daily_chart_backup'));
+        return view('pages.charts.backupDaily', compact('data_json', 'start_date', 'end_date', 'day_filter', 'daily_chart_backup'));
 
         // sum terminnal rpt
         // select vendor_id sum(amout) where bussinatedate between start and end  group by vendor_id and vendor_name
@@ -104,17 +113,17 @@ class ChartController extends Controller
         // รับค่าจากฟอร์ม (ถ้าไม่มีค่า จะใช้ค่าดีฟอลต์)
         $start_date = $request->input('start_date');
         $end_date = $request->input('end_date');
-
+        $day_filter = DB::table('closeendday')->orderBy('batch', 'desc')->get();
         // dd($start, $end);
 
         // ตั้งค่าช่วงเวลาของวันที่ให้ครอบคลุมทั้งวัน
-        $start = Carbon::parse($start_date)->startOfDay()->format('Y-m-d H:i:s');
-        $end = Carbon::parse($end_date)->endOfDay()->format('Y-m-d H:i:s');
+        // $start = Carbon::parse($start_date)->startOfDay()->format('Y-m-d H:i:s');
+        // $end = Carbon::parse($end_date)->endOfDay()->format('Y-m-d H:i:s');
 
         // ดึงข้อมูลจากฐานข้อมูล
         $sale_terminal_rpt = DB::table('sum_terminal_rpt')
             ->select('vendor_id', 'vendor_name', DB::raw('SUM(amount) as total_amount'))
-            ->whereBetween('businessdate', [$start, $end])
+            ->whereBetween('batch', [$start_date, $end_date])
             ->groupBy('vendor_id', 'vendor_name')
             ->orderBy('total_amount', 'DESC') // เรียงลำดับตามยอดรวมจากมากไปน้อย
             ->get();
@@ -133,20 +142,27 @@ class ChartController extends Controller
         // dd($data);
         if ($sale_terminal_rpt->isEmpty()) {
             sweetalert()
-                ->error('No sales data found for the specified period' . ' ' . $start_date . ' - ' . $end_date,);
+                ->error(__('chart.sale_not_found') . ' ' . $start_date . ' - ' . $end_date,);
             return redirect()->route('daily-backup-charts');
         }
+        $count_data = count($sale_terminal_rpt);
+        if ($count_data > 1500) {
+            sweetalert()
+                ->warning(__('chart.sale_not_found') . ' ' . $start_date . ' - ' . $end_date, 'จำนวนข้อมูลมากเกินไป กรุณาเลือกช่วงวันที่ใหม่');
+            return redirect()->route('daily-backup-charts');
+        }
+
 
         // เตรียมข้อมูลที่ส่งกลับ
         $daily_chart_backup['vendor_name'] = " ";
         $daily_chart_backup['total_amount'] = " ";
         $daily_chart_backup['vendor_id'] = " ";
         foreach ($data as $item) {
-            $daily_chart_backup['vendor_name'] .= "'" . $item['vendor_name'] . "'" . ', ';
+            $daily_chart_backup['vendor_name'] .= '"' . $item['vendor_name'] . '"' . ', ';
             $daily_chart_backup['total_amount'] .= $item['total_amount'] . ', ';
             $daily_chart_backup['vendor_id'] .= $item['vendor_id'] . ', ';
         }
         // dd($daily_chart_backup);
-        return view('pages.charts.backupDaily', compact('data_json', 'start_date', 'end_date', 'daily_chart_backup'));
+        return view('pages.charts.backupDaily', compact('data_json', 'start_date', 'end_date', 'day_filter', 'daily_chart_backup'));
     }
 }

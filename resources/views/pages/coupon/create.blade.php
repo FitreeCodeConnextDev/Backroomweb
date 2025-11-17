@@ -22,7 +22,7 @@
         <div class="grid lg:grid-cols-2 grid-cols-1 gap-4 mt-3">
             <div>
                 <label for="coupon_id" class="label_input">{{ __('coupon.coupon_id') }}</label>
-                <input type="text" name="coupon_id" id="coupon_id" class="input_text"
+                <input type="text" name="coupon_id" id="coupon_id" class="input_text" maxlength="20"
                     placeholder="{{ __('coupon.coupon_id') }}" required>
                 @error('coupon_id')
                     <p class="mt-2 text-sm text-red-600"><span class=" font-medium"> {{ __(__('menu.is_warning')) }} </span>
@@ -41,7 +41,7 @@
             </div>
             <div>
                 <label for="coupon_name" class="label_input">{{ __('coupon.coupon_name') }}</label>
-                <input type="text" name="coupon_name" id="coupon_name" class="input_text"
+                <input type="text" name="coupon_name" id="coupon_name" class="input_text" maxlength="100"
                     placeholder="{{ __('coupon.coupon_name') }}" required>
                 @error('coupon_name')
                     <p class="mt-2 text-sm text-red-600"><span class=" font-medium"> {{ __(__('menu.is_warning')) }} </span>

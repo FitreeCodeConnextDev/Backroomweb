@@ -21,14 +21,22 @@
                 <div class="grid grid-cols-2 lg:grid-cols-5 gap-4">
                     <div>
                         <label for="start_date" class="label_input"> {{ __('chart.start_date') }} </label>
-                        <input type="date" class="input_text" name="start_date" value="{{ $start_date }}"
-                            placeholder="dd/mm/yyyy" pattern="\d{2}/\d{2}/\d{4}">
+                        <select name="start_date" id="start_date" class="input_text">
+                            @foreach ($day_filter as $date)
+                                <option value="{{ $date->batch }}" {{ $date->batch == $start_date ? 'selected' : '' }}>
+                                    {{ date('d/m/Y', strtotime($date->businessdate)) }} ({{ $date->batch }})</option>
+                            @endforeach
+                        </select>
 
                     </div>
                     <div>
                         <label for="end_date" class="label_input">{{ __('chart.end_date') }}</label>
-                        <input type="date" class="input_text" name="end_date" value="{{ $end_date }}"
-                            placeholder="dd/mm/yyyy" pattern="\d{2}/\d{2}/\d{4}">
+                        <select name="end_date" id="end_date" class="input_text">
+                            @foreach ($day_filter as $date)
+                                <option value="{{ $date->batch }}" {{ $date->batch == $end_date ? 'selected' : '' }}>
+                                    {{ date('d/m/Y', strtotime($date->businessdate)) }} ({{ $date->batch }})</option>
+                            @endforeach
+                        </select>
 
                     </div>
                     <div class="mt-7 flex space-x-3">
