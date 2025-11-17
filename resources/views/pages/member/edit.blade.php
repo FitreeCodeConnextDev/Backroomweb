@@ -44,7 +44,7 @@
                 <label for="member_license" class="label_input">{{ __('member.member_license') }}</label>
                 <input type="text" id="member_license" name="member_license" maxlength="13"
                     placeholder="0-0000-00000-00-0" class="input_text " value="{{ $member_data->member_license }}"
-                    required />
+                     />
                 @error('member_license')
                     <p class="mt-2 text-sm text-red-600 "><span class="font-medium">{{ __('menu.is_warning') }}</span>
                         {{ $message }}
