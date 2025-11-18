@@ -30,12 +30,13 @@ class VendorController extends Controller
 
         if ($user_branch == 000000) {
             $vendor_data = DB::table('vendor_info')
-                ->select('vendor_id', 'vendor_name','branch_id')
+                ->select('vendor_id', 'vendor_name', 'branch_id')
                 ->where('activeflag', '=', 1)
                 ->where(function ($query) use ($search) {
                     // If search term is provided, filter by product description or product id
                     if ($search) {
                         $query->where('vendor_name', 'like', '%' . $search . '%')
+                            ->orWhere('branch_id', 'like', '%' . $search . '%')
                             ->orWhere('vendor_id', 'like', '%' . $search . '%');
                     }
                 })
@@ -92,7 +93,11 @@ class VendorController extends Controller
                 ->error(__('menu.is_permission_denied'));
             return redirect()->back();
         }
-        return view('pages.vendors.create');
+        $branch = DB::table('branch_info')
+            ->select('branch_id')
+            ->orderBy('branch_id', 'asc')
+            ->get();
+        return view('pages.vendors.create', compact('branch'));
     }
     public function store(Request $request)
     {

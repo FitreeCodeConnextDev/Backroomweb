@@ -38,17 +38,39 @@
                             </p>
                         @enderror
                     </div>
-                    <div>
-                        <label for="branch_id" class="label_input">{{ __('vendor.branch_id') }}</label>
-                        <input type="text" readonly id="branch_id" name="branch_id" value="{{ $user_branch_id }}"
-                            class="input_text" required>
-                        @error('branch_id')
-                            <p class="mt-2 text-sm text-red-600 "><span class="font-medium"> {{ __('menu.is_warning') }}
-                                </span>
-                                {{ $message }}
-                            </p>
-                        @enderror
-                    </div>
+                    @if (session('auth_user.branch_id') == '000000')
+                        <div>
+                            <label for="branch_id" class="label_input">{{ __('vendor.branch_id') }}</label>
+                            <select name="branch_id" id="branch_id" class="input_text" required>
+                                <option value="000000" selected>000000</option>
+                                @foreach ($branch as $branches)
+                                    <option value="{{ $branches->branch_id }}">
+                                        {{ $branches->branch_id }}</option>
+                                @endforeach
+                            </select>
+                            @error('branch_id')
+                                <p class="mt-2 text-sm text-red-600 "><span class="font-medium"> {{ __('menu.is_warning') }}
+                                    </span>
+                                    {{ $message }}
+                                </p>
+                            @enderror
+                        </div>
+                    @else
+                        <div>
+                            <label for="branch_id" class="label_input">{{ __('vendor.branch_id') }}</label>
+                            <input type="text" readonly id="branch_id" name="branch_id" value="{{ $user_branch_id }}"
+                                class="input_text" required>
+                            <div>
+                                @error('branch_id')
+                                    <p class="mt-2 text-sm text-red-600 "><span class="font-medium">
+                                            {{ __('menu.is_warning') }}
+                                        </span>
+                                        {{ $message }}
+                                    </p>
+                                @enderror
+                            </div>
+                        </div>
+                    @endif
                     <div>
                         <label for="term_id" class="label_input">{{ __('vendor.term_id') }}</label>
                         <select name="term_id" id="term_id" class="input_text" required>
@@ -228,7 +250,8 @@
                     </div>
                     <div>
                         <label for="vendor_batchno" class="label_input"> {{ __('vendor.vendor_batchno') }} </label>
-                        <input type="text" name="vendor_batchno" value="1" id="vendor_batchno" class="input_text">
+                        <input type="text" name="vendor_batchno" value="1" id="vendor_batchno"
+                            class="input_text">
                         @error('vendor_batchno')
                             <p class="mt-2 text-sm text-red-600 "><span class="font-medium"> {{ __('menu.is_warning') }}
                                 </span>
