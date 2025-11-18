@@ -400,7 +400,7 @@ class PromotionCardController extends Controller
 
     public function destroy($id)
     {
-        if (!PermissionHelper::checkUserPermission('funtion', 14)) {
+        if (!PermissionHelper::checkUserPermission('function', 14)) {
             Log::channel('activity')->error(session('auth_user.user_id') . ' Permission Denied: Access Card Promotion Delete Page ', [
                 'user_id' => session('auth_user.user_id'),
                 'action' => 'access',

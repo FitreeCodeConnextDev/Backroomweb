@@ -23,7 +23,7 @@
         <div class="grid gap-6 mb-4 md:grid-cols-3 border-b-2 border-gray-200 py-4">
             <div>
                 <label for="promo_code" class="label_input"> {{ __('card_promo.promo_code') }} </label>
-                <input type="text" id="promo_code" name="promo_code" maxlength="10" placeholder="..." class="input_text"
+                <input type="text" id="promo_code" name="promo_code" maxlength="2" placeholder="..." class="input_text"
                     value="" required />
                 @error('promo_code')
                     <p class="mt-2 text-sm text-red-600 "><span class="font-medium">{{ __('menu.is_warning') }}</span>
@@ -42,7 +42,7 @@
             </div>
             <div>
                 <label for="promo_seq" class=" label_input"> {{ __('card_promo.promo_seq') }} </label>
-                <input type="text" id="promo_seq" name="promo_seq" placeholder=" 1, 2" class="input_text" value=""
+                <input type="number" id="promo_seq" name="promo_seq" placeholder=" 1, 2" class="input_text" value=""
                     required />
                 @error('promo_seq')
                     <p class="mt-2 text-sm text-red-600 "><span class="font-medium">{{ __('menu.is_warning') }}</span>
@@ -170,7 +170,7 @@
                             <h2 class="text-md font-semibold">การซื้อ</h2>
                             <section class="mt-2">
                                 <label for="buy_amt" class=" label_input">{{ __('card_promo.buy_amt') }}</label>
-                                <input type="text" id="buy_amt" name="buy_amt" class="input_text " value=""
+                                <input type="number" id="buy_amt" name="buy_amt" class="input_text " value=""
                                     required />
                                 @error('buy_amt')
                                     <p class="mt-2 text-sm text-red-600 "><span
@@ -181,7 +181,7 @@
                             </section>
                             <section class="mt-2">
                                 <label for="get_amt" class=" label_input">{{ __('card_promo.get_amt') }}</label>
-                                <input type="text" id="get_amt" name="get_amt" class="input_text " value=""
+                                <input type="number" id="get_amt" name="get_amt" class="input_text " value=""
                                     required />
                                 @error('get_amt')
                                     <p class="mt-2 text-sm text-red-600 "><span
@@ -192,7 +192,7 @@
                             </section>
                             <section class="mt-2">
                                 <label for="get_point" class=" label_input">{{ __('card_promo.get_point') }}</label>
-                                <input type="text" id="get_point" name="get_point" class="input_text "
+                                <input type="number" id="get_point" name="get_point" class="input_text "
                                     value="" required />
                                 @error('get_point')
                                     <p class="mt-2 text-sm text-red-600 "><span
@@ -207,7 +207,7 @@
                             <h2 class="text-md font-semibold">{{ __('card_promo.adjust') }}</h2>
                             <section class="mt-2">
                                 <label for="adj_amt" class=" label_input">{{ __('card_promo.adj_amt') }}</label>
-                                <input type="text" id="adj_amt" name="adj_amt" class="input_text " value=""
+                                <input type="number" id="adj_amt" name="adj_amt" class="input_text " value=""
                                     required />
                                 @error('adj_amt')
                                     <p class="mt-2 text-sm text-red-600 "><span
@@ -218,7 +218,7 @@
                             </section>
                             <section class="mt-2">
                                 <label for="adjget_amt" class=" label_input">{{ __('card_promo.adjget_amt') }}</label>
-                                <input type="text" id="adjget_amt" name="adjget_amt" class="input_text "
+                                <input type="number" id="adjget_amt" name="adjget_amt" class="input_text "
                                     value="" required />
                                 @error('adjget_amt')
                                     <p class="mt-2 text-sm text-red-600 "><span
@@ -230,7 +230,7 @@
                             <section class="mt-2">
                                 <label for="adjget_point"
                                     class=" label_input">{{ __('card_promo.adjget_point') }}</label>
-                                <input type="text" id="adjget_point" name="adjget_point" class="input_text "
+                                <input type="number" id="adjget_point" name="adjget_point" class="input_text "
                                     value="" required />
                                 @error('adjget_point')
                                     <p class="mt-2 text-sm text-red-600 "><span
@@ -299,17 +299,17 @@
                 <div class="grid gap-6 mb-4 md:grid-cols-3 mt-3">
                     <div>
                         <label for="expire_day" class="label_input">{{ __('card_promo.expire_day') }}</label>
-                        <input type="text" id="expire_day" name="expire_day" class="input_text "
+                        <input type="number" id="expire_day" name="expire_day" class="input_text "
                             value="{{ old('expire_day') }}" />
                     </div>
                     <div>
                         <label for="pio_rity" class="label_input">{{ __('card_promo.priority') }}</label>
-                        <input type="text" id="pio_rity" name="priority" class="input_text "
+                        <input type="number" id="pio_rity" name="priority" class="input_text "
                             value="{{ old('priority') }}" />
                     </div>
                     <div>
                         <label for="deposit" class="label_input">{{ __('card_promo.deposit') }}</label>
-                        <input type="text" id="deposit" name="deposit" class="input_text "
+                        <input type="number" id="deposit" name="deposit" class="input_text "
                             value="{{ old('deposit') }}" />
                     </div>
                     <div>

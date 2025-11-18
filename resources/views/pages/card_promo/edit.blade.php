@@ -34,7 +34,7 @@
             </div>
             <div>
                 <label for="promo_seq" class=" label_input"> {{ __('card_promo.promo_seq') }} </label>
-                <input type="text" id="promo_seq" name="promo_seq" placeholder=" 1, 2" class="input_text"
+                <input type="number" id="promo_seq" name="promo_seq" placeholder=" 1, 2" class="input_text"
                     value="{{ $card_promo->promo_seq }}" required />
             </div>
             <div>
@@ -112,12 +112,14 @@
                 data-tabs-toggle="#default-tab-content" role="tablist">
                 <li class="me-2" role="presentation">
 
-                    <button class="inline-block p-4 border-b-2 border-gray-200 rounded-t-lg hover:text-gray-600 hover:border-gray-300 "
+                    <button
+                        class="inline-block p-4 border-b-2 border-gray-200 rounded-t-lg hover:text-gray-600 hover:border-gray-300 "
                         id="condiction_tab" data-tabs-target="#condiction" type="button" role="tab"
                         aria-controls="condiction" aria-selected="false">{{ __('card_promo.condiction_tab') }}</button>
                 </li>
                 <li class="me-2" role="presentation">
-                    <button class="inline-block p-4 border-b-2 border-gray-200 rounded-t-lg hover:text-gray-600 hover:border-gray-300 "
+                    <button
+                        class="inline-block p-4 border-b-2 border-gray-200 rounded-t-lg hover:text-gray-600 hover:border-gray-300 "
                         id="text_promo_tab" data-tabs-target="#text_promo" type="button" role="tab"
                         aria-controls="text_promo" aria-selected="false">{{ __('card_promo.text_promo_tab') }}</button>
                 </li>
@@ -147,17 +149,17 @@
                             <h2 class="text-md font-semibold">การซื้อ</h2>
                             <section class="mt-2">
                                 <label for="buy_amt" class=" label_input">{{ __('card_promo.buy_amt') }}</label>
-                                <input type="text" id="buy_amt" name="buy_amt" class="input_text "
+                                <input type="number" id="buy_amt" name="buy_amt" class="input_text "
                                     value="{{ $card_promo->buy_amt }}" required />
                             </section>
                             <section class="mt-2">
                                 <label for="get_amt" class=" label_input">{{ __('card_promo.get_amt') }}</label>
-                                <input type="text" id="get_amt" name="get_amt" class="input_text "
+                                <input type="number" id="get_amt" name="get_amt" class="input_text "
                                     value="{{ $card_promo->get_amt }}" required />
                             </section>
                             <section class="mt-2">
                                 <label for="get_point" class=" label_input">{{ __('card_promo.get_point') }}</label>
-                                <input type="text" id="get_point" name="get_point" class="input_text "
+                                <input type="number" id="get_point" name="get_point" class="input_text "
                                     value="{{ $card_promo->get_point }}" required />
                             </section>
 
@@ -166,18 +168,18 @@
                             <h2 class="text-md font-semibold">{{ __('card_promo.adjust') }}</h2>
                             <section class="mt-2">
                                 <label for="adj_amt" class=" label_input">{{ __('card_promo.adj_amt') }}</label>
-                                <input type="text" id="adj_amt" name="adj_amt" class="input_text "
+                                <input type="number" id="adj_amt" name="adj_amt" class="input_text "
                                     value="{{ $card_promo->adj_amt }}" required />
                             </section>
                             <section class="mt-2">
                                 <label for="adjget_amt" class=" label_input">{{ __('card_promo.adjget_amt') }}</label>
-                                <input type="text" id="adjget_amt" name="adjget_amt" class="input_text "
+                                <input type="number" id="adjget_amt" name="adjget_amt" class="input_text "
                                     value="{{ $card_promo->adjget_amt }}" required />
                             </section>
                             <section class="mt-2">
                                 <label for="adjget_point"
                                     class=" label_input">{{ __('card_promo.adjget_point') }}</label>
-                                <input type="text" id="adjget_point" name="adjget_point" class="input_text "
+                                <input type="number" id="adjget_point" name="adjget_point" class="input_text "
                                     value="{{ $card_promo->adjget_point }}" required />
                             </section>
                             <section class="mt-2">
@@ -240,17 +242,17 @@
                 <div class="grid gap-6 mb-4 md:grid-cols-3 mt-3">
                     <div>
                         <label for="expire_day" class="label_input">{{ __('card_promo.expire_day') }}</label>
-                        <input type="text" id="expire_day" name="expire_day" class="input_text "
+                        <input type="number" id="expire_day" name="expire_day" class="input_text "
                             value="{{ $card_promo_expire->expire_day }}" />
                     </div>
                     <div>
                         <label for="pio_rity" class="label_input">{{ __('card_promo.priority') }}</label>
-                        <input type="text" id="pio_rity" name="priority" class="input_text "
+                        <input type="number" id="pio_rity" name="priority" class="input_text "
                             value="{{ $card_promo_expire->priority }}" />
                     </div>
                     <div>
                         <label for="deposit" class="label_input">{{ __('card_promo.deposit') }}</label>
-                        <input type="text" id="deposit" name="deposit" class="input_text "
+                        <input type="number" id="deposit" name="deposit" class="input_text "
                             value="{{ $card_promo_expire->deposit }}" />
                     </div>
                     <div>
@@ -413,7 +415,6 @@
     </div>
 @endsection
 @section('js-scripts')
-    
     <script type="module">
         $(document).ready(function() {
             // เมื่อคลิกปุ่มที่มี id="saveButton"
