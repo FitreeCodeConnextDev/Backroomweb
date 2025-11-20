@@ -95,11 +95,14 @@
                 @enderror
             </div>
             <div>
+                <label for="tax_branchseq" class=" label_input">{{ __('branch.tax_branchseq') }}</label>
+                <input type="text" id="tax_branchseq" name="tax_branchseq" maxlength="30" placeholder="..." class="input_text" />
+            </div>
+            <div>
                 <label for="tax_addr1" class="label_input">{{ __('branch.tax_addr1') }}</label>
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-2">
                     <div>
-                        <input type="text" id="tax_addr1" name="tax_addr1" placeholder="..." class="input_text "
-                            value="" required />
+                        <textarea id="tax_addr1" name="tax_addr1" placeholder="..." class="input_text " required></textarea>
                         @error('tax_addr1')
                             <p class="mt-2 text-sm text-red-600"><span class=" font-medium"> {{ __(__('menu.is_warning')) }}
                                 </span>
@@ -107,24 +110,32 @@
                         @enderror
                     </div>
                     <div>
-                        <input type="text" id="tax_addr2" name="tax_addr2" class="input_text " value="" />
+                        <textarea id="tax_addr2" name="tax_addr2" class="input_text"></textarea>
                     </div>
                 </div>
             </div>
             <div>
                 <label for="tax_name_e" class=" label_input">{{ __('branch.tax_name_e') }}</label>
-                <input type="text" id="tax_name_e" name="tax_name_e" placeholder="..." class="input_text "
-                    value="" />
+                <input type="text" name="tax_name_e" placeholder="..." class="input_text" />
+                @error('tax_name_e')
+                    <p class="mt-2 text-sm text-red-600"><span class=" font-medium"> {{ __(__('menu.is_warning')) }}
+                        </span>
+                        {{ $message }} </p>
+                @enderror
             </div>
             <div>
                 <label for="tax_addr1_e" class="label_input">{{ __('branch.tax_addr1_e') }}</label>
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-2">
                     <div>
-                        <input type="text" id="tax_addr1_e" name="tax_addr1_e" placeholder="..." class="input_text "
-                            value="" />
+                        <textarea id="tax_addr1_e" name="tax_addr1_e" placeholder="..." class="input_text "></textarea>
+                        @error('tax_addr1_e')
+                            <p class="mt-2 text-sm text-red-600"><span class=" font-medium"> {{ __(__('menu.is_warning')) }}
+                                </span>
+                                {{ $message }} </p>
+                        @enderror
                     </div>
                     <div>
-                        <input type="text" id="tax_addr2_e" name="tax_addr2_e" class="input_text " value="" />
+                        <textarea id="tax_addr2_e" name="tax_addr2_e" class="input_text "></textarea>
                     </div>
                 </div>
             </div>
@@ -189,6 +200,7 @@
                 <input type="text" id="message4" name="message4" placeholder="..." class="input_text "
                     value="" />
             </div>
+
 
         </div>
         {{-- @if ($errors->any())

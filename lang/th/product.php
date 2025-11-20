@@ -17,6 +17,9 @@ return [
     'show_kiosk_N' => 'ไม่แสดง',
     'show_kiosk_Y' => 'แสดง',
     'non_select' => 'ไม่เลือก',
+    'type_group' => 'ประเภทกลุ่มสินค้า',
+    'gtype_group' => 'กลุ่มสินค้า',
+
 
 
     'product_id_valid' => "โปรดกรอกรหัสสินค้า",

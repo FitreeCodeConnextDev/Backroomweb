@@ -136,9 +136,25 @@
                     <option value="N">{{ __('product.show_kiosk_N') }}</option>
                     <option value="Y">{{ __('product.show_kiosk_Y') }}</option>
                 </select>
-
             </div>
-
+            <div>
+                <label for="type_group" class=" label_input">{{ __('product.type_group') }}</label>
+                <select name="type_group" class="input_text" id="type_group">
+                    <option value="  " selected disabled> {{ __('product.non_select') }} </option>
+                    @foreach ($group_type as $item_type)
+                        <option value=" {{ $item_type->type_group }} "> {{ $item_type->description }} </option>
+                    @endforeach
+                </select>
+            </div>
+            <div>
+                <label for="gtype_group" class=" label_input">{{ __('product.gtype_group') }}</label>
+                <select name="gtype_group" class="input_text" id="gtype_group">
+                    <option value="  " selected disabled> {{ __('product.non_select') }} </option>
+                    @foreach ($gtype_group as $item_gtype)
+                        <option value=" {{ $item_gtype->gtype_group }} "> {{ $item_gtype->description }} </option>
+                    @endforeach
+                </select>
+            </div>
         </div>
         <button type="submit" class="submit_btn"> {{ __('menu.button.save') }} </button>
         <button type="button" onclick="history.back()" class="cancel_btn">{{ __('menu.button.cancel') }}</button>
@@ -162,7 +178,7 @@
                 product_barcode: `{{ __('product.product_barcode_valid') }}`,
                 product_group: `{{ __('product.product_group_valid') }}`,
                 subno: `{{ __('product.subno_valid') }}`,
-                
+
             }
         });
     </script>

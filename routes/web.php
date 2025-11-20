@@ -16,6 +16,7 @@ use App\Http\Controllers\ProductSapController;
 use App\Http\Controllers\ProductUnitController;
 use App\Http\Controllers\PromotionCardController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\ReportVendorController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\TerminalController;
@@ -148,4 +149,10 @@ Route::middleware(['auth_user'])->group(function () {
 
         Route::get('/report-checkConnection', [ReportController::class, 'checkConnection'])->name('report.checkConnection');
         Route::get('/reportnameclient', [ReportController::class, 'test_report_client'])->name('report.test_report_client');
+
+        Route::get('/report-vendor', [ReportVendorController::class, 'index'])->name('report.vendor');
+        Route::post('/report-generateVendorReport', [ReportVendorController::class, 'generateVendorReport'])->name('report.generateVendorReport');
+        Route::get('/report-gen_rpt_sum_salecard_by_vendor/{format}/{start_date}/{end_date}/{report_name}', [ReportVendorController::class, 'gen_rpt_sum_salecard_by_vendor'])->name('rpt_sum_salecard_by_vendor');
+        Route::get('/report-gen_rpt_sum_salecard_by_groupvendor/{format}/{start_date}/{end_date}/{report_name}', [ReportVendorController::class, 'gen_rpt_sum_salecard_by_groupvendor'])->name('rpt_sum_salecard_by_groupvendor');
+        Route::get('/report-gen_rpt_sum_salecard_by_typeofcard', [ReportVendorController::class, 'gen_rpt_sum_salecard_by_typeofcard'])->name('rpt_sum_salecard_by_typeofcard');
 });

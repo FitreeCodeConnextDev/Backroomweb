@@ -68,7 +68,11 @@ class ProductController extends Controller
             ->orderBy('unit_id')->get();
         $product_category = DB::table('catproductgroup_info')
             ->orderBy('catproduct_group')->get();
-        return view("pages.products.create", compact('card_type', 'product_unit', 'product_category', 'product_group'));
+        $group_type = DB::table('typeproduct_info')
+            ->orderBy('type_group')->get();
+        $gtype_group = DB::table('grouptypeproduct_info')
+            ->orderBy('gtype_group')->get();
+        return view("pages.products.create", compact('card_type', 'product_unit', 'product_category', 'product_group', 'group_type', 'gtype_group'));
     }
 
     public function store(Request $request)
@@ -87,6 +91,8 @@ class ProductController extends Controller
                 'product_edesc' => 'nullable',
                 'rabbit_discount' => 'nullable',
                 'show_kiosk' => 'nullable',
+                'type_group' => 'nullable',
+                'gtype_group' => 'nullable',
             ],
             [
                 'product_id.required' => __('product.product_id_valid'),
@@ -114,6 +120,8 @@ class ProductController extends Controller
             'rabbit_discount' => $productData['rabbit_discount'],
             'catproduct_group' => $productData['catproduct_group'],
             'show_kiosk' => $productData['show_kiosk'],
+            'type_group' => $productData['type_group'],
+            'gtype_group' => $productData['gtype_group'],
             'activeflag' => 1,
         ]);
 
@@ -178,6 +186,10 @@ class ProductController extends Controller
         $card_type = DB::table('sub_info')->select('subno', 'subdesc')->orderBy('subno', 'asc')->get();
         $product_unit = DB::table('unit_info')->orderBy('unit_id')->get();
         $product_category = DB::table('catproductgroup_info')->orderBy('catproduct_group')->get();
+        $group_type = DB::table('typeproduct_info')
+            ->orderBy('type_group')->get();
+        $gtype_group = DB::table('grouptypeproduct_info')
+            ->orderBy('gtype_group')->get();
         Log::channel('activity')->info('Product Edit Page', [
             'user_id' => session('auth_user.user_id'),
             'action' => 'edit',
@@ -185,7 +197,7 @@ class ProductController extends Controller
             'page' => 'Product Edit Page',
             'timestamp' => Carbon::now()->toDateTimeString(),
         ]);
-        return view("pages.products.edit", compact('product', 'card_type', 'product_unit', 'product_category', 'product_group'));
+        return view("pages.products.edit", compact('product', 'card_type', 'product_unit', 'product_category', 'product_group', 'group_type', 'gtype_group'));
     }
 
     public function update(Request $request, $id)
@@ -203,6 +215,8 @@ class ProductController extends Controller
                 'product_edesc' => 'nullable',
                 'rabbit_discount' => 'nullable',
                 'show_kiosk' => 'nullable',
+                'type_group' => 'nullable',
+                'gtype_group' => 'nullable',
             ],
             [
                 'product_desc.required' => __('product.product_desc_valid'),
@@ -229,6 +243,8 @@ class ProductController extends Controller
                 'rabbit_discount' => $productData['rabbit_discount'],
                 'catproduct_group' => $productData['catproduct_group'],
                 'show_kiosk' => $productData['show_kiosk'],
+                'type_group' => $productData['type_group'],
+                'gtype_group' => $productData['gtype_group'],
             ]);
         if (isset($update_product)) {
             Log::channel('activity')->notice(session('auth_user.user_id') . ' updated product: ' . $id, [
@@ -303,7 +319,7 @@ class ProductController extends Controller
                 ->option('position', 'bottom-right')
                 ->option('timeout', 3000)
                 ->success(__('menu.delete_is_success'));
-            return redirect()->route('products.index')->with('success', 'ลบข้อมูลสินค้าสำเร็จ');
+            return redirect()->route('products.index');
         } else {
             Log::channel('activity')->error(session('auth_user.user_id') . ' failed to delete product: ' . $id, [
                 'product_id' => $id,

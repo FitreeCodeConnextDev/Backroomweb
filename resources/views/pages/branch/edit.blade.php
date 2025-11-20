@@ -97,11 +97,19 @@
                 @enderror
             </div>
             <div>
+                <label for="tax_branchseq" class=" label_input">{{ __('branch.tax_branchseq') }}</label>
+                <input type="text" id="tax_branchseq" name="tax_branchseq" placeholder="..." class="input_text"
+                    maxlength="30" value="{{ $branch->tax_branchseq }}" />
+                @error('tax_branchseq')
+                    <p class="mt-2 text-sm text-red-600"><span class=" font-medium"> {{ __(__('menu.is_warning')) }} </span>
+                        {{ $message }} </p>
+                @enderror
+            </div>
+            <div>
                 <label for="tax_addr1" class="label_input">{{ __('branch.tax_addr1') }}</label>
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-2">
                     <div>
-                        <input type="text" id="tax_addr1" name="tax_addr1" placeholder="..." class="input_text "
-                            value="{{ $branch->tax_addr1 }}" required />
+                        <textarea id="tax_addr1" name="tax_addr1" placeholder="..." class="input_text " required>{{ $branch->tax_addr1 }}</textarea>
                         @error('tax_addr1')
                             <p class="mt-2 text-sm text-red-600"><span class=" font-medium"> {{ __(__('menu.is_warning')) }}
                                 </span>
@@ -109,8 +117,7 @@
                         @enderror
                     </div>
                     <div>
-                        <input type="text" id="tax_addr2" name="tax_addr2" placeholder="..." class="input_text "
-                            value="{{ $branch->tax_addr2 }}" />
+                        <textarea id="tax_addr2" name="tax_addr2" class="input_text">{{ $branch->tax_addr2 }}</textarea>
                     </div>
                 </div>
             </div>
@@ -123,8 +130,7 @@
                 <label for="tax_addr1_e" class="label_input">{{ __('branch.tax_addr1_e') }}</label>
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-2">
                     <div>
-                        <input type="text" id="tax_addr1_e" name="tax_addr1_e" placeholder="..." class="input_text "
-                            value="{{ $branch->tax_addr1_e }}" />
+                        <textarea id="tax_addr1_e" name="tax_addr1_e" placeholder="..." class="input_text ">{{ $branch->tax_addr1_e }}</textarea>
                         @error('tax_addr1_e')
                             <p class="mt-2 text-sm text-red-600"><span class=" font-medium"> {{ __(__('menu.is_warning')) }}
                                 </span>
@@ -132,8 +138,7 @@
                         @enderror
                     </div>
                     <div>
-                        <input type="text" id="tax_addr2_e" name="tax_addr2_e" placeholder="..." class="input_text "
-                            value="{{ $branch->tax_addr2_e }}" />
+                        <textarea id="tax_addr2_e" name="tax_addr2_e" placeholder="..." class="input_text ">{{ $branch->tax_addr2_e }}</textarea>
                     </div>
                 </div>
             </div>

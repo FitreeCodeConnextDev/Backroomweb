@@ -1,10 +1,13 @@
 <?php
 
 return [
-    'report_title' => 'รายงาน (Report)',
+    'report_title' => 'รายงาน',
     'report_desc' => 'สร้างและดูรายงานต่างๆ',
     'select_report' => 'เลือกรายงาน',
-    
+
+    'daily_report' => 'รายงานประจำวัน (Daily Report)',
+    'vendor_report' => 'รายงานแยกตามร้านค้า (Vendor Report)',
+
     'report_sales' => 'รายงานการขาย (Sales Report)',
     'report_sales_desc' => 'ดูรายงานการขายในช่วงเวลาที่กำหนด',
     'report_sales_preview' => 'ตัวอย่างรายงานการขาย',
@@ -19,9 +22,9 @@ return [
 
     'report_error' => 'เกิดข้อผิดพลาดในการสร้างรายงาน',
     'report_error_desc' => 'กรุณาตรวจสอบข้อมูลและลองอีกครั้ง',
-    'report_not_found' =>'ไม่พบรายงานนี้',
+    'report_not_found' => 'ไม่พบรายงานนี้',
     'report_select_again' => 'กรุณาเลือกใหม่อีกครั้ง',
-    
+
     'report_format' => 'รูปแบบไฟล์ที่รองรับคือ PDF และ CSV',
 
     'rpt_sum_daily' => 'รายงานยอดขายรวม-ประจำวัน',

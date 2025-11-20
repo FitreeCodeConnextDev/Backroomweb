@@ -145,7 +145,26 @@
                     <option value="Y" @if ($product->show_kiosk == 'Y') selected @endif>
                         {{ __('product.show_kiosk_Y') }}</option>
                 </select>
-
+            </div>
+            <div>
+                <label for="type_group" class=" label_input">{{ __('product.type_group') }}</label>
+                <select name="type_group" class="input_text" id="type_group">
+                    <option value="  " selected disabled> {{ __('product.non_select') }} </option>
+                    @foreach ($group_type as $item_type)
+                        <option value=" {{ $item_type->type_group }} " @if ($product->type_group == $item_type->type_group) selected @endif>
+                            {{ $item_type->description }} </option>
+                    @endforeach
+                </select>
+            </div>
+            <div>
+                <label for="gtype_group" class=" label_input">{{ __('product.gtype_group') }}</label>
+                <select name="gtype_group" class="input_text" id="gtype_group">
+                    <option value="  " selected disabled> {{ __('product.non_select') }} </option>
+                    @foreach ($gtype_group as $item_gtype)
+                        <option value=" {{ $item_gtype->gtype_group }} "
+                            @if ($product->gtype_group == $item_gtype->gtype_group) selected @endif> {{ $item_gtype->description }} </option>
+                    @endforeach
+                </select>
             </div>
 
         </div>

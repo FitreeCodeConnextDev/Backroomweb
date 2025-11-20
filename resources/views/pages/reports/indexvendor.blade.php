@@ -1,14 +1,14 @@
 @extends('layouts.indexpage')
 @section('title_page')
-    {{ __('report.daily_report') }}
+    {{ __('report.vendor_report') }}
 @endsection
 @section('index-title')
-    {{ __('report.daily_report') }}
+    {{ __('report.vendor_report') }}
 @endsection
 @section('table-section')
     <div class="mb-4">
         <div class=" max-w-screen mt-5">
-            <form action="{{ route('report.getReportName') }}" method="post" target="_blank">
+            <form action="{{ route('report.generateVendorReport') }}" method="post" target="_blank">
                 @csrf
 
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-4">
@@ -58,7 +58,7 @@
                         </select>
                     </div>
                     <div class="mt-7">
-                        <button class="submit_btn" type="submit">
+                        <button type="submit" class="submit_btn">
                             {{ __('menu.button.confirm') }}
                         </button>
                     </div>
@@ -69,27 +69,15 @@
 @endsection
 @section('js-scripts')
     <script type="text/javascript">
-        function handleSelectChange() {
-            var selectedValue = document.getElementById("report_name").value;
-            var selectday = document.getElementById("select_day");
-
-            if (
-                [
-                    "rpt_sum_use_card_daily",
-                    "rpt_sum_balance_advancecard_daily",
-                    "rpt_sum_refund_card_daily",
-                    "rpt_cardexpire"
-                ].includes(
-                    selectedValue)
-            ) {
-                selectday.style.display = "block";
-            } else {
-                selectday.style.display = "none";
-            }
-        }
-        window.onload = function() {
-            handleSelectChange();
-            document.getElementById("report_name").addEventListener("change", handleSelectChange);
-        };
+        $(document).ready(function() {
+            $('#report_name').on('change', function() {
+                var reportConfig = $(this).val();
+                if (reportConfig === 'report.vendor_daily_report') {
+                    $('#select_day').show();
+                } else {
+                    $('#select_day').hide();
+                }
+            });
+        });
     </script>
 @endsection
