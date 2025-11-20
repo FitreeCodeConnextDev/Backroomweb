@@ -154,5 +154,5 @@ Route::middleware(['auth_user'])->group(function () {
         Route::post('/report-generateVendorReport', [ReportVendorController::class, 'generateVendorReport'])->name('report.generateVendorReport');
         Route::get('/report-gen_rpt_sum_salecard_by_vendor/{format}/{start_date}/{end_date}/{report_name}', [ReportVendorController::class, 'gen_rpt_sum_salecard_by_vendor'])->name('rpt_sum_salecard_by_vendor');
         Route::get('/report-gen_rpt_sum_salecard_by_groupvendor/{format}/{start_date}/{end_date}/{report_name}', [ReportVendorController::class, 'gen_rpt_sum_salecard_by_groupvendor'])->name('rpt_sum_salecard_by_groupvendor');
-        Route::get('/report-gen_rpt_sum_salecard_by_typeofcard', [ReportVendorController::class, 'gen_rpt_sum_salecard_by_typeofcard'])->name('rpt_sum_salecard_by_typeofcard');
+        Route::get('/report-gen_rpt_sum_salecard_by_typeofcard/{format}/{start_date}/{end_date}/{report_name}', [ReportVendorController::class, 'gen_rpt_sum_salecard_by_typeofcard'])->name('rpt_sum_salecard_by_typeofcard');
 });
