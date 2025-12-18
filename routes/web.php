@@ -6,6 +6,7 @@ use App\Http\Controllers\BranchController;
 use App\Http\Controllers\CardTypeController;
 use App\Http\Controllers\ChartController;
 use App\Http\Controllers\CouponController;
+use App\Http\Controllers\ExpenseVendorController;
 use App\Http\Controllers\ImportCotroller;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\PaymentGroupController;
@@ -16,9 +17,12 @@ use App\Http\Controllers\ProductSapController;
 use App\Http\Controllers\ProductUnitController;
 use App\Http\Controllers\PromotionCardController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\ReportItemController;
+use App\Http\Controllers\ReportPaymentController;
 use App\Http\Controllers\ReportVendorController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\StaffController;
+use App\Http\Controllers\StockController;
 use App\Http\Controllers\TerminalController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\VendorController;
@@ -130,22 +134,23 @@ Route::middleware(['auth_user'])->group(function () {
         Route::get('/report-testReport', [ReportController::class, 'testReport'])->name('report.testReport');
         Route::post('/report-toReportName', [ReportController::class, 'toReportName'])->name('report.getReportName');
 
-        Route::get('/report-gen_rpt_sum_daily/{start_date}/{end_date}/{format}', [ReportController::class, 'gen_sum_daily_rpt'])->name('rpt_sum_daily');
-        Route::get('/report-gen_rpt_sum_debt/{start_date}/{end_date}/{format}', [ReportController::class, 'gen_sum_debt_rpt'])->name('rpt_sum_debt_daily');
-        Route::get('/report-gen_rpt_sum_cashier_daily/{start_date}/{end_date}/{format}', [ReportController::class, 'gen_rpt_sum_cashier_daily'])->name('rpt_sum_cashier_daily');
-        Route::get('/report-gen_rpt_sum_vendor_daily/{start_date}/{end_date}/{format}', [ReportController::class, 'gen_rpt_sum_vendor_daily'])->name('rpt_sum_vendor_daily');
+        Route::get('/report-gen_rpt_sum_daily/{start_date}/{end_date}/{format}/{report_name}', [ReportController::class, 'gen_sum_daily_rpt'])->name('rpt_sum_daily');
+        Route::get('/report-gen_rpt_sum_debt/{start_date}/{end_date}/{format}/{report_name}', [ReportController::class, 'gen_sum_debt_rpt'])->name('rpt_sum_debt_daily');
+        Route::get('/report-gen_rpt_sum_cashier_daily/{start_date}/{end_date}/{format}/{report_name}', [ReportController::class, 'gen_rpt_sum_cashier_daily'])->name('rpt_sum_cashier_daily');
+        Route::get('/report-gen_rpt_sum_vendor_daily/{start_date}/{end_date}/{format}/{report_name}', [ReportController::class, 'gen_rpt_sum_vendor_daily'])->name('rpt_sum_vendor_daily');
 
-        Route::get('/report-gen_rpt_sum_use_card_daily/{start_date}/{end_date}/{type_date}/{format}', [ReportController::class, 'gen_rpt_sum_use_card_daily'])->name('rpt_sum_use_card_daily');
-        Route::get('/report-gen_rpt_sum_refund_card_daily/{start_date}/{end_date}/{type_date}/{format}', [ReportController::class, 'gen_rpt_sum_refund_card_daily'])->name('rpt_sum_refund_card_daily');
-        Route::get('/report-gen_rpt_sum_balance_advancecard_daily/{start_date}/{end_date}/{type_date}/{format}', [ReportController::class, 'gen_rpt_sum_balance_advancecard_daily'])->name('rpt_sum_balance_advancecard_daily');
+        Route::get('/report-gen_rpt_sum_use_card_daily/{start_date}/{end_date}/{type_date}/{format}/{report_name}', [ReportController::class, 'gen_rpt_sum_use_card_daily'])->name('rpt_sum_use_card_daily');
+        Route::get('/report-gen_rpt_sum_refund_card_daily/{start_date}/{end_date}/{type_date}/{format}/{report_name}', [ReportController::class, 'gen_rpt_sum_refund_card_daily'])->name('rpt_sum_refund_card_daily');
+        Route::get('/report-gen_rpt_sum_balance_advancecard_daily/{start_date}/{end_date}/{type_date}/{format}/{report_name}', [ReportController::class, 'gen_rpt_sum_balance_advancecard_daily'])->name('rpt_sum_balance_advancecard_daily');
 
 
-        Route::get('/report-gen_rpt_invoicevendor_daily/{start_date}/{end_date}/{format}', [ReportController::class, 'gen_rpt_invoicevendor_daily'])->name('rpt_invoicevendor_daily');
-        Route::get('/report-gen_rpt_sum_cardnotreturn/{start_date}/{end_date}/{format}', [ReportController::class, 'gen_rpt_sum_cardnotreturn'])->name('rpt_sum_cardnotreturn');
+        Route::get('/report-gen_rpt_invoicevendor_daily/{start_date}/{end_date}/{format}/{report_name}', [ReportController::class, 'gen_rpt_invoicevendor_daily'])->name('rpt_invoicevendor_daily');
+        Route::get('/report-gen_rpt_sum_cardnotreturn/{start_date}/{end_date}/{format}/{report_name}', [ReportController::class, 'gen_rpt_sum_cardnotreturn'])->name('rpt_sum_cardnotreturn');
 
-        Route::get('/report-gen_rpt_cardexpire/{start_date}/{end_date}/{type_date}/{format}', [ReportController::class, 'gen_rpt_cardexpire'])->name('rpt_cardexpire');
-        Route::get('/report-gen_rpt_stockcard/{start_date}/{end_date}/{format}', [ReportController::class, 'gen_rpt_stockcard'])->name('rpt_stockcard');
-        Route::get('/report-rpt_sum_promotioncard_daily/{start_date}/{end_date}/{format}', [ReportController::class, 'gen_rpt_sum_promotioncard_daily'])->name('rpt_sum_promotioncard_daily');
+        Route::get('/report-gen_rpt_cardexpire/{start_date}/{end_date}/{type_date}/{format}/{report_name}', [ReportController::class, 'gen_rpt_cardexpire'])->name('rpt_cardexpire');
+        Route::get('/report-gen_rpt_stockcard/{start_date}/{end_date}/{format}/{report_name}', [ReportController::class, 'gen_rpt_stockcard'])->name('rpt_stockcard');
+        Route::get('/report-rpt_sum_promotioncard_daily/{start_date}/{end_date}/{format}/{report_name}', [ReportController::class, 'gen_rpt_sum_promotioncard_daily'])->name('rpt_sum_promotioncard_daily');
+        Route::get('/report-gen_rpt_sum_expense_vendor/{start_date}/{end_date}/{format}/{report_name}', [ReportController::class, 'gen_rpt_sum_expense_vendor'])->name('rpt_sum_expense_vendor');
 
         Route::get('/report-checkConnection', [ReportController::class, 'checkConnection'])->name('report.checkConnection');
         Route::get('/reportnameclient', [ReportController::class, 'test_report_client'])->name('report.test_report_client');
@@ -155,4 +160,40 @@ Route::middleware(['auth_user'])->group(function () {
         Route::get('/report-gen_rpt_sum_salecard_by_vendor/{format}/{start_date}/{end_date}/{report_name}', [ReportVendorController::class, 'gen_rpt_sum_salecard_by_vendor'])->name('rpt_sum_salecard_by_vendor');
         Route::get('/report-gen_rpt_sum_salecard_by_groupvendor/{format}/{start_date}/{end_date}/{report_name}', [ReportVendorController::class, 'gen_rpt_sum_salecard_by_groupvendor'])->name('rpt_sum_salecard_by_groupvendor');
         Route::get('/report-gen_rpt_sum_salecard_by_typeofcard/{format}/{start_date}/{end_date}/{report_name}', [ReportVendorController::class, 'gen_rpt_sum_salecard_by_typeofcard'])->name('rpt_sum_salecard_by_typeofcard');
+        Route::get('/report-gen_rpt_sum_salecard_by_refcode/{format}/{start_date}/{end_date}/{report_name}', [ReportVendorController::class, 'gen_rpt_sum_salecard_by_refcode'])->name('rpt_sum_salecard_by_refcode');
+
+        Route::get('/report-item', [ReportItemController::class, 'index'])->name('report.item');
+        Route::post('/report-toReportItem', [ReportItemController::class, 'toReportItem'])->name('report.toReportItem');
+        Route::get('/report-gen_rpt_sum_item_by_product/{start_date}/{end_date}/{format}/{report_name}', [ReportItemController::class, 'gen_rpt_sum_item_by_product'])->name('rpt_sum_item_by_product');
+        Route::get('/report-rpt_sum_item_by_groupproduct/{start_date}/{end_date}/{format}/{report_name}', [ReportItemController::class, 'gen_rpt_sum_item_by_groupproduct'])->name('rpt_sum_item_by_groupproduct');
+        Route::get('/report-gen_rpt_sum_item_by_vendor/{start_date}/{end_date}/{format}/{report_name}', [ReportItemController::class, 'gen_rpt_sum_item_by_vendor'])->name('rpt_sum_item_by_vendor');
+        Route::get('/report-gen_rpt_sum_item_by_groupvendor/{start_date}/{end_date}/{format}/{report_name}', [ReportItemController::class, 'gen_rpt_sum_item_by_groupvendor'])->name('rpt_sum_item_by_groupvendor');
+        Route::get('/report-gen_rpt_stock_by_vendor_product/{start_date}/{end_date}/{format}/{report_name}', [ReportItemController::class, 'gen_rpt_stock_by_vendor_product'])->name('rpt_stock_by_vendor_product');
+        Route::get('/report-gen_rpt_stock_balance_daily/{start_date}/{end_date}/{format}/{report_name}', [ReportItemController::class, 'gen_rpt_stock_balance_daily'])->name('rpt_stock_balance_daily');
+        Route::get('/report-gen_rpt_sum_item_by_typevendor/{start_date}/{end_date}/{format}/{report_name}', [ReportItemController::class, 'gen_rpt_sum_item_by_typevendor'])->name('rpt_sum_item_by_typevendor');
+        Route::get('/report-gen_rpt_sum_itembest_by_vendor/{start_date}/{end_date}/{format}/{report_name}', [ReportItemController::class, 'gen_rpt_sum_itembest_by_vendor'])->name('rpt_sum_itembest_by_vendor');
+
+        Route::get('/report-payment', [ReportPaymentController::class, 'index'])->name('report.payment');
+        Route::post('/report-toReportPayment', [ReportPaymentController::class, 'toReportPayment'])->name('report.toReportPayment');
+        Route::get('/report-gen_rpt_sum_use_thaiqr/{start_date}/{end_date}/{format}/{report_name}', [ReportPaymentController::class, 'gen_rpt_sum_use_thaiqr'])->name('rpt_sum_use_thaiqr');
+        Route::get('/report-gen_rpt_sum_use_thaiqr_by_vendor/{start_date}/{end_date}/{format}/{report_name}', [ReportPaymentController::class, 'gen_rpt_sum_use_thaiqr_by_vendor'])->name('rpt_sum_use_thaiqr_by_vendor');
+        Route::get('/report-gen_rpt_detail_use_thaiqr_by_vendor/{start_date}/{end_date}/{format}/{report_name}', [ReportPaymentController::class, 'gen_rpt_detail_use_thaiqr_by_vendor'])->name('rpt_detail_use_thaiqr_by_vendor');
+        Route::get('/report-gen_rpt_sum_use_alipay/{start_date}/{end_date}/{format}/{report_name}', [ReportPaymentController::class, 'gen_rpt_sum_use_alipay'])->name('rpt_sum_use_alipay');
+        Route::get('/report-gen_rpt_sum_use_alipay_by_vendor/{start_date}/{end_date}/{format}/{report_name}', [ReportPaymentController::class, 'gen_rpt_sum_use_alipay_by_vendor'])->name('rpt_sum_use_alipay_by_vendor');
+        Route::get('/report-gen_rpt_detail_use_alipay_by_vendor/{start_date}/{end_date}/{format}/{report_name}', [ReportPaymentController::class, 'gen_rpt_detail_use_alipay_by_vendor'])->name('rpt_detail_use_alipay_by_vendor');
+        Route::get('/report-gen_rpt_sum_use_wechat/{start_date}/{end_date}/{format}/{report_name}', [ReportPaymentController::class, 'gen_rpt_sum_use_wechat'])->name('rpt_sum_use_wechat');
+        Route::get('/report-gen_rpt_sum_use_wechat_by_vendor/{start_date}/{end_date}/{format}/{report_name}', [ReportPaymentController::class, 'gen_rpt_sum_use_wechat_by_vendor'])->name('rpt_sum_use_wechat_by_vendor');
+        Route::get('/report-gen_rpt_detail_use_wechat_by_vendor/{start_date}/{end_date}/{format}/{report_name}', [ReportPaymentController::class, 'gen_rpt_detail_use_wechat_by_vendor'])->name('rpt_detail_use_wechat_by_vendor');
+        Route::get('/report-gen_rpt_sum_use_true/{start_date}/{end_date}/{format}/{report_name}', [ReportPaymentController::class, 'gen_rpt_sum_use_true'])->name('rpt_sum_use_true');
+        Route::get('/report-gen_rpt_sum_use_true_by_vendor/{start_date}/{end_date}/{format}/{report_name}', [ReportPaymentController::class, 'gen_rpt_sum_use_true_by_vendor'])->name('rpt_sum_use_true_by_vendor');
+        Route::get('/report-gen_rpt_detail_use_true_by_vendor/{start_date}/{end_date}/{format}/{report_name}', [ReportPaymentController::class, 'gen_rpt_detail_use_true_by_vendor'])->name('rpt_detail_use_true_by_vendor');
+
+        Route::resource('/stock-info', StockController::class);
+        Route::get('/get-product-details-stock/{product_id}', [StockController::class, 'getProductDetailsStock']);
+        Route::put('/stock-info-cancel-adjuststock/{txnno}', [StockController::class, 'cancel_adjuststock'])->name('cancel_adjuststock');
+
+        Route::resource('/expense_vendor', ExpenseVendorController::class);
+        Route::get('/expense_vendor_other', [ExpenseVendorController::class, 'expensevendor_other'])->name('expensevendor_other_index');
+        Route::post('/expense_vendor_other_store', [ExpenseVendorController::class, 'store_other'])->name('expensevendor_other_store');
+        Route::delete('/expense_vendor_other_destroy/{txnyear}/{txnmonth}/{vendor_id}/{exp_code}', [ExpenseVendorController::class, 'destroy_expensevendor_other'])->name('expensevendor_other_destroy');
 });

@@ -1,14 +1,14 @@
 @extends('layouts.indexpage')
 @section('title_page')
-    {{ __('report.vendor_report') }}
+    {{ __('report.payment_type_report') }}
 @endsection
 @section('index-title')
-    {{ __('report.vendor_report') }}
+    {{ __('report.payment_type_report') }}
 @endsection
 @section('table-section')
     <div class="mb-4">
         <div class=" max-w-screen mt-5">
-            <form action="{{ route('report.generateVendorReport') }}" method="post" target="_blank">
+            <form action="{{ route('report.toReportPayment') }}" method="post">
                 @csrf
 
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-4">
@@ -42,14 +42,6 @@
                             @endforeach
                         </select>
                     </div>
-                    <div id="select_day" style="display: none">
-                        <label for="type_date" class="label_input"> {{ __('report.select_report_date') }} </label>
-                        <select name="type_date" class="input_text">
-                            <option value="ALL_DAY">{{ __('report.rpt_allday') }}</option>
-                            <option value="IN_DAY">{{ __('report.rpt_inday') }}</option>
-                            <option value="CROSS_DAY">{{ __('report.rpt_crossday') }}</option>
-                        </select>
-                    </div>
                     <div>
                         <label for="format" class="label_input"> {{ __('report.select_format') }} </label>
                         <select name="format" class="input_text">
@@ -68,18 +60,7 @@
     </div>
 @endsection
 @section('js-scripts')
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('#report_name').on('change', function() {
-                var reportConfig = $(this).val();
-                if (reportConfig === 'report.vendor_daily_report') {
-                    $('#select_day').show();
-                } else {
-                    $('#select_day').hide();
-                }
-            });
-        });
-
+    <script>
         function openReportWindow(event) {
             event.preventDefault();
             const form = event.target.closest('form');

@@ -24,5 +24,3 @@ window.Swal = Swal;
 window.swal = Swal;
 window.sweetAlert = Swal;
 window.SweetAlert2 = Swal;
-
-

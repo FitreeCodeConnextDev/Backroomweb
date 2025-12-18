@@ -58,7 +58,7 @@
                         </select>
                     </div>
                     <div class="mt-7">
-                        <button class="submit_btn" type="submit">
+                        <button class="submit_btn" type="submit" onclick="openReportWindow(event)">
                             {{ __('menu.button.confirm') }}
                         </button>
                     </div>
@@ -91,5 +91,33 @@
             handleSelectChange();
             document.getElementById("report_name").addEventListener("change", handleSelectChange);
         };
+
+        function openReportWindow(event) {
+            event.preventDefault();
+            const form = event.target.closest('form');
+            const windowName = 'report_window_' + new Date().getTime();
+
+            // Open a new window
+            const newWindow = window.open('', windowName, 'width=900,height=700,resizable=yes,scrollbars=yes');
+
+            if (newWindow) {
+                newWindow.document.write('Please wait, generating report...');
+                form.target = windowName;
+
+                // Add a hidden input to indicate popup mode if it doesn't exist
+                let input = form.querySelector('input[name="open_mode"]');
+                if (!input) {
+                    input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = 'open_mode';
+                    input.value = 'popup';
+                    form.appendChild(input);
+                }
+
+                form.submit();
+            } else {
+                alert('Please allow popups for this website');
+            }
+        }
     </script>
 @endsection

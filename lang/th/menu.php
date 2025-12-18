@@ -1,4 +1,4 @@
-<?php 
+<?php
 return [
         'title_web' => 'Backroom',
         'login_web_title' => 'LOGIN | Backroom',
@@ -17,7 +17,7 @@ return [
         'product_add' => 'เพิ่มข้อมูลสินค้า',
         'product_edit' => 'แก้ไขข้อมูลสินค้า',
         'product_delete' => 'ลบข้อมูลสินค้า',
-        
+
         // member
         'member' => 'ข้อมูลสมาชิก',
         'member_add' => 'เพิ่มข้อมูลสมาชิก',
@@ -40,7 +40,7 @@ return [
         'card_promo_add' => 'เพิ่ม Promotion บัตร',
         'card_promo_edit' => 'แก้ไข Promotion บัตร',
         'card_promo_delete' => 'ลบ Promotion บัตร',
-    
+
         // users
         'users' => 'ข้อมูลผู้ใช้ระบบ',
         'users_add' => 'เพิ่มข้อมูลผู้ใช้ระบบ',
@@ -64,13 +64,13 @@ return [
         'card_type_add' => 'เพิ่มข้อมูลประเภทบัตร',
         'card_type_edit' => 'แก้ไขข้อมูลประเภทบัตร',
         'card_type_delete' => 'ลบข้อมูลประเภทบัตร',
-        
+
         // payment_type
         'rewards' => 'ข้อมูลของรางวัล',
         'rewards_add' => 'เพิ่มข้อมูลของรางวัล',
         'rewards_edit' => 'แก้ไขข้อมูลของรางวัล',
         'rewards_delete' => 'ลบข้อมูลของรางวัล',
-        
+
         // staff
         'staff' => 'ข้อมูลพนักงาน',
         'staff_add' => 'เพิ่มข้อมูลพนักงาน',
@@ -94,12 +94,12 @@ return [
         'product_sap_add' => 'เพิ่มข้อมูลกลุ่มสินค้า SAP',
         'product_sap_edit' => 'แก้ไขข้อมูลกลุ่มสินค้า SAP',
         'product_sap_delete' => 'ลบข้อมูลกลุ่มสินค้า SAP',
-    
+
         'coupons' => 'ข้อมูล Coupon',
         'coupons_add' => 'เพิ่มข้อมูล Coupon',
         'coupons_edit' => 'แก้ไขข้อมูล Coupon',
         'coupons_delete' => 'ลบข้อมูล Coupon',
-        
+
         // payment
         'payment_groups' => 'ข้อมูลกลุ่มประเภทชำระ',
         'payment_groups_add' => 'เพิ่มข้อมูลกลุ่มประเภทชำระ',
@@ -120,6 +120,20 @@ return [
         'vendor_type_add' => 'เพิ่มข้อมูลประเภทร้าน',
         'vendor_type_edit' => 'แก้ไขข้อมูลประเภทร้าน',
         'vendor_type_delete' => 'ลบข้อมูลประเภทร้าน',
+
+        // Stock
+        'other_cate' => 'อื่นๆ (Other)',
+
+        'stock_title' => 'สินค้าใน Stock',
+        'stock_add' => 'เพิ่มสินค้าใน Stock',
+        'stock_edit' => 'แก้ไขสินค้าใน Stock',
+        'stock_delete' => 'ลบสินค้าใน Stock',
+
+        'expense_vendor_title' => 'บันทึกค่าใช้จ่ายร้านค้า',
+        'expense_vendor_add' => 'เพิ่มค่าใช้จ่ายร้านค้า',
+        'expense_vendor_edit' => 'แก้ไขค่าใช้จ่ายร้านค้า',
+        'expense_vendor_delete' => 'ลบค่าใช้จ่ายร้านค้า',
+
 
         // Teminal
         'terminals' => 'เครื่อง Terminal',
@@ -143,14 +157,14 @@ return [
         'input.username' => 'ชื่อผู้ใช้',
         'input.password' => 'รหัสผ่าน',
 
-        
+
         'save_is_success' => 'บันทึกข้อมูลสำเร็จ',
         'save_is_failed' => 'บันทึกข้อมูลไม่สำเร็จ',
         'edit_is_success' => 'แก้ไขข้อมูลสำเร็จ',
         'edit_is_failed' => 'แก้ไขข้อมูลไม่สำเร็จ',
         'delete_is_success' => 'ลบข้อมูลสำเร็จ',
         'delete_is_failed' => 'ลบข้อมูลไม่สำเร็จ',
-        
+
         'is_warning' => 'คำเตือน!!!',
         'is_failed' => 'เกิดข้อผิดพลาด',
         'is_loading' => 'โปรดรอสักครู่...',
