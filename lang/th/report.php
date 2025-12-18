@@ -6,8 +6,8 @@ return [
     'select_report' => 'เลือกรายงาน',
 
     'daily_report' => 'รายงานประจำวัน (Daily Report)',
-    'vendor_report' => 'รายงานแยกตามร้านค้า (Vendor Report)',
-    'item_report' => 'รายงานแยกตาม Item (Item Report)',
+    'vendor_report' => 'รายงานเกี่ยวกับร้านค้า (Vendor Report)',
+    'item_report' => 'รายงานเกี่ยวกับ Item (Item Report)',
     'payment_type_report' => 'รายงานแยกตามประเภทการใช้จ่าย (Payment Type Report)',
 
     'report_sales' => 'รายงานการขาย (Sales Report)',

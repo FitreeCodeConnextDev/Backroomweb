@@ -128,28 +128,28 @@ class ReportVendorController extends Controller
     public function gen_rpt_sum_salecard_by_vendor($format, $start_date, $end_date, $report_name)
     {
         $params = $this->getBusinessDates($start_date, $end_date);
-        $filename = $report_name . '_' . time() . '.' . strtolower($format);
+        $filename = $report_name . '_' . date('Y-m-d');
         return $this->generateJasperReport('/vendor/rpt_sum_salecard_by_vendor', $filename, $params, $format, 'Generate Report');
     }
 
     public function gen_rpt_sum_salecard_by_groupvendor($format, $start_date, $end_date, $report_name)
     {
         $params = $this->getBusinessDates($start_date, $end_date);
-        $filename = $report_name . '_' . time() . '.' . strtolower($format);
+        $filename = $report_name . '_' . date('Y-m-d');
         return $this->generateJasperReport('/vendor/rpt_sum_salecard_by_groupvendor', $filename, $params, $format, 'Generate Report');
     }
 
     public function gen_rpt_sum_salecard_by_typeofcard($format, $start_date, $end_date, $report_name)
     {
         $params = $this->getBusinessDates($start_date, $end_date);
-        $filename = $report_name . '_' . time() . '.' . strtolower($format);
+        $filename = $report_name . '_' . date('Y-m-d');
         return $this->generateJasperReport('/vendor/rpt_sum_salecard_by_typeofcard', $filename, $params, $format, 'Generate Report');
     }
 
     public function gen_rpt_sum_salecard_by_refcode($format, $start_date, $end_date, $report_name)
     {
         $params = $this->getBusinessDates($start_date, $end_date);
-        $filename = $report_name . '_' . time() . '.' . strtolower($format);
+        $filename = $report_name . '_' . date('Y-m-d');
         return $this->generateJasperReport('/vendor/rpt_sum_salecard_by_refcode', $filename, $params, $format, 'Generate Report');
     }
 }
