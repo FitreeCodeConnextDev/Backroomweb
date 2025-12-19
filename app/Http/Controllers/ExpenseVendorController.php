@@ -360,4 +360,20 @@ class ExpenseVendorController extends Controller
             return redirect()->route('expensevendor_other_index');
         }
     }
+
+    public function fetch_expensevendor_other(Request $request)
+    {
+        $expense_vendor_data = DB::table('expensevendor_info')
+            ->select('exp_code', 'description', 'price_rate')
+            ->where('exp_code', $request->exp_code)
+            ->first();
+
+        if (!$expense_vendor_data) {
+            return response()->json(['status' => 'error', 'message' => 'Expense Vendor not found.'], 404);
+        }
+        return response()->json([
+            'description' => $expense_vendor_data->description,
+            'price_rate' => $expense_vendor_data->price_rate,
+        ]);
+    }
 }

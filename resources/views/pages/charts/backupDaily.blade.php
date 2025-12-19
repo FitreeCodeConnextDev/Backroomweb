@@ -16,7 +16,7 @@
 
         </div>
         <div class="flex justify-between pb-4 mb-4 border-b border-gray-200">
-            <form action="{{ route('daily-backup-showdailybackupchart') }}" method="post">
+            <form action="{{ route('charts.showdailybackupchart') }}" method="post">
                 @csrf
                 <div class="grid grid-cols-2 lg:grid-cols-5 gap-4">
                     <div>
@@ -46,7 +46,7 @@
                             </button>
                         </div>
                         <div>
-                            <a href="{{ route('daily-backup-charts') }}">
+                            <a href="{{ route('charts.backupdaily') }}">
                                 <button type="button" class="reset_button">
                                     {{ __('menu.button.reset') }}
                                 </button>

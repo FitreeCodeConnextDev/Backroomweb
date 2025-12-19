@@ -122,7 +122,7 @@
                 </div>
                 <div>
                     <label for="start_no" class="label_input"> {{ __('expense_vendor.start_no') }} </label>
-                    <input type="number" name="start_no" id="start_no" class="input_text">
+                    <input type="number" name="start_no" id="start_no" step="0.01" class="input_text">
                     @error('start_no')
                         <p class="mt-2 text-sm text-red-600"><span class=" font-medium"> {{ __(__('menu.is_warning')) }}
                             </span>
@@ -131,7 +131,7 @@
                 </div>
                 <div>
                     <label for="end_no" class="label_input"> {{ __('expense_vendor.end_no') }} </label>
-                    <input type="number" name="end_no" id="end_no" class="input_text">
+                    <input type="number" name="end_no" id="end_no" step="0.01" class="input_text">
                     @error('end_no')
                         <p class="mt-2 text-sm text-red-600"><span class=" font-medium"> {{ __(__('menu.is_warning')) }}
                             </span>
@@ -140,7 +140,7 @@
                 </div>
                 <div>
                     <label for="price_rate" class="label_input"> {{ __('expense_vendor.price_rate_desc') }} </label>
-                    <input type="number" name="price_rate" id="price_rate" class="input_text">
+                    <input type="number" name="price_rate" id="price_rate" step="0.01" class="input_text">
                     @error('price_rate')
                         <p class="mt-2 text-sm text-red-600"><span class=" font-medium"> {{ __(__('menu.is_warning')) }}
                             </span>
@@ -149,7 +149,7 @@
                 </div>
                 <div>
                     <label for="total" class="label_input"> {{ __('expense_vendor.total') }} </label>
-                    <input type="number" name="total" id="total" class="input_text">
+                    <input type="number" name="total" id="total" step="0.01" class="input_text">
                     @error('total')
                         <p class="mt-2 text-sm text-red-600"><span class=" font-medium"> {{ __(__('menu.is_warning')) }}
                             </span>
@@ -179,4 +179,26 @@
             </div>
         </div>
     </section>
+@endsection
+@section('js-scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() { 
+            const expenseSelect = document.getElementById('exp_code');
+            expenseSelect.addEventListener('change', function(event) {
+                const selectedExpCode = event.target.value;
+                fetch(`/get-expense-details/${selectedExpCode}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data && data.price_rate) {
+                            document.getElementById('price_rate').value = data.price_rate;
+                        } else {
+                            document.getElementById('price_rate').value = '';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching expense details:', error);
+                    });
+            });
+        });
+    </script>
 @endsection

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -508,11 +509,12 @@ class ReportController extends Controller
         $params = [
             'branch_name' => $data['branch_name'],
             'user_name' => session('auth_user.user_name'),
-            'b_start' => date('Y-m-d', strtotime($data['b_start'])),
-            'b_end' => date('Y-m-d', strtotime($data['b_end'])),
+            'b_start' => Carbon::createFromFormat('d/m/Y', $data['b_start'])->format('Y-m-d'),
+            'b_end' => Carbon::createFromFormat('d/m/Y', $data['b_end'])->format('Y-m-d'),
             'batch_start' => $start_date,
             'batch_end' => $end_date,
         ];
+        // dd($params);
 
         return $this->generateJasperReport($reportPath, $filename, $params, $format, 'Generated expense vendor report');
     }

@@ -105,10 +105,10 @@ Route::middleware(['auth_user'])->group(function () {
         Route::put('/coupons/coupon_detail_lock/{coupon_no}', [CouponController::class, 'coupon_detail_lock'])->name('coupon_detail_lock');
         Route::put('/coupons/coupon_lockall/{coupon_id}', [CouponController::class, 'coupon_lockall'])->name('coupon_lockall');
 
-        Route::get('/daily-charts', [ChartController::class, 'chartDaily'])->name('chart_daily');
-        Route::get('/daily-backup-charts', [ChartController::class, 'chartDailyBackup'])->name('daily-backup-charts');
+        Route::get('/daily-charts', [ChartController::class, 'chartDaily'])->name('charts.daily');
+        Route::get('/daily-backup-charts', [ChartController::class, 'chartDailyBackup'])->name('charts.backupdaily');
 
-        Route::post('/show-dailybackupchart', [ChartController::class, 'showDailyChartBackup'])->name('daily-backup-showdailybackupchart');
+        Route::post('/show-dailybackupchart', [ChartController::class, 'showDailyChartBackup'])->name('charts.showdailybackupchart');
 
         Route::resource('/session-main', SessionController::class);
 
@@ -196,4 +196,5 @@ Route::middleware(['auth_user'])->group(function () {
         Route::get('/expense_vendor_other', [ExpenseVendorController::class, 'expensevendor_other'])->name('expensevendor_other_index');
         Route::post('/expense_vendor_other_store', [ExpenseVendorController::class, 'store_other'])->name('expensevendor_other_store');
         Route::delete('/expense_vendor_other_destroy/{txnyear}/{txnmonth}/{vendor_id}/{exp_code}', [ExpenseVendorController::class, 'destroy_expensevendor_other'])->name('expensevendor_other_destroy');
+        Route::get('/get-expense-details/{exp_code}', [ExpenseVendorController::class, 'fetch_expensevendor_other'])->name('get_expense_details');
 });
