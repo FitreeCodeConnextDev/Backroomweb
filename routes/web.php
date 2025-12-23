@@ -193,7 +193,7 @@ Route::middleware(['auth_user'])->group(function () {
         Route::put('/stock-info-cancel-adjuststock/{txnno}', [StockController::class, 'cancel_adjuststock'])->name('cancel_adjuststock');
 
         Route::resource('/expense_vendor', ExpenseVendorController::class);
-        Route::get('/expense_vendor_other', [ExpenseVendorController::class, 'expensevendor_other'])->name('expensevendor_other_index');
+        Route::get('/expense_vendor_other', [ExpenseVendorController::class, 'expensevendor_other'])->name('other.expensevendor_other_index');
         Route::post('/expense_vendor_other_store', [ExpenseVendorController::class, 'store_other'])->name('expensevendor_other_store');
         Route::delete('/expense_vendor_other_destroy/{txnyear}/{txnmonth}/{vendor_id}/{exp_code}', [ExpenseVendorController::class, 'destroy_expensevendor_other'])->name('expensevendor_other_destroy');
         Route::get('/get-expense-details/{exp_code}', [ExpenseVendorController::class, 'fetch_expensevendor_other'])->name('get_expense_details');

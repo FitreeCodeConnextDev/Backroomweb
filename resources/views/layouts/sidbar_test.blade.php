@@ -468,43 +468,80 @@
             </ul>
         @endif
 
-        {{-- ส่วน Back DEV Maintenance --}}
-        @if (session('auth_user.profile_code') == '00')
-            <hr class=" my-8 border border-y-gray-200">
-            @php $isDevActive = request()->is('log-viewer*') || request()->routeIs('session-main.*'); @endphp
-            <ul class="space-y-2 font-medium">
-                <li>
-                    <button type="button"
-                        class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 {{ $isDevActive ? 'bg-gray-50' : '' }}"
-                        aria-controls="back_end" data-collapse-toggle="back_end">
-                        <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Back DEV
-                            Maintenance</span>
-                        <svg class="w-3 h-3 transition-transform {{ $isDevActive ? 'rotate-180' : '' }}"
-                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                stroke-width="2" d="m1 1 4 4 4-4" />
-                        </svg>
-                    </button>
-                    <ul id="back_end" class="{{ $isDevActive ? '' : 'hidden' }} py-2 space-y-2">
-                        <li>
-                            <div class=" bg-white border-b border-gray-200 ">
-                                <a href="/log-viewer" target="_blank"
-                                    class="flex items-center w-full p-2 mb-2 text-gray-900 transition duration-75 hover:bg-gray-100 rounded-lg pl-5 group {{ request()->routeIs('log-viewer.*') ? 'active_menu' : 'text-gray-500' }}">
-                                    <span class="ms-3"> LOG View </span>
-                                </a>
-                            </div>
-                        </li>
-                        <li>
-                            <div class=" bg-white border-b border-gray-200 ">
-                                <a href="{{ route('session-main.index') }}"
-                                    class="flex items-center w-full p-2 mb-2 text-gray-900 transition duration-75 hover:bg-gray-100 rounded-lg pl-5 group {{ request()->routeIs('session-main.*') ? 'active_menu' : 'text-gray-500' }}">
-                                    <span class="ms-3"> Session </span>
-                                </a>
-                            </div>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-        @endif
+        <div class=" mt-3 "></div>
+        @php $isOrtherActive = request()->routeIs(['other.*' , 'stock-info.*']); @endphp
+        <ul class="space-y-2 font-medium">
+            <li>
+                <button type="button"
+                    class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 {{ $isOrtherActive ? 'bg-gray-50' : '' }}"
+                    aria-controls="orther" data-collapse-toggle="orther">
+                    <span
+                        class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">{{ __('menu.other_cate') }}</span>
+                    <svg class="w-3 h-3 transition-transform {{ $isOrtherActive ? 'rotate-180' : '' }}"
+                        aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="m1 1 4 4 4-4" />
+                    </svg>
+                </button>
+                <ul id="orther" class="{{ $isOrtherActive ? '' : 'hidden' }} py-2 space-y-2">
+
+                    <li>
+                        <div class=" bg-white border-b border-gray-200 ">
+                            <a href="{{ route('stock-info.index') }}"
+                                class="flex items-center w-full p-2 mb-2 text-gray-900 transition duration-75 hover:bg-gray-100 rounded-lg pl-5 group {{ request()->routeIs('stock-info.*') ? 'active_menu' : 'text-gray-500' }}">
+                                <span class="ms-3"> {{ __('menu.stock_title') }} </span>
+                            </a>
+                        </div>
+                    </li>
+                    <li>
+                        <div class=" bg-white border-b border-gray-200 ">
+                            <a href="{{ route('other.expensevendor_other_index') }}"
+                                class="flex items-center w-full p-2 mb-2 text-gray-900 transition duration-75 hover:bg-gray-100 rounded-lg pl-5 group {{ request()->routeIs('other.expensevendor_*') ? 'active_menu' : 'text-gray-500' }}">
+                                <span class="ms-3"> {{ __('expense_vendor.expense_vendor') }} </span>
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+            </li>
+
+            {{-- ส่วน Back DEV Maintenance --}}
+            @if (session('auth_user.profile_code') == '00')
+                <hr class=" my-8 border border-y-gray-200">
+                @php $isDevActive = request()->is('log-viewer*') || request()->routeIs('session-main.*'); @endphp
+                <ul class="space-y-2 font-medium">
+                    <li>
+                        <button type="button"
+                            class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 {{ $isDevActive ? 'bg-gray-50' : '' }}"
+                            aria-controls="back_end" data-collapse-toggle="back_end">
+                            <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Back DEV
+                                Maintenance</span>
+                            <svg class="w-3 h-3 transition-transform {{ $isDevActive ? 'rotate-180' : '' }}"
+                                aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 10 6">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2" d="m1 1 4 4 4-4" />
+                            </svg>
+                        </button>
+                        <ul id="back_end" class="{{ $isDevActive ? '' : 'hidden' }} py-2 space-y-2">
+                            <li>
+                                <div class=" bg-white border-b border-gray-200 ">
+                                    <a href="/log-viewer" target="_blank"
+                                        class="flex items-center w-full p-2 mb-2 text-gray-900 transition duration-75 hover:bg-gray-100 rounded-lg pl-5 group {{ request()->routeIs('log-viewer.*') ? 'active_menu' : 'text-gray-500' }}">
+                                        <span class="ms-3"> LOG View </span>
+                                    </a>
+                                </div>
+                            </li>
+                            <li>
+                                <div class=" bg-white border-b border-gray-200 ">
+                                    <a href="{{ route('session-main.index') }}"
+                                        class="flex items-center w-full p-2 mb-2 text-gray-900 transition duration-75 hover:bg-gray-100 rounded-lg pl-5 group {{ request()->routeIs('session-main.*') ? 'active_menu' : 'text-gray-500' }}">
+                                        <span class="ms-3"> Session </span>
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            @endif
     </div>
 </aside>
