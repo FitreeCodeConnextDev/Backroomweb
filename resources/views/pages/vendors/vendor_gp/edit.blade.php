@@ -5,7 +5,7 @@
 @endphp
 <section>
     <div class="grid grid-cols-1 gap-6 border border-gray-200 rounded-lg p-5">
-        <div>
+        <div class=" flex justify-end">
             <button data-modal-target="vendor_gp_modal" data-modal-toggle="vendor_gp_modal" class="modal_button_add"
                 type="button">
                 {{ __('menu.button.add') }}
@@ -43,16 +43,14 @@
                             <td>{{ $item->gp_qr }}</td>
                             <td>{{ $item->gp_min }}</td>
                             <td>
-                                <form
-                                    action="{{ route('vendor_gp_del', [$item->gp_seq, $item->vendor_id]) }}"
+                                <form action="{{ route('vendor_gp_del', [$item->gp_seq, $item->vendor_id]) }}"
                                     method="post" id="delete-form-{{ $item->gp_seq }}">
                                     @csrf
                                     @method('PUT')
-                                    <button id="del-button" class="del-button" data-item-id="{{ $item->gp_seq }}"
+                                    <button type="button" class="del-button" data-item-id="{{ $item->gp_seq }}"
                                         data-name="{{ $item->gp_seq }}">
-                                        <svg class="w-[16px] h-[16px]" aria-hidden="true"
-                                            xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            fill="none" viewBox="0 0 24 24">
+                                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                            width="24" height="24" fill="none" viewBox="0 0 24 24">
                                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                                                 stroke-width="1.6"
                                                 d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z" />
@@ -73,7 +71,7 @@
             <!-- Modal content -->
             <div class="relative bg-white rounded-lg shadow-sm ">
                 <!-- Modal header -->
-                <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t  border-gray-200">
+                <div class="flex items-center justify-between p-4 md:p-5 border-b   border-gray-200">
 
                     <button type="button"
                         class="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
@@ -237,6 +235,27 @@
                     // เมื่อเกิดข้อผิดพลาด
                     // alert('เกิดข้อผิดพลาด: ' + error);
                     // console.log(xhr.responseText); // แสดงข้อผิดพลาดใน console
+                }
+            });
+        });
+
+        // Delete button handler
+        $(document).on('click', '.del-button', function(e) {
+            e.preventDefault();
+            const itemId = $(this).data('item-id');
+            const form = $('#delete-form-' + itemId);
+
+            Swal.fire({
+                title: `{{ __('menu.deleted_title') }}`,
+                html: `{{ __('menu.deleted_text') }} <b>${itemName}</b>`,
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: `{{ __('menu.deleted_yes') }}`,
+                cancelButtonText: `{{ __('menu.deleted_no') }}`,
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
                 }
             });
         });

@@ -10,7 +10,7 @@
     <div class="grid grid-cols-1 gap-3">
 
         <div class="overflow-x-auto">
-            <table class="table-data" id="">
+            <table class="table-data" id="vendorproduct_promo_print-table">
                 <thead>
                     <tr>
                         <th scope="col"> {{ __('vendor_product.product_desc') }} </th>
@@ -38,3 +38,16 @@
             </table>
         </div>
 </section>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const table = document.querySelector("#vendorproduct_promo_print-table");
+        if (table) {
+            new DataTable(table, {
+                searchable: true,
+                sortable: true,
+                perPage: 5,
+                perPageSelect: [5, 10, 15]
+            });
+        }
+    });
+</script>

@@ -3,7 +3,7 @@
 <section>
     <div class="grid grid-cols-1 gap-3">
         <div class="overflow-x-auto">
-            <table class="table-data">
+            <table class="table-data" id="vendorproduct_promo-table">
                 <thead>
                     <tr>
                         <th scope="col"> {{ __('vendor_product.vendorproduct_startdate') }}</th>
@@ -31,7 +31,7 @@
                             <td>{{ date('H:i', strtotime($item_product->end_time)) }}</td>
                             <td> {{ $item_product->priceunit }} </td>
                             <td> {{ $item_product->gp_normal }} </td>
-                            
+
                         </tr>
                     @endforeach
 
@@ -40,3 +40,16 @@
         </div>
     </div>
 </section>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const table = document.querySelector("#vendorproduct_promo-table");
+        if (table) {
+            new DataTable(table, {
+                searchable: true,
+                sortable: true,
+                perPage: 5,
+                perPageSelect: [5, 10, 15]
+            });
+        }
+    });
+</script>

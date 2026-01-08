@@ -220,9 +220,13 @@ class ReportPaymentController extends Controller
             ]);
         }
         if (request('open_mode') === 'popup') {
-            return response("<script>alert('Failed to fetch report'); window.close();</script>");
+            return response("<script>alert('" . __('report.report_failed_fetch') . "'); window.close();</script>");
         }
-        return redirect()->back();
+        return response()->json([
+            'error' => 'Failed to fetch report',
+            'status' => $client['status'] ?? 'unknown',
+            'curl_error' => $client['error'] ?? 'unknown',
+        ], 500);
     }
 
     public function gen_rpt_sum_use_thaiqr($start_date, $end_date, $format)

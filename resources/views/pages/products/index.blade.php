@@ -17,14 +17,14 @@
     </div>
 @endsection
 @section('table-section')
-    <div class=" p-3 flex justify-start">
+    <div class=" mb-4 flex justify-start">
         <form method="GET" action="{{ route('products.index') }}">
             {{-- <input type="text" name="search" value="{{ $search }}"
                 class="block w-30 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Search products..."> --}}
             <div class="relative">
                 <input placeholder="Search..." name="search" value="{{ $search }}"
-                    class="input  focus:border-2 border-gray-300 px-3 py-2 rounded-xl w-56 transition-all focus:w-64 outline-none"
+                    class="input  block w-64 px-3 py-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500"
                     name="search" type="search" />
             </div>
 

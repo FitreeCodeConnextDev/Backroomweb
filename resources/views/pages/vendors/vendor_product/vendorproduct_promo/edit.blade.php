@@ -2,7 +2,7 @@
 <section>
 
     <div class="grid grid-cols-1 gap-3">
-        <div>
+        <div class="flex justify-end">
             <button type="button" data-modal-target="vedor_product_promo-modal"
                 data-modal-toggle="vedor_product_promo-modal" class="modal_button_add" type="button">
                 {{ __('menu.button.add') }}
@@ -10,7 +10,7 @@
         </div>
         <div class="overflow-x-auto">
 
-            <table class="table-data">
+            <table class="table-data" id="vendorproduct_promo-table">
                 <thead>
                     <tr>
                         <th scope="col"> {{ __('vendor_product.product_desc') }} </th>
@@ -440,6 +440,15 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const productSelect = document.getElementById('product_id_1');
+        const table = document.querySelector("#vendorproduct_promo-table");
+        if (table) {
+            new DataTable(table, {
+                searchable: true,
+                sortable: true,
+                perPage: 5,
+                perPageSelect: [5, 10, 15]
+            });
+        }
 
         productSelect.addEventListener('change', function(event) {
             const productId = event.target.value;

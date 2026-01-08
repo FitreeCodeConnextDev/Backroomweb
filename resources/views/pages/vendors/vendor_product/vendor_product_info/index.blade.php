@@ -7,7 +7,7 @@
             ->where('vendor_id', '=', $vendor_id)
             ->where('vendorproduct_info.activeflag', '=', 1)
             ->orderBy('product_seq', 'asc')
-            ->paginate(10);
+            ->get();
     } else {
         $vendor_product = DB::table('vendorproduct_info')
             ->join('product_info', 'vendorproduct_info.product_id', '=', 'product_info.product_id')
@@ -15,7 +15,7 @@
             ->where('branch_id', '=', $branch_id)
             ->where('vendorproduct_info.activeflag', '=', 1)
             ->orderBy('product_seq', 'asc')
-            ->paginate(10);
+            ->get();
     }
 
 @endphp
@@ -38,14 +38,27 @@
                         <td> {{ $product->product_seq }} </td>
                         <td> {{ $product->product_id }} </td>
                         <td> {{ $product->product_desc }} </td>
-                        <td> {{ $product->priceunit }} </td>
+                        <td> {{ number_format($product->priceunit, 2) }} </td>
                         <td> {{ $product->gp_normal }} </td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
-        <div class=" mt-2">
+        {{-- <div class=" mt-2">
             {{ $vendor_product->links() }}
-        </div>
+        </div> --}}
     </div>
 </section>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const table = document.querySelector("#vendorproduct-table");
+        if (table) {
+            new DataTable(table, {
+                searchable: true,
+                sortable: true,
+                perPage: 5,
+                perPageSelect: [5, 10, 15]
+            });
+        }
+    });
+</script>

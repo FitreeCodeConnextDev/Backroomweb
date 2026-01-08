@@ -124,17 +124,17 @@
                 </div>
                 <div>
                     <label for="txnno" class="label_input"> {{ __('vendor.txnno') }} </label>
-                    <input type="text" id="txnno" name="txnno" class="input_text"
+                    <input type="text" id="txnno" name="txnno" class="input_text" readonly
                         value="{{ $vendor_data->txnno }}">
                 </div>
                 <div>
                     <label for="vendor_batchno" class="label_input"> {{ __('vendor.vendor_batchno') }} </label>
-                    <input type="text" id="vendor_batchno" name="vendor_batchno" class="input_text"
+                    <input type="text" id="vendor_batchno" name="vendor_batchno" class="input_text" readonly
                         value="{{ $vendor_data->vendor_batchno }}">
                 </div>
                 <div>
                     <label for="billcount" class="label_input"> {{ __('vendor.vendor_billcount') }} </label>
-                    <input type="text" id="billcount" name="billcount" class="input_text"
+                    <input type="text" id="billcount" name="billcount" class="input_text" readonly
                         value="{{ $vendor_data->billcount }}">
                 </div>
             </div>

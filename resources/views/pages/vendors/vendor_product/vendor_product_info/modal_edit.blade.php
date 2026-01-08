@@ -26,10 +26,8 @@
                     @csrf
                     @method('PUT')
                     <div class="grid gap-4 mb-4 grid-cols-1 lg:grid-cols-4">
-                        <input type="text" class=" sr-only" name="vendor_id"
-                            value="{{ $vendor_p->vendor_id }}">
-                        <input type="text" class=" sr-only" name="branch_id"
-                            value="{{ $vendor_p->branch_id }}">
+                        <input type="text" class=" sr-only" name="vendor_id" value="{{ $vendor_p->vendor_id }}">
+                        <input type="text" class=" sr-only" name="branch_id" value="{{ $vendor_p->branch_id }}">
                         <div>
                             <label for="product_id" class="label_input">
                                 {{ __('vendor_product.product_id') }}
@@ -170,9 +168,8 @@
                             <div>
                                 <label for="pricediscount" class="label_input">
                                     {{ __('vendor_product.product_pricediscount') }} </label>
-                                <input type="text" id="pricediscount_edit"
-                                    value="{{ $vendor_p->pricediscount }}" name="pricediscount"
-                                    class="input_text" required>
+                                <input type="text" id="pricediscount_edit" value="{{ $vendor_p->pricediscount }}"
+                                    name="pricediscount" class="input_text" required>
                             </div>
                             <div>
                                 <label for="gp_promotion" class="label_input">
@@ -261,9 +258,8 @@
                             <div>
                                 <label for="product_perunit" class="label_input">
                                     {{ __('vendor_product.product_perunit') }} </label>
-                                <input type="text" id="product_perunit"
-                                    value="{{ $vendor_p->product_perunit }}" name="product_perunit"
-                                    class="input_text" required>
+                                <input type="text" id="product_perunit" value="{{ $vendor_p->product_perunit }}"
+                                    name="product_perunit" class="input_text" required>
                             </div>
                             <div>
                                 <label for="vatrate" class="label_input">

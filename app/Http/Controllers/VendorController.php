@@ -224,13 +224,13 @@ class VendorController extends Controller
         if ($branch_session == 000000) {
             $terminal = DB::table('terminal_info')
                 ->select('term_id')
-                ->orderBy('branch_id', 'asc')
+                ->orderBy('term_id', 'asc')
                 ->get();
         } else {
             $terminal = DB::table('terminal_info')
                 ->select('term_id')
                 ->where('branch_id', $branch_session)
-                ->orderBy('branch_id', 'asc')
+                ->orderBy('term_id', 'asc')
                 ->get();
         }
         Log::channel('activity')->info('Vendor Edit Page', [

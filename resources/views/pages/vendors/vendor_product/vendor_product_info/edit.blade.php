@@ -7,7 +7,7 @@
         ->where('branch_id', '=', $branch_id)
         ->where('vendorproduct_info.activeflag', '=', 1)
         ->orderBy('product_seq', 'asc')
-        ->paginate(10);
+        ->get();
     $group_product = DB::table('groupproduct_info')->select('groupproduct_id', 'groupproduct_desc')->get();
     $products = DB::table('product_info')
         ->select('product_id', 'product_desc', 'product_group')
@@ -19,79 +19,82 @@
 
 <section>
     <div class="grid grid-cols-1 gap-3">
-        <div>
+        <div class="flex justify-end mb-2">
             <button type="button" data-modal-target="vedor_product_info" data-modal-toggle="vedor_product_info"
                 class="modal_button_add" type="button">
                 {{ __('menu.button.add') }}
             </button>
         </div>
-        <div class="overflow-x-auto">
-            <table class="table-data">
-                <thead>
-                    <tr>
+        <div class="overflow-x-auto ">
 
-                        <th scope="col"> {{ __('vendor_product.product_seq') }} </th>
-                        <th scope="col"> {{ __('vendor_product.product_id') }} </th>
-                        <th scope="col"> {{ __('vendor_product.product_desc') }} </th>
-                        <th scope="col"> {{ __('vendor_product.product_price') }} </th>
-                        <th scope="col"> {{ __('vendor_product.product_gp') }} </th>
-                        <th scope="col"> Action </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($vendor_product as $vendor_p)
+            <div>
+                <table class="table-data" id="vendorproduct-table">
+                    <thead>
                         <tr>
 
-                            <td> {{ $vendor_p->product_seq }} </td>
-                            <td> {{ $vendor_p->product_id }} </td>
-                            <td> {{ $vendor_p->product_desc }} </td>
-                            <td> {{ $vendor_p->priceunit }} </td>
-                            <td> {{ $vendor_p->gp_normal }} </td>
-                            <td>
-                                <div class="flex space-x-3">
-                                    <div>
-                                        <button type="button"
-                                            data-modal-target="vendor-edit-{{ $vendor_p->product_seq }}"
-                                            data-modal-toggle="vendor-edit-{{ $vendor_p->product_seq }}"
-                                            class="edit-button" type="button">
-                                            <svg class="w-[16px] h-[16px]" aria-hidden="true"
-                                                xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                fill="none" viewBox="0 0 24 24">
-                                                <path stroke="currentColor" stroke-linecap="round"
-                                                    stroke-linejoin="round" stroke-width="1.6"
-                                                    d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z" />
-                                            </svg>
-                                        </button>
-                                    </div>
-                                    <div>
-                                        <form
-                                            action="{{ route('vendor-product.destroy_product', [$vendor_p->product_seq, $vendor_p->vendor_id, $vendor_p->branch_id]) }}"
-                                            method="post" id="delete-form-{{ $vendor_p->product_seq }}">
-                                            @csrf
-                                            @method('PUT')
-                                            <button id="del-button" class="del-button"
-                                                data-item-id="{{ $vendor_p->product_seq }}"
-                                                data-name="{{ $vendor_p->product_desc }}">
+                            <th scope="col"> {{ __('vendor_product.product_seq') }} </th>
+                            <th scope="col"> {{ __('vendor_product.product_id') }} </th>
+                            <th scope="col"> {{ __('vendor_product.product_desc') }} </th>
+                            <th scope="col"> {{ __('vendor_product.product_price') }} </th>
+                            <th scope="col"> {{ __('vendor_product.product_gp') }} </th>
+                            <th scope="col"> Action </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($vendor_product as $vendor_p)
+                            <tr>
+
+                                <td> {{ $vendor_p->product_seq }} </td>
+                                <td> {{ $vendor_p->product_id }} </td>
+                                <td> {{ $vendor_p->product_desc }} </td>
+                                <td> {{ number_format($vendor_p->priceunit, 2) }} </td>
+                                <td> {{ $vendor_p->gp_normal }} </td>
+                                <td>
+                                    <div class="flex space-x-3">
+                                        <div>
+                                            <button type="button"
+                                                data-modal-target="vendor-edit-{{ $vendor_p->product_seq }}"
+                                                data-modal-toggle="vendor-edit-{{ $vendor_p->product_seq }}"
+                                                class="edit-button" type="button">
                                                 <svg class="w-[16px] h-[16px]" aria-hidden="true"
                                                     xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                     fill="none" viewBox="0 0 24 24">
                                                     <path stroke="currentColor" stroke-linecap="round"
                                                         stroke-linejoin="round" stroke-width="1.6"
-                                                        d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z" />
+                                                        d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z" />
                                                 </svg>
                                             </button>
-                                        </form>
+                                        </div>
+                                        <div>
+                                            <form
+                                                action="{{ route('vendor-product.destroy_product', [$vendor_p->product_seq, $vendor_p->vendor_id, $vendor_p->branch_id]) }}"
+                                                method="post" id="delete-form-{{ $vendor_p->product_seq }}">
+                                                @csrf
+                                                @method('PUT')
+                                                <button id="del-button" class="del-button"
+                                                    data-item-id="{{ $vendor_p->product_seq }}"
+                                                    data-name="{{ $vendor_p->product_desc }}">
+                                                    <svg class="w-[16px] h-[16px]" aria-hidden="true"
+                                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                        fill="none" viewBox="0 0 24 24">
+                                                        <path stroke="currentColor" stroke-linecap="round"
+                                                            stroke-linejoin="round" stroke-width="1.6"
+                                                            d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z" />
+                                                    </svg>
+                                                </button>
+                                            </form>
+                                        </div>
                                     </div>
-                                </div>
-                            </td>
-                        </tr>
-                        @include('pages.vendors.vendor_product.vendor_product_info.modal_edit')
-                    @endforeach
-                </tbody>
-            </table>
-            <div class=" mt-2">
-                {{ $vendor_product->links() }}
+                                </td>
+                            </tr>
+                            @include('pages.vendors.vendor_product.vendor_product_info.modal_edit')
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
+            {{-- <div class=" mt-2">
+                {{ $vendor_product->links() }}
+            </div> --}}
         </div>
     </div>
 </section>
@@ -503,8 +506,6 @@
     </div>
 </section>
 
-{{-- <link href="https://cdn.jsdelivr.net/npm/tom-select@2.4.3/dist/css/tom-select.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/tom-select@2.4.3/dist/js/tom-select.complete.min.js"></script> --}}
 <script type="module">
     new TomSelect('#product_id', {
         plugins: ['dropdown_input'],
@@ -578,7 +579,15 @@
 <script type="text/javascript">
     document.addEventListener('DOMContentLoaded', function() {
         const productSelect = document.getElementById('product_id');
-
+        const table = document.querySelector("#vendorproduct-table");
+        if (table) {
+            new DataTable(table, {
+                searchable: true,
+                sortable: true,
+                perPage: 5,
+                perPageSelect: [5, 10, 15]
+            });
+        }
         productSelect.addEventListener('change', function(event) {
             const productId = event.target.value;
 
@@ -606,33 +615,23 @@
         });
     });
 
+    function copyPriceToFields(sourceId, suffixList) {
+        const value = document.getElementById(sourceId).value;
+        suffixList.forEach(fieldId => {
+            const element = document.getElementById(fieldId);
+            if (element) {
+                element.value = value;
+            }
+        });
+    }
+
     function CopyValue() {
-        const valueprice = document.getElementById('priceunit').value;
-        document.getElementById('pricediscount').value = valueprice;
-        document.getElementById('pricemember').value = valueprice;
-        document.getElementById('pricestaff').value = valueprice;
-        document.getElementById('pricerabbit').value = valueprice;
-        document.getElementById('priceqr').value = valueprice;
-        document.getElementById('pricesp1').value = valueprice;
-        document.getElementById('pricesp2').value = valueprice;
-        document.getElementById('pricesp3').value = valueprice;
-        document.getElementById('pricesp4').value = valueprice;
-        document.getElementById('pricesp5').value = valueprice;
-        document.getElementById('priceedc').value = valueprice;
+        const fieldIds = ['pricediscount', 'pricemember', 'pricestaff', 'pricerabbit', 'priceqr', 'pricesp1', 'pricesp2', 'pricesp3', 'pricesp4', 'pricesp5', 'priceedc'];
+        copyPriceToFields('priceunit', fieldIds);
     }
 
     function copyPriceToInputs() {
-        const valueprice_edit = document.getElementById('priceunit_edit').value;
-        document.getElementById('pricediscount_edit').value = valueprice_edit;
-        document.getElementById('pricemember_edit').value = valueprice_edit;
-        document.getElementById('pricestaff_edit').value = valueprice_edit;
-        document.getElementById('pricerabbit_edit').value = valueprice_edit;
-        document.getElementById('priceqr_edit').value = valueprice_edit;
-        document.getElementById('pricesp1_edit').value = valueprice_edit;
-        document.getElementById('pricesp2_edit').value = valueprice_edit;
-        document.getElementById('pricesp3_edit').value = valueprice_edit;
-        document.getElementById('pricesp4_edit').value = valueprice_edit;
-        document.getElementById('pricesp5_edit').value = valueprice_edit;
-        document.getElementById('priceedc_edit').value = valueprice_edit;
+        const fieldIds = ['pricediscount', 'pricemember', 'pricestaff', 'pricerabbit', 'priceqr', 'pricesp1', 'pricesp2', 'pricesp3', 'pricesp4', 'pricesp5', 'priceedc'];
+        copyPriceToFields('priceunit', fieldIds);
     }
 </script>

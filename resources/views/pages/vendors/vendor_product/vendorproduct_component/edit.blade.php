@@ -24,14 +24,14 @@
     @endphp
     {{-- Product info จะมี unit ดึง join unit_info เพื่อแสดงชื่อ --}}
     <div class="grid grid-cols-1 gap-3">
-        <div>
+        <div class=" flex justify-self-end">
             <button type="button" data-modal-target="vendor_product_component"
                 data-modal-toggle="vendor_product_component" class="modal_button_add" type="button">
                 {{ __('menu.button.add') }}
             </button>
         </div>
         <div class="overflow-x-auto">
-            <table class="table-data" id="">
+            <table class="table-data" id="vendorproduct_component-table">
                 <thead>
                     <tr>
                         <th scope="col"> {{ __('vendor_product.product_desc') }} </th>
@@ -151,15 +151,10 @@
 </section>
 <link href="https://cdn.jsdelivr.net/npm/tom-select@2.4.3/dist/css/tom-select.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/tom-select@2.4.3/dist/js/tom-select.complete.min.js"></script>
-<script>
-    new TomSelect("#productdetail_id", {
-        create: true,
-        sortField: {
-            field: "selected",
-        }
-    });
-</script>
 <script type="module">
+    new TomSelect('#productdetail_id', {
+        plugins: ['dropdown_input'],
+    });
     $(document).ready(function() {
         // เมื่อคลิกปุ่มที่มี id="saveButton"
         $('#compoButton2').on('click', function(e) {
@@ -222,5 +217,18 @@
         $('[data-modal-hide="vendor_product_component"]').on('click', function() {
             $('#vendor_product_component').addClass('hidden');
         });
+    });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const table = document.querySelector("#vendorproduct_component-table");
+        if (table) {
+            new DataTable(table, {
+                searchable: true,
+                sortable: true,
+                perPage: 5,
+                perPageSelect: [5, 10, 15]
+            });
+        }
     });
 </script>

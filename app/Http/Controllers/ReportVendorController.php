@@ -122,7 +122,14 @@ class ReportVendorController extends Controller
                 'error' => $e->getMessage()
             ]);
         }
-        return redirect()->back();
+        if (request('open_mode') === 'popup') {
+            return response("<script>alert('" . __('report.report_failed_fetch') . "'); window.close();</script>");
+        }
+        return response()->json([
+            'error' => 'Failed to fetch report',
+            'status' => $client['status'] ?? 'unknown',
+            'curl_error' => $client['error'] ?? 'unknown',
+        ], 500);
     }
 
     public function gen_rpt_sum_salecard_by_vendor($format, $start_date, $end_date, $report_name)
