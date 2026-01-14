@@ -19,7 +19,7 @@
 
 <section>
     <div class="grid grid-cols-1 gap-3">
-        <div class="flex justify-end mb-2">
+        <div class="flex justify-end">
             <button type="button" data-modal-target="vedor_product_info" data-modal-toggle="vedor_product_info"
                 class="modal_button_add" type="button">
                 {{ __('menu.button.add') }}
