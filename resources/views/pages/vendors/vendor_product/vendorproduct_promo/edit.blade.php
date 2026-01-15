@@ -57,7 +57,7 @@
                                         @method('PUT')
                                         <button id="del-button" class="del-button"
                                             data-item-id="{{ $item_product->time_seq }}"
-                                            data-name="{{ $item_product->time_seq }}">
+                                            data-name="{{ $item_product->product_desc }} : [{{ $item_product->start_date }} - {{ $item_product->end_date }}]">
                                             <svg class="w-[16px] h-[16px]" aria-hidden="true"
                                                 xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                 fill="none" viewBox="0 0 24 24">
@@ -262,7 +262,7 @@
                             <label for="pricesp1" class="label_input">
                                 {{ __('vendor_product.product_sp1') }}
                             </label>
-                            <input type="text" id="pricesp1" name="pricesp1" class="input_text" required>
+                            <input type="number" id="pricesp1" name="pricesp1" class="input_text" required>
                         </div>
                         <div>
                             <label for="gp_sp1" class="label_input">
@@ -277,7 +277,7 @@
                             <label for="pricesp2" class="label_input">
                                 {{ __('vendor_product.product_sp2') }}
                             </label>
-                            <input type="text" id="pricesp2" name="pricesp2" class="input_text" required>
+                            <input type="number" id="pricesp2" name="pricesp2" class="input_text" required>
                         </div>
                         <div>
                             <label for="gp_sp2" class="label_input">
@@ -292,7 +292,7 @@
                             <label for="pricesp3" class="label_input">
                                 {{ __('vendor_product.product_sp3') }}
                             </label>
-                            <input type="text" id="pricesp3" name="pricesp3" class="input_text" required>
+                            <input type="number" id="pricesp3" name="pricesp3" class="input_text" required>
                         </div>
                         <div>
                             <label for="gp_sp3" class="label_input">
@@ -307,7 +307,7 @@
                             <label for="pricesp4" class="label_input">
                                 {{ __('vendor_product.product_sp4') }}
                             </label>
-                            <input type="text" id="pricesp4" name="pricesp4" class="input_text" required>
+                            <input type="number" id="pricesp4" name="pricesp4" class="input_text" required>
                         </div>
                         <div>
                             <label for="gp_sp4" class="label_input">
@@ -322,7 +322,7 @@
                             <label for="pricesp5" class="label_input">
                                 {{ __('vendor_product.product_sp5') }}
                             </label>
-                            <input type="text" id="pricesp5" name="pricesp5" class="input_text" required>
+                            <input type="number" id="pricesp5" name="pricesp5" class="input_text" required>
                         </div>
                         <div>
                             <label for="gp_sp5" class="label_input">
@@ -338,7 +338,7 @@
                             <label for="priceedc" class="label_input">
                                 {{ __('vendor_product.product_price_edc') }}
                             </label>
-                            <input type="text" id="priceedc" name="priceedc" class="input_text" required>
+                            <input type="number" id="priceedc" name="priceedc" class="input_text" required>
                         </div>
                         <div>
                             <label for="gp_edc" class="label_input">

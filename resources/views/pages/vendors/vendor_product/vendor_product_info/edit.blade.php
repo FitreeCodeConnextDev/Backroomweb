@@ -193,7 +193,7 @@
                         <div>
                             <label for="product_seq" class="label_input">
                                 {{ __('vendor_product.product_seq') }}</label>
-                            <input type="text" id="product_seq" name="product_seq" class="input_text" required>
+                            <input type="number" id="product_seq" name="product_seq" class="input_text" required>
                         </div>
                         <div>
                             <label for="use_point" class="label_input">
@@ -626,7 +626,17 @@
     }
 
     function CopyValue() {
-        const fieldIds = ['pricediscount', 'pricemember', 'pricestaff', 'pricerabbit', 'priceqr', 'pricesp1', 'pricesp2', 'pricesp3', 'pricesp4', 'pricesp5', 'priceedc'];
+        const fieldIds = ['pricediscount', 'pricemember', 'pricestaff', 'pricerabbit', 'priceqr', 'pricesp1',
+            'pricesp2', 'pricesp3', 'pricesp4', 'pricesp5', 'priceedc'
+        ];
         copyPriceToFields('priceunit', fieldIds);
+    }
+
+    function copyPriceToInputs() {
+        const fieldIds = ['pricediscount_edit', 'pricemember_edit', 'pricestaff_edit', 'pricerabbit_edit',
+            'priceqr_edit', 'pricesp1_edit', 'pricesp2_edit', 'pricesp3_edit', 'pricesp4_edit', 'pricesp5_edit',
+            'priceedc_edit'
+        ];
+        copyPriceToFields('priceunit_edit', fieldIds);
     }
 </script>

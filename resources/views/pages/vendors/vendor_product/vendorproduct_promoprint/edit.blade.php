@@ -48,7 +48,7 @@
                                     @csrf
                                     @method('PUT')
                                     <button id="del-button" class="del-button" data-item-id="{{ $vpr->promo_seq }}"
-                                        data-name="{{ $vpr->promo_seq }}">
+                                        data-name="{{ $vpr->product_desc }} [Promotion: {{ $vpr->description1 }}]">
                                         <svg class="w-[16px] h-[16px]" aria-hidden="true"
                                             xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                             fill="none" viewBox="0 0 24 24">

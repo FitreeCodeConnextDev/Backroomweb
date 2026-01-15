@@ -383,6 +383,23 @@
                     targets.classList.remove('hidden');
                 });
             });
+
+            function copyPriceToFields(sourceId, suffixList) {
+                const value = document.getElementById(sourceId).value;
+                suffixList.forEach(fieldId => {
+                    const element = document.getElementById(fieldId);
+                    if (element) {
+                        element.value = value;
+                    }
+                });
+            }
+
+            function CopyValue() {
+                const fieldIds = ['pricediscount', 'pricemember', 'pricestaff', 'pricerabbit', 'priceqr',
+                    'pricesp1', 'pricesp2', 'pricesp3', 'pricesp4', 'pricesp5', 'priceedc'
+                ];
+                copyPriceToFields('priceunit', fieldIds);
+            }
         });
     </script>
 @endsection

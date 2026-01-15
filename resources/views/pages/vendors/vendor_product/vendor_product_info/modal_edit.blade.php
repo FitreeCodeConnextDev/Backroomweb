@@ -107,7 +107,7 @@
                             <label for="product_seq" class="label_input">
                                 {{ __('vendor_product.product_seq') }}
                             </label>
-                            <input type="text" id="product_seq" value="{{ $vendor_p->product_seq }}"
+                            <input type="number" id="product_seq" value="{{ $vendor_p->product_seq }}"
                                 name="product_seq" class="input_text" required>
                         </div>
                         <div>
