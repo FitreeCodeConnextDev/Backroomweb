@@ -49,8 +49,8 @@
                     <td>{{ $expensevendor_info_map[$item->exp_code]->description ?? 'N/A' }}</td>
                     <td>{{ $item->start_no }}</td>
                     <td>{{ $item->end_no }}</td>
-                    <td>{{ $item->price_rate }}</td>
-                    <td>{{ $item->total }}</td>
+                    <td>{{ number_format($item->price_rate, 2) }}</td>
+                    <td>{{ number_format($item->total, 2) }}</td>
                     <td>{{ date('d/m/Y', strtotime($item->txndate)) }}</td>
                     <td>{{ date('d/m/Y', strtotime($item->duedate)) }}</td>
                     <td>{{ $item->invoiceno }}</td>

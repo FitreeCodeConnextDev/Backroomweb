@@ -9,7 +9,7 @@ return [
     'issuedate' => 'วันที่เริ่มใช้',
     'validdate' => 'วันที่สิ้นสุดใช้งาน',
     'vendor_name' => 'ชื่อร้านค้า',
-    'vendor_food' => 'ประภทร้านค้า',
+    'vendor_food' => 'ประเภทร้านค้า',
     'vendor_subfood' => 'ประเภทร้านค้า(SUB)',
     'ar_sap' => 'AR SAP',
     'vendor_no' => 'Contract No.',
