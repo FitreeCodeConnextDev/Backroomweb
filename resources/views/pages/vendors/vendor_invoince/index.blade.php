@@ -17,7 +17,7 @@
     $daysInMonth = 31;
 @endphp
 {{-- @dd($vendor_invoice) --}}
-<div class="grid grid-cols-1 lg:grid-cols-4 gap-3">
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-3">
     <section>
         <form action="" method="post">
             <div class=" flex justify-between items-center border border-gray-200 rounded-lg p-3 ">

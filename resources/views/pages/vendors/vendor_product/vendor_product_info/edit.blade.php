@@ -107,7 +107,7 @@
                 <!-- Modal header -->
                 <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t border-gray-200">
                     <h3 class="text-lg font-semibold text-gray-900 ">
-                        {{ __('vendor_product.vendor_product_promo') }}
+                        {{ __('vendor_product.vendor_product_data_add') }}
                     </h3>
                     <button type="button" class="" data-modal-toggle="vedor_product_info">
                         <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -626,11 +626,6 @@
     }
 
     function CopyValue() {
-        const fieldIds = ['pricediscount', 'pricemember', 'pricestaff', 'pricerabbit', 'priceqr', 'pricesp1', 'pricesp2', 'pricesp3', 'pricesp4', 'pricesp5', 'priceedc'];
-        copyPriceToFields('priceunit', fieldIds);
-    }
-
-    function copyPriceToInputs() {
         const fieldIds = ['pricediscount', 'pricemember', 'pricestaff', 'pricerabbit', 'priceqr', 'pricesp1', 'pricesp2', 'pricesp3', 'pricesp4', 'pricesp5', 'priceedc'];
         copyPriceToFields('priceunit', fieldIds);
     }

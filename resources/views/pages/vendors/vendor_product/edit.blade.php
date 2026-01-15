@@ -8,7 +8,7 @@
                     role="tab" aria-controls="vendor-product-t" aria-selected="false">
                     {{ __('vendor_product.vendor_product_data') }} </button>
             </li>
-            
+
             <li class="me-2" role="presentation">
                 <button class="tab_button_2 hover:border-gray-300 dark:hover:text-gray-300" id="vendor_component-tab"
                     data-tabs-target="#vendor_component" type="button" role="tab" aria-controls="vendor_component"
@@ -63,41 +63,3 @@
         </div>
     </div>
 </main>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // เมื่อหน้าโหลดเสร็จแล้ว
-        const tabsVendor = document.querySelectorAll('.tab_button_2');
-
-        // เช็คว่าใน localStorage มีการบันทึก tab ไว้หรือไม่
-        const activeTabIds = localStorage.getItem('activeTabVendor');
-        if (activeTabIds) {
-            // ถ้ามีการบันทึก tab ไว้ ให้เปิด tab นั้น
-            const activeTabVendorpro = document.getElementById(activeTabIds);
-            if (activeTabVendorpro) {
-                activeTabVendorpro.setAttribute('aria-selected', 'true');
-                const targetTabs = document.querySelector(activeTabVendorpro.getAttribute('data-tabs-target'));
-                targetTabs.classList.remove('hidden');
-            }
-        }
-
-        tabsVendor.forEach(tab => {
-            tab.addEventListener('click', function() {
-                // เมื่อผู้ใช้คลิก tab จะบันทึก tab ที่เลือก
-                localStorage.setItem('activeTabVendor', tab.id);
-
-                // ปิด tab ทั้งหมด
-                document.querySelectorAll('.tab_button_2').forEach(button => {
-                    button.setAttribute('aria-selected', 'false');
-                    const targetTabs = document.querySelector(button.getAttribute(
-                        'data-tabs-target'));
-                    targetTabs.classList.add('hidden');
-                });
-
-                // เปิด tab ที่เลือก
-                tab.setAttribute('aria-selected', 'true');
-                const targets = document.querySelector(tab.getAttribute('data-tabs-target'));
-                targets.classList.remove('hidden');
-            });
-        });
-    });
-</script>

@@ -318,33 +318,69 @@
             }
         });
     </script>
-    <script>
-        document.querySelectorAll('.del-button').forEach(button => {
-            button.addEventListener('click', function(e) {
-                e.preventDefault();
-                const itemId = this.getAttribute('data-item-id');
-                const itemName = this.getAttribute('data-name');
-                const form = document.getElementById(`delete-form-${itemId}`);
-                const swalWithBootstrapButtons = Swal.mixin({
-                    customClass: {
-                        confirmButton: "alert_confirm_btn",
-                        cancelButton: "alert_cancel_btn"
-                    },
-                    buttonsStyling: false
-                });
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelectorAll('.del-button').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const itemId = this.getAttribute('data-item-id');
+                    const itemName = this.getAttribute('data-name');
+                    const form = document.getElementById(`delete-form-${itemId}`);
+                    const swalWithBootstrapButtons = Swal.mixin({
+                        customClass: {
+                            confirmButton: "alert_confirm_btn",
+                            cancelButton: "alert_cancel_btn"
+                        },
+                        buttonsStyling: false
+                    });
 
-                swalWithBootstrapButtons.fire({
-                    title: `{{ __('menu.deleted_title') }}`,
-                    html: `{{ __('menu.deleted_text') }} <b>` + itemName + `</b>`,
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonText: `{{ __('menu.deleted_yes') }}`,
-                    cancelButtonText: `{{ __('menu.deleted_no') }}`,
-                    reverseButtons: true
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        form.submit(); // Submit the form to delete the item
-                    }
+                    swalWithBootstrapButtons.fire({
+                        title: `{{ __('menu.deleted_title') }}`,
+                        html: `{{ __('menu.deleted_text') }} <b>` + itemName + `</b>`,
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonText: `{{ __('menu.deleted_yes') }}`,
+                        cancelButtonText: `{{ __('menu.deleted_no') }}`,
+                        reverseButtons: true
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit(); // Submit the form to delete the item
+                        }
+                    });
+                });
+            });
+            // เมื่อหน้าโหลดเสร็จแล้ว
+            const tabsVendor = document.querySelectorAll('.tab_button_2');
+
+            // เช็คว่าใน localStorage มีการบันทึก tab ไว้หรือไม่
+            const activeTabIds = localStorage.getItem('activeTabVendor');
+            if (activeTabIds) {
+                // ถ้ามีการบันทึก tab ไว้ ให้เปิด tab นั้น
+                const activeTabVendorpro = document.getElementById(activeTabIds);
+                if (activeTabVendorpro) {
+                    activeTabVendorpro.setAttribute('aria-selected', 'true');
+                    const targetTabs = document.querySelector(activeTabVendorpro.getAttribute('data-tabs-target'));
+                    targetTabs.classList.remove('hidden');
+                }
+            }
+
+            tabsVendor.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // เมื่อผู้ใช้คลิก tab จะบันทึก tab ที่เลือก
+                    localStorage.setItem('activeTabVendor', tab.id);
+
+                    // ปิด tab ทั้งหมด
+                    document.querySelectorAll('.tab_button_2').forEach(button => {
+                        button.setAttribute('aria-selected', 'false');
+                        const targetTabs = document.querySelector(button.getAttribute(
+                            'data-tabs-target'));
+                        targetTabs.classList.add('hidden');
+                    });
+
+                    // เปิด tab ที่เลือก
+                    tab.setAttribute('aria-selected', 'true');
+                    const targets = document.querySelector(tab.getAttribute('data-tabs-target'));
+                    targets.classList.remove('hidden');
                 });
             });
         });

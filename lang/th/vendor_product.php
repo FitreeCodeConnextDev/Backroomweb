@@ -2,6 +2,7 @@
 
 return [
     'vendor_product_data' => 'ข้อมูลสินค้าที่ร้านค้า',
+    'vendor_product_data_add' => 'เพิ่มข้อมูลสินค้าที่ร้านค้า',
     'vendor_product_data_edit' => 'แก้ไขข้อมูลสินค้าที่ร้านค้า',
     'vendor_component' => 'ข้อมูลส่วนประกอบ',
     'vendor_product_promo' => 'ข้อมูลราคา Promotion',

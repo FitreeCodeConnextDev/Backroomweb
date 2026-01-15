@@ -6,7 +6,7 @@
         ->first();
     // dd($garantee);
 @endphp
-<div class="grid grid-cols-1 lg:grid-cols-4 gap-3">
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-3">
     <section class="mt-3 border border-gray-200 rounded-lg p-5">
         <h1 class=" text-xl font-semibold"> {{ __('vendor.vendor_garantee') }} </h1>
         <form action="{{ route('vendor_product_update_garantee', ['vendor_id' => $vendor_id]) }}" class="tabs_form" method="post">

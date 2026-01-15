@@ -17,13 +17,13 @@
     $daysInMonth = 31;
 @endphp
 {{-- @dd($vendor_invoice) --}}
-<div class="grid grid-cols-1 lg:grid-cols-4 gap-3">
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-3">
     <section>
         <form class="tabs_form" action="{{ route('vendor_invoice_update', ['id' => $vendor_id]) }}" method="post">
             @csrf
             @method('PUT')
-            <div class="lex justify-between items-center border border-gray-200 rounded-lg p-3">
-                <div class="grid grid-cols-1 gap-5 py-3">
+            <div class="mt-3 border border-gray-200 rounded-lg p-5">
+                <div class="grid grid-cols-1 gap-3 py-3">
                     <section>
                         <label for="invoicename" class="label_input"> {{ __('vendor.invoicename') }} </label>
                         <input type="text" id="invoicename" class="input_text" name="invoicename"
