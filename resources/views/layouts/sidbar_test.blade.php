@@ -89,6 +89,7 @@
                 // เช็คว่าหน้าปัจจุบันอยู่ในหมวด Homepage หรือไม่
                 $isHomeActive = request()->routeIs([
                     'vendor-page.*',
+                    'vendor_product_info_search',
                     'member.*',
                     'products-groups.*',
                     'vendor-promotion.*',
@@ -125,7 +126,7 @@
                         <li>
                             <div class=" bg-white border-b border-gray-200 ">
                                 <a href="{{ route('vendor-page.index') }}"
-                                    class="flex items-center w-full p-2 mb-2 text-gray-900 transition duration-75 hover:bg-gray-100 rounded-lg pl-5 group {{ request()->routeIs('vendor-page.*') ? 'active_menu' : 'text-gray-500' }}">
+                                    class="flex items-center w-full p-2 mb-2 text-gray-900 transition duration-75 hover:bg-gray-100 rounded-lg pl-5 group {{ request()->routeIs(['vendor-page.*' , 'vendor_product_info_search']) ? 'active_menu' : 'text-gray-500' }}">
                                     <span class="ms-3"> {{ __('menu.vendor') }} </span>
                                 </a>
                             </div>

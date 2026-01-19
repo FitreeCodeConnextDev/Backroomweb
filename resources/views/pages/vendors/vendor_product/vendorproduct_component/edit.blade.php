@@ -1,6 +1,7 @@
 @vite(['resources/css/app.css', 'resources/js/app.js'])
 <section>
     @php
+        $search_compo = request()->get('search_compo', '');
         $vendor_product = DB::table('vendorproduct_info')
             ->join('product_info', 'vendorproduct_info.product_id', '=', 'product_info.product_id')
             ->where('vendor_id', '=', $vendor_id)
@@ -20,7 +21,15 @@
         $vendor_product_detail = DB::table('productdetail_info')
             ->join('product_info', 'product_info.product_id', '=', 'productdetail_info.product_id')
             ->where('vendor_id', '=', $vendor_id)
-            ->get();
+            ->where(function ($query) use ($search_compo) {
+                if ($search_compo) {
+                    $query
+                        ->where('productdetail_info.product_id', 'like', '%' . $search_compo . '%')
+                        ->orWhere('product_desc', 'like', '%' . $search_compo . '%');
+                }
+            })
+            ->paginate(10);
+
     @endphp
     {{-- Product info จะมี unit ดึง join unit_info เพื่อแสดงชื่อ --}}
     <div class="grid grid-cols-1 gap-3">
@@ -31,6 +40,14 @@
             </button>
         </div>
         <div class="overflow-x-auto">
+            <div class="flex justify-start mb-3">
+                <form action="{{ route('vendor_product_info_search', [$vendor_id, 'pages_search' => 'edit']) }}"
+                    id="vendor_product_compo" method="GET">
+                    <input placeholder="Search..." name="search_compo" value="{{ $search_compo }}"
+                        class="input block w-64 px-3 py-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                        name="search" type="search" />
+                </form>
+            </div>
             <table class="table-data" id="vendorproduct_component-table">
                 <thead>
                     <tr>
@@ -84,6 +101,9 @@
 
                 </tbody>
             </table>
+        </div>
+        <div class=" mt-2">
+            {{ $vendor_product_detail->links() }}
         </div>
     </div>
 </section>
@@ -217,18 +237,5 @@
         $('[data-modal-hide="vendor_product_component"]').on('click', function() {
             $('#vendor_product_component').addClass('hidden');
         });
-    });
-</script>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const table = document.querySelector("#vendorproduct_component-table");
-        if (table) {
-            new DataTable(table, {
-                searchable: true,
-                sortable: true,
-                perPage: 5,
-                perPageSelect: [5, 10, 15]
-            });
-        }
     });
 </script>

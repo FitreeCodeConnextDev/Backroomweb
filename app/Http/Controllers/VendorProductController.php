@@ -165,6 +165,7 @@ class VendorProductController extends Controller
                 $insertData['gp_edc'] = $form_vendor_product['gp_edc'];
             }
 
+
             $vendor_product_insert = DB::table('vendorproduct_info')
                 ->insert($insertData);
             if ($vendor_product_insert) {
@@ -848,6 +849,82 @@ class VendorProductController extends Controller
                 'updated_by' => session('auth_user.user_id'),
             ]);
             return response()->json(['success' => false, 'message' => __('menu.edit_is_failed')]);
+        }
+    }
+
+    public function vendor_product_info_search(Request $request, $vendor_id, $pages_search)
+    {
+        $search = $request->input('search');
+        $search_compo = $request->input('search_compo');
+        $search_promo = $request->input('search_promo');
+        $search_print = $request->input('search_print');
+
+
+        $vendor_data = DB::table('vendor_info')
+            ->where('vendor_id', $vendor_id)
+            ->first();
+        $vendor_user = DB::table('vendoruser_info')
+            ->join('user_info', 'vendoruser_info.user_id', '=', 'user_info.user_id')
+            ->where('vendoruser_info.vendor_id', $vendor_id)
+            ->select('user_info.user_id', 'user_info.user_name')
+            ->groupBy('user_info.user_id', 'user_info.user_name')
+            ->get();
+
+        if ($search != null) {
+            if ($pages_search = 'edit') {
+                return view('pages.vendors.edit', compact('vendor_product', 'vendor_data', 'vendor_user', 'search'));
+            }
+        } elseif ($search_compo != null) {
+            if ($pages_search = 'edit') {
+                return view('pages.vendors.edit', compact('vendor_product', 'vendor_data', 'vendor_user', 'search_compo'));
+            }
+        } elseif ($search_promo != null) {
+            if ($pages_search = 'edit') {
+                return view('pages.vendors.edit', compact('vendor_product', 'vendor_data', 'vendor_user', 'search_promo'));
+            }
+        } elseif ($search_print != null) {
+            if ($pages_search = 'edit') {
+                return view('pages.vendors.edit', compact('vendor_product', 'vendor_data', 'vendor_user', 'search_print'));
+            }
+        } else {
+            sweetalert()
+                ->error(__('vendor_product.search_failed'));
+            return redirect()->back();
+        }
+    }
+    public function vendor_product_info_search_show(Request $request, $vendor_id, $pages_search)
+    {
+        $search = $request->input('search');
+        $search_compo = $request->input('search_compo');
+        $search_promo = $request->input('search_promo');
+        $search_print = $request->input('search_print');
+
+
+        $vendor_data = DB::table('vendor_info')
+            ->where('vendor_id', $vendor_id)
+            ->first();
+        $vendor_user = DB::table('vendoruser_info')
+            ->join('user_info', 'vendoruser_info.user_id', '=', 'user_info.user_id')
+            ->where('vendoruser_info.vendor_id', $vendor_id)
+            ->select('user_info.user_id', 'user_info.user_name')
+            ->groupBy('user_info.user_id', 'user_info.user_name')
+            ->get();
+
+        if ($search != null) {
+            return view('pages.vendors.show', compact('vendor_product', 'vendor_data', 'vendor_user', 'search'));
+        } elseif ($search_compo != null) {
+
+            return view('pages.vendors.show', compact('vendor_product', 'vendor_data', 'vendor_user', 'search_compo'));
+        } elseif ($search_promo != null) {
+
+            return view('pages.vendors.show', compact('vendor_product', 'vendor_data', 'vendor_user', 'search_promo'));
+        } elseif ($search_print != null) {
+
+            return view('pages.vendors.show', compact('vendor_product', 'vendor_data', 'vendor_user', 'search_print'));
+        } else {
+            sweetalert()
+                ->error(__('vendor_product.search_failed'));
+            return redirect()->back();
         }
     }
 }

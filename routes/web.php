@@ -81,6 +81,9 @@ Route::middleware(['auth_user'])->group(function () {
 
         Route::get('/get-product-details/{product_id}', [VendorProductController::class, 'getProductDetails']);
 
+        Route::get('/vendor-page/{vendor_id}/{pages_search}', [VendorProductController::class, 'vendor_product_info_search'])->name('vendor_product_info_search');
+        Route::get('/vendor-page/{vendor_id}', [VendorProductController::class, 'vendor_product_info_search_show'])->name('vendor_product_info_search_show');
+
 
         Route::resource('/member', MemberController::class);
         Route::resource('/users', UsersController::class,);

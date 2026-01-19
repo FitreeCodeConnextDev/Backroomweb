@@ -1,6 +1,7 @@
 @vite(['resources/css/app.css', 'resources/js/app.js'])
 <section>
     @php
+        $search_print = request()->get('search_print', '');
         $vendor_product = DB::table('vendorproduct_info')
             ->join('product_info', 'vendorproduct_info.product_id', '=', 'product_info.product_id')
             ->where('vendor_id', '=', $vendor_id)
@@ -11,7 +12,16 @@
         $vendorpromo = DB::table('vendorpromotionprint_info')
             ->join('product_info', 'vendorpromotionprint_info.product_id', '=', 'product_info.product_id')
             ->where('vendor_id', $vendor_id)
-            ->get();
+            ->where(function ($query) use ($search_print) {
+                if ($search_print) {
+                    $query
+                        ->where('vendorpromotionprint_info.promo_seq', 'like', '%' . $search_print . '%')
+                        ->orWhere('product_info.product_desc', 'like', '%' . $search_print . '%')
+                        ->orWhere('vendorpromotionprint_info.description1', 'like', '%' . $search_print . '%')
+                        ->orWhere('vendorpromotionprint_info.description2', 'like', '%' . $search_print . '%');
+                }
+            })
+            ->paginate(10);
     @endphp
     <div class="grid grid-cols-1 gap-3">
         <div class=" flex justify-end">
@@ -21,6 +31,14 @@
             </button>
         </div>
         <div class="overflow-x-auto">
+            <div class="flex justify-start mb-3">
+                <form action="{{ route('vendor_product_info_search', [$vendor_id, 'pages_search' => 'edit']) }}"
+                    id="vendor_product_compo" method="GET">
+                    <input placeholder="Search..." name="search_print" value="{{ $search_print }}"
+                        class="input block w-64 px-3 py-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                        name="search" type="search" />
+                </form>
+            </div>
             <table class="table-data" id="vendorproduct_promo_print-table">
                 <thead>
                     <tr>
@@ -256,18 +274,5 @@
         $('[data-modal-hide="vedor_product_info"]').on('click', function() {
             $('#vedor_product_info').addClass('hidden');
         });
-    });
-</script>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const table = document.querySelector("#vendorproduct_promo_print-table");
-        if (table) {
-            new DataTable(table, {
-                searchable: true,
-                sortable: true,
-                perPage: 5,
-                perPageSelect: [5, 10, 15]
-            });
-        }
     });
 </script>

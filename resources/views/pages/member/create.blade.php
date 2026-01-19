@@ -134,11 +134,6 @@
             </button>
         </a>
     </form>
-    {{-- @if ($errors->any())
-        <div class="error_alert" role="alert">
-            <span class="font-medium text-xl">!คำเตือน</span> {{ $errors->first() }}
-        </div>
-    @endif --}}
 @endsection
 @section('js-scripts')
     <script type="module">
@@ -152,28 +147,6 @@
                     member_name: {
                         required: true
                     },
-                    // member_license: {
-                    //     required: true,
-                    //     minlength: 13,
-                    //     maxlength: 13,
-                    //     number: true
-                    // },
-                    // member_expire: {
-                    //     required: true,
-                    //     date: true,
-                    // },
-                    // member_birthdate: {
-                    //     required: true
-                    // },
-                    // member_phone: {
-                    //     required: true,
-                    //     minlength: 10,
-                    //     maxlength: 10,
-                    //     number: true
-                    // },
-                    // member_addr: {
-                    //     required: true
-                    // }
                 },
                 messages: {
                     member_id: {
@@ -181,24 +154,6 @@
                         maxlength: `{{ __('member.member_id_valid_max') }}`
                     },
                     member_name: `{{ __('member.member_name_valid') }}`,
-                    // member_license: {
-                    //     required: `{{ __('member.member_license_valid') }}`,
-                    //     minlength: `{{ __('member.member_license_valid_min') }}`,
-                    //     maxlength: `{{ __('member.member_license_valid_max') }}`,
-                    //     number: `{{ __('member.member_license_valid_num') }}`
-                    // },
-                    // member_expire: {
-                    //     required: `{{ __('member.member_expire_valid') }}`,
-                    //     date: `{{ __('member.member_expire_valid_date') }}`
-                    // },
-                    // member_birthdate: `{{ __('member.member_birthdate_valid') }}`,
-                    // member_phone: {
-                    //     required: `{{ __('member.member_phone_valid') }}`,
-                    //     minlength: `{{ __('member.member_phone_valid_min') }}`,
-                    //     maxlength: `{{ __('member.member_phone_valid_max') }}`,
-                    //     number: `{{ __('member.member_phone_valid_num') }}`
-                    // },
-                    // member_addr: `{{ __('member.member_addr_valid') }}`
                 }
             })
         });

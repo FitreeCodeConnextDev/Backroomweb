@@ -4,7 +4,7 @@
     {{ __('menu.product_group') }}
 @endsection
 @section('breadcrumb-index')
-    <a href="{{ route('card-promotion.index') }}" class="first_bc_a" id="index_page">
+    <a href="{{ route('products-groups.index') }}" class="first_bc_a" id="index_page">
         {{ __('menu.product_group') }}
     </a>
 @endsection

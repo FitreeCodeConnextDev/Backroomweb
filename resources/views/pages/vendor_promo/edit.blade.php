@@ -42,8 +42,7 @@
                 <label for="start_date" class="label_input">{{ __('vendor_promo.start_date') }}</label>
                 {{-- <input type="date" placeholder="dd/mm/yyyy" pattern="\d{2}/\d{2}/\d{4}" id="start-date" name="start_date" class="input_text" value="{{ $vendor_promo->start_date }}" /> --}}
                 <input type="date" id="start_date" name="start_date"
-                    value="{{ date('Y-m-d', strtotime($vendor_promo->start_date)) }}" pattern="\d{2}/\d{2}/\d{4}"
-                    class="input_text">
+                    value="{{ date('Y-m-d', strtotime($vendor_promo->start_date)) }}" class="input_text">
                 @error('start_date')
                     <p class="mt-2 text-sm text-red-600 "><span class="font-medium">{{ __('menu.is_warning') }}</span>
                         {{ $message }}
@@ -52,8 +51,8 @@
             </div>
             <div>
                 <label for="end_date" class="label_input">{{ __('vendor_promo.end_date') }}</label>
-                <input type="date" value="{{ date('Y-m-d', strtotime($vendor_promo->end_date)) }}"
-                    pattern="\d{2}/\d{2}/\d{4}" id="end_date" name="end_date" class="input_text" />
+                <input type="date" value="{{ date('Y-m-d', strtotime($vendor_promo->end_date)) }}" id="end_date"
+                    name="end_date" class="input_text" />
                 @error('end_date')
                     <p class="mt-2 text-sm text-red-600 "><span class="font-medium">{{ __('menu.is_warning') }}</span>
                         {{ $message }}
@@ -71,7 +70,7 @@
                                 clip-rule="evenodd" />
                         </svg>
                     </div>
-                    <input type="time" id="start_time" name="start_time" min='1:30' max='2:30' class="input_time"
+                    <input type="time" id="start_time" name="start_time" class="input_time"
                         value="{{ date('H:i', strtotime($vendor_promo->start_time)) }}" placeholder="00:00" />
                     @error('start_time')
                         <p class="mt-2 text-sm text-red-600 "><span class="font-medium">{{ __('menu.is_warning') }}</span>
@@ -91,7 +90,7 @@
                                 clip-rule="evenodd" />
                         </svg>
                     </div>
-                    <input type="time" id="end_time" name="end_time" min='1:30' max='2:30' class="input_time"
+                    <input type="time" id="end_time" name="end_time" class="input_time"
                         value="{{ date('H:i', strtotime($vendor_promo->end_time)) }}" placeholder="00:00" />
                     @error('end_time')
                         <p class="mt-2 text-sm text-red-600 "><span class="font-medium">{{ __('menu.is_warning') }}</span>

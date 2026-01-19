@@ -15,7 +15,7 @@ return [
     'staff_nomaly' => 'พนักงานทั่วไป',
     'staff_vip' => 'VIP',
 
-    'staff_id_required'=> 'โปรดระบุรหัสพนักงาน',
+    'staff_id_required' => 'โปรดระบุรหัสพนักงาน',
     'staff_id_valid_max' => 'โปรดระบุรหัสพนักงานไม่เกิน 10 ตัวอักษร',
     'staff_id_valid_unique' => 'รหัสพนักงานซ้ำ',
 
@@ -38,5 +38,6 @@ return [
     'staff_limit_required' => 'โปรดกรอกลิมิต',
 
     'card_no_valid' => 'โปรดกรอกหมายเลขบัตร',
+    'card_no_digits' => 'โปรดระบุหมายเลขบัตรเป็น 11 หลัก',
 
 ];

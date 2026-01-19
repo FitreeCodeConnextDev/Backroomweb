@@ -58,7 +58,7 @@
             <div>
                 <label for="staff_license" class="label_input"> {{ __('staff.staff_license') }} </label>
                 <input type="text" id="staff_license" maxlength="13" name="staff_license" placeholder="0-0000-00000-00-0"
-                    class="input_text " value="{{ $staff_data->staff_license }}"  />
+                    class="input_text " value="{{ $staff_data->staff_license }}" />
                 @error('staff_license')
                     <p class="mt-2 text-sm text-red-600 "><span class="font-medium"> {{ __('menu.is_warning') }} </span>
                         {{ $message }}
@@ -67,8 +67,8 @@
             </div>
             <div>
                 <label for="staff_expiredate" class="label_input"> {{ __('staff.staff_expiredate') }} </label>
-                <input type="date" id="staff_expiredate" name="staff_expiredate"
-                    class="input_text" value="{{ date('Y-m-d', strtotime($staff_data->staff_expiredate)) }}" />
+                <input type="date" id="staff_expiredate" name="staff_expiredate" class="input_text"
+                    value="{{ date('Y-m-d', strtotime($staff_data->staff_expiredate)) }}" />
                 @error('staff_expiredate')
                     <p class="mt-2 text-sm text-red-600 "><span class="font-medium"> {{ __('menu.is_warning') }} </span>
                         {{ $message }}
@@ -78,8 +78,8 @@
 
             <div>
                 <label for="staff_birthdate" class="label_input"> {{ __('staff.staff_birthdate') }} </label>
-                <input type="date" id="staff_birthdate" name="staff_birthdate"
-                    class="input_text" value="{{ date('Y-m-d', strtotime($staff_data->staff_birthdate)) }}" />
+                <input type="date" id="staff_birthdate" name="staff_birthdate" class="input_text"
+                    value="{{ date('Y-m-d', strtotime($staff_data->staff_birthdate)) }}" />
                 @error('staff_birthdate')
                     <p class="mt-2 text-sm text-red-600 "><span class="font-medium"> {{ __('menu.is_warning') }} </span>
                         {{ $message }}
@@ -103,7 +103,7 @@
             <div>
                 <label for="staff_phone" class="label_input"> {{ __('staff.staff_phone') }} </label>
                 <input type="text" id="staff_phone" maxlength="10" name="staff_phone" placeholder="000-000-0000"
-                    class="input_text "  value="{{ $staff_data->staff_phone }}" />
+                    class="input_text " value="{{ $staff_data->staff_phone }}" />
                 @error('staff_phone')
                     <p class="mt-2 text-sm text-red-600 "><span class="font-medium"> {{ __('menu.is_warning') }} </span>
                         {{ $message }}
@@ -113,7 +113,7 @@
             <div>
                 <label for="staff_limit" class="label_input"> {{ __('staff.staff_limit') }} </label>
                 <input type="number" id="staff_limit" value="{{ $staff_data->credit_limit }}" name="staff_limit"
-                    class="input_text"  />
+                    class="input_text" />
                 @error('staff_limit')
                     <p class="mt-2 text-sm text-red-600 "><span class="font-medium"> {{ __('menu.is_warning') }} </span>
                         {{ $message }}
@@ -143,7 +143,7 @@
                         <div>
                             <label for="card_number" class="label_input"> {{ __('member.card_no') }} </label>
                             <input type="text" class="input_text" id="card_number" maxlength="13"
-                                value="{{ $staff_data->card_no ?? '' }}" readonly>
+                                value="{{ substr($staff_data->card_no, 0, $lengthCard) ?? '' }}" readonly>
                         </div>
                         <div>
                             <label for="card_number" class="label_input"> {{ __('member.balance') }} </label>

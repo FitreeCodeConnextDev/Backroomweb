@@ -67,14 +67,13 @@ class PaymentGroupController extends Controller
 
         // dd($validateData);
 
-        $paymentGroup_insert = DB::table('grouppaymenttype_info')->insert([
-            'payment_group' => $validateData['payment_group'],
-            'description' => $validateData['description'],
-            'show_tender' => $validateData['show_tender'],
-            'activeflag' => 1
-        ]);
-
-        if (isset($paymentGroup_insert)) {
+        if (isset($validateData)) {
+            DB::table('grouppaymenttype_info')->insert([
+                'payment_group' => $validateData['payment_group'],
+                'description' => $validateData['description'],
+                'show_tender' => $validateData['show_tender'],
+                'activeflag' => 1
+            ]);
             Log::channel('activity')->notice(session('auth_user.user_id') . ' created payment group: ' . $validateData['payment_group'], [
                 'payment_group' => $validateData['payment_group'],
                 'description' => $validateData['description'],
@@ -140,13 +139,12 @@ class PaymentGroupController extends Controller
             ]
         );
 
-        $paymentGroup_update = DB::table('grouppaymenttype_info')->where('payment_group', $id)
-            ->update([
-                'description' => $validateData['description'],
-                'show_tender' => $validateData['show_tender'],
-            ]);
-
-        if (isset($paymentGroup_update)) {
+        if (isset($validateData)) {
+            DB::table('grouppaymenttype_info')->where('payment_group', $id)
+                ->update([
+                    'description' => $validateData['description'],
+                    'show_tender' => $validateData['show_tender'],
+                ]);
             Log::channel('activity')->notice(session('auth_user.user_id') . ' updated payment group: ' . $id, [
                 'payment_group' => $id,
                 'description' => $validateData['description'],
@@ -192,12 +190,13 @@ class PaymentGroupController extends Controller
                 ->error(__('menu.is_permission_denied'));
             return redirect()->back();
         }
-        $paymentGroup_delete = DB::table('grouppaymenttype_info')->where('payment_group', $id)
-            ->update([
-                'activeflag' => 0
-            ]);
 
-        if (isset($paymentGroup_delete)) {
+
+        if (isset($id)) {
+            DB::table('grouppaymenttype_info')->where('payment_group', $id)
+                ->update([
+                    'activeflag' => 0
+                ]);
             Log::channel('activity')->notice(session('auth_user.user_id') . ' deleted payment group: ' . $id, [
                 'payment_group' => $id,
                 'action' => 'delete',

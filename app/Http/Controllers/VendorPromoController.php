@@ -185,7 +185,6 @@ class VendorPromoController extends Controller
 
         // dd($start_date, $end_date, $start_datetime, $end_datetime);ด
         $promotionvendor_update = DB::table('vendorpromotion_info')->where('promo_code', $id)->update([
-            'promo_code' => $validate_data['promo_code'],
             'promo_desc' => $validate_data['promo_desc'],
             'start_date' => $start_date,
             'end_date' => $end_date,

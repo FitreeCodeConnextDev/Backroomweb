@@ -73,7 +73,7 @@
 
             <div>
                 <label for="staff_birthdate" class="label_input"> {{ __('staff.staff_birthdate') }} </label>
-                <input type="date" pattern="\d{2}/\d{2}/\d{4}" id="staff_birthdate" name="staff_birthdate"
+                <input type="date" id="staff_birthdate" name="staff_birthdate"
                     class="input_text" />
                 @error('staff_birthdate')
                     <p class="mt-2 text-sm text-red-600 "><span class="font-medium"> {{ __('menu.is_warning') }} </span>
@@ -130,7 +130,7 @@
                     <div class="my-5 flex space-x-3">
                         <div>
                             <label for="card_number" class="label_input"> {{ __('member.card_no') }} </label>
-                            <input type="text" name="card_no" class="input_text" id="card_number" maxlength="13">
+                            <input type="text" name="card_no" class="input_text" id="card_number" maxlength="11">
                             @error('card_no')
                                 <p class="mt-2 text-sm text-red-600 "><span
                                         class="font-medium">{{ __('menu.is_warning') }}</span>

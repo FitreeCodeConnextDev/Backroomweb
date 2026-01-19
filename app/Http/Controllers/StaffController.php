@@ -61,7 +61,7 @@ class StaffController extends Controller
                 'staff_addr' => 'nullable',
                 'staff_phone' => 'nullable|regex:/(0)[0-9]/|not_regex:/[a-z]/|min:10',
                 'staff_limit' => 'nullable',
-                'card_no' => 'required|max:13',
+                'card_no' => 'required|digits:11',
             ],
             [
                 'staff_id' => __('staff.staff_id_required'),
@@ -77,29 +77,32 @@ class StaffController extends Controller
                 'staff_phone' => __('staff.staff_phone_required'),
                 'staff_phone.regex' => __('staff.staff_phone_num'),
                 'staff_limit' => __('staff.staff_limit_required'),
-                'card_no' => __('member.card_no_valid'),
+                'card_no' => __('staff.card_no_valid'),
+                'card_no.digits' => __('staff.card_no_digits'),
             ]
         );
 
         $staff_birthdate = Carbon::parse($validate_data['staff_birthdate'])->format('Y-m-d');
         $staff_expiredate = Carbon::parse($validate_data['staff_expiredate'])->format('Y-m-d');
         // dd($validate_data);
-        $staff_insert = DB::table('staff_info')
-            ->insert([
-                'staff_id' => $validate_data['staff_id'],
-                'staff_name' => $validate_data['staff_name'],
-                'staff_type' => $validate_data['staff_type'],
-                'staff_license' => $validate_data['staff_license'],
-                'staff_birthdate' => $staff_birthdate,
-                'staff_expiredate' =>  $staff_expiredate,
-                'staff_addr' => $validate_data['staff_addr'],
-                'staff_phone' => $validate_data['staff_phone'],
-                'credit_limit' => $validate_data['staff_limit'],
-                'card_no' => $validate_data['card_no'],
-                'activeflag' => 1,
-            ]);
+        $checksum = $this->checkSum($validate_data['card_no']);
+        $card_no_checksum = $validate_data['card_no'] = $validate_data['card_no'] . $checksum;
 
-        if (isset($staff_insert)) {
+        try {
+            DB::table('staff_info')
+                ->insert([
+                    'staff_id' => $validate_data['staff_id'],
+                    'staff_name' => $validate_data['staff_name'],
+                    'staff_type' => $validate_data['staff_type'],
+                    'staff_license' => $validate_data['staff_license'],
+                    'staff_birthdate' => $staff_birthdate,
+                    'staff_expiredate' =>  $staff_expiredate,
+                    'staff_addr' => $validate_data['staff_addr'],
+                    'staff_phone' => $validate_data['staff_phone'],
+                    'credit_limit' => $validate_data['staff_limit'],
+                    'card_no' => $card_no_checksum,
+                    'activeflag' => 1,
+                ]);
             Log::channel('activity')
                 ->notice(session('auth_user.user_id') .  'Created new staff: ' . $validate_data['staff_id'], [
                     'staff_id' => $validate_data['staff_id'],
@@ -113,7 +116,7 @@ class StaffController extends Controller
                 ->option('timeout', 3000)
                 ->success(__('menu.save_is_success'));
             return redirect()->route('staff.index');
-        } else {
+        } catch (\Exception $e) {
             Log::channel('activity')
                 ->error(session('auth_user.user_id') .  'Failed to create staff: ' . $validate_data['staff_id'], [
                     'staff_id' => $validate_data['staff_id'],
@@ -166,7 +169,8 @@ class StaffController extends Controller
             'page' => 'Staff Edit Page',
             'timestamp' => Carbon::now()->toDateTimeString(),
         ]);
-        return view('pages.staff.edit', compact('staff_data', 'card_sub', 'use_card'));
+        $lengthCard = DB::table('system_info')->value('lengthcard');
+        return view('pages.staff.edit', compact('staff_data', 'card_sub', 'use_card', 'lengthCard'));
     }
 
     public function update(Request $request, $id)
@@ -302,5 +306,43 @@ class StaffController extends Controller
                 ->error(__('menu.delete_is_failed'));
             return redirect()->route('staff.index');
         }
+    }
+    private function byteCrc(int $data, int &$crc): void
+    {
+        $crc ^= ($data << 8) & 0xFFFF;
+
+        for ($i = 0; $i < 8; $i++) {
+            if (($crc & 0x8000) !== 0) {
+                $crc = (($crc << 1) & 0xFFFF) ^ 0x1021;
+            } else {
+                $crc = ($crc << 1) & 0xFFFF;
+            }
+        }
+    }
+
+    private function stringCrc(string $s): int
+    {
+        $crc = 0;
+        $len = strlen($s);
+
+        for ($i = 0; $i < $len; $i++) {
+            $this->byteCrc(ord($s[$i]), $crc);
+        }
+
+        return $crc;
+    }
+
+    private function checkSum(string $cardNo): string
+    {
+        $buf = $this->stringCrc($cardNo);
+
+        $hex = strtoupper(str_pad(dechex($buf), 4, '0', STR_PAD_LEFT));
+
+        $buf1 = hexdec(substr($hex, 0, 2));
+        $buf2 = hexdec(substr($hex, 2, 2));
+
+        $checksum = ($buf1 ^ $buf2) % 100;
+
+        return str_pad((string)$checksum, 2, '0', STR_PAD_LEFT);
     }
 }
