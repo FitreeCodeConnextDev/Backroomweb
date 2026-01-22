@@ -121,6 +121,18 @@
                 @enderror
             </div>
         </div>
+        <div class="my-5 flex space-x-3">
+            <div>
+                <label for="card_number" class="label_input"> {{ __('member.card_no') }} </label>
+                <input type="text" class="input_text" id="card_number" maxlength="13"
+                    value="{{ substr($staff_data->card_no, 0, $lengthCard) ?? '' }}" readonly>
+            </div>
+            <div>
+                <label for="card_number" class="label_input"> {{ __('member.balance') }} </label>
+                <input type="text" class="input_text" id="card_number" maxlength="13"
+                    value="{{ $card_sub->net ?? '' }}" readonly>
+            </div>
+        </div>
         <div class="p-2  border border-gray-200 rounded-md">
             <div class="mb-4 border-b border-gray-200">
                 <ul class="tab_ul" id="member_tab" data-tabs-toggle="#member_tab_content" role="tablist">
@@ -130,49 +142,40 @@
                         </button>
                     </li>
                     <li class="me-2" role="presentation">
-                        <button
-                            class="inline-block p-4 border-b-2 border-gray-200 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
-                            id="member_card-tab" data-tabs-target="#member_card" type="button" role="tab"
-                            aria-controls="member_card" aria-selected="false">{{ __('member.card_desc') }} </button>
+                        <button class="tab_button" id="member_card-tab" data-tabs-target="#member_card" type="button"
+                            role="tab" aria-controls="member_card"
+                            aria-selected="false">{{ __('member.card_desc') }} </button>
                     </li>
                 </ul>
             </div>
             <div id="member_tab_content">
                 <div class="hidden p-4 rounded-lg " id="use_card" role="tabpanel" aria-labelledby="use_card_tab">
-                    <div class="my-5 flex space-x-3">
-                        <div>
-                            <label for="card_number" class="label_input"> {{ __('member.card_no') }} </label>
-                            <input type="text" class="input_text" id="card_number" maxlength="13"
-                                value="{{ substr($staff_data->card_no, 0, $lengthCard) ?? '' }}" readonly>
-                        </div>
-                        <div>
-                            <label for="card_number" class="label_input"> {{ __('member.balance') }} </label>
-                            <input type="text" class="input_text" id="card_number" maxlength="13"
-                                value="{{ $card_sub->net ?? '' }}" readonly>
-                        </div>
-                    </div>
-                    <table class="table-data">
+
+                    <table class="table-data" id="use_card_daily">
                         <thead>
                             <tr>
-                                <th>วันที่</th>
-                                <th>ร้านค้า</th>
-                                <th>จำนวนเงิน</th>
+                                <th>{{ __('staff.txn_date_th') }}</th>
+                                <th>{{ __('staff.term_id_th') }}</th>
+                                <th>{{ __('staff.ref_name_th') }}</th>
+                                <th>{{ __('staff.amount_th') }}</th>
                             </tr>
                         </thead>
                         <tbody>
 
-                            @if ($use_card->isEmpty())
+                            @if ($use_card_staff_daily->isEmpty())
                                 <tr>
-                                    <td>ว่าง</td>
-                                    <td>ว่าง</td>
-                                    <td>ว่าง</td>
+                                    <td>{{ __('staff.empty_data') }}</td>
+                                    <td>{{ __('staff.empty_data') }}</td>
+                                    <td>{{ __('staff.empty_data') }}</td>
+                                    <td>{{ __('staff.empty_data') }}</td>
                                 </tr>
                             @else
-                                @foreach ($use_card as $item)
+                                @foreach ($use_card_staff_daily as $item)
                                     <tr>
                                         <td>{{ $item->txndate }}</td>
-                                        <td>{{ $item->vendor_name }}</td>
-                                        <td>{{ $item->amount }}</td>
+                                        <td>{{ $item->term_id }}</td>
+                                        <td>{{ $item->ref_name }}</td>
+                                        <td>{{ $item->total }}</td>
                                     </tr>
                                 @endforeach
                             @endif
@@ -180,21 +183,33 @@
                     </table>
                 </div>
                 <div class="hidden p-4 rounded-lg " id="member_card" role="tabpanel" aria-labelledby="member_card-tab">
-                    <table class="table-data">
+
+                    <table class="table-data" id="use_card_backup">
                         <thead>
                             <tr>
-                                <th>วันที่</th>
-                                <th>ร้านค้า</th>
-                                <th>จำนวนเงิน</th>
+                                <th>{{ __('staff.txn_date_th') }}</th>
+                                <th>{{ __('staff.term_id_th') }}</th>
+                                <th>{{ __('staff.ref_name_th') }}</th>
+                                <th>{{ __('staff.amount_th') }}</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        @if ($use_card_staff_backup->isEmpty())
                             <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                <td>{{ __('staff.empty_data') }}</td>
+                                <td>{{ __('staff.empty_data') }}</td>
+                                <td>{{ __('staff.empty_data') }}</td>
+                                <td>{{ __('staff.empty_data') }}</td>
                             </tr>
-                        </tbody>
+                        @else
+                            @foreach ($use_card_staff_backup as $item)
+                                <tr>
+                                    <td>{{ $item->txndate }}</td>
+                                    <td>{{ $item->term_id }}</td>
+                                    <td>{{ $item->ref_name }}</td>
+                                    <td>{{ $item->total }}</td>
+                                </tr>
+                            @endforeach
+                        @endif
                     </table>
                 </div>
             </div>
@@ -217,6 +232,29 @@
     </form>
 @endsection
 @section('js-scripts')
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const table = document.querySelector("#use_card_daily");
+            const table_backup = document.querySelector("#use_card_backup");
+            if (table) {
+                new DataTable(table, {
+                    searchable: false,
+                    sortable: false,
+                    perPage: 5,
+                    perPageSelect: [5, 10, 20]
+                });
+            }
+            if (table_backup) {
+                new DataTable(table_backup, {
+                    searchable: false,
+                    sortable: false,
+                    perPage: 5,
+                    perPageSelect: [5, 10, 20]
+                });
+            }
+
+        });
+    </script>
     <script type="module">
         $('#staff_form').validate({
             rules: {
@@ -274,6 +312,6 @@
                 // },
                 // staff_addr: `{{ __('staff.staff_addr_required') }}`
             }
-        })
+        });
     </script>
 @endsection

@@ -147,13 +147,59 @@ class MemberController extends Controller
             ->selectRaw('(cur_amt + adj_amt - use_amt) as net')
             ->where('card_no', '=', $member_data->card_no)
             ->first();
-        $use_card = DB::table('sale_terminal_backup as A')
-            ->join('vendor_info as B', 'A.vendor_id', '=', 'B.vendor_id')
-            ->join('member_info as M', 'A.card_no', '=', 'M.card_no')
-            ->select('A.txndate', 'B.vendor_name', 'A.amount')
-            ->where('A.void_flag', '=', '0')
+        $use_card = DB::table('sale_card_daily as d')
+            ->join('cardsub_info as c', 'd.card_no', '=', 'c.card_no')
+            ->select(
+                'd.txndate',
+                'd.clientno as term_id',
+                DB::raw("cast('cashier' as varchar(100)) as ref_name"),
+                DB::raw("(d.sale_amt + d.adj_amt) as total")
+            )
+            ->where('d.card_no', $member_data->card_no)
+            ->whereraw('d.txndate >= c.issuedate')
+            ->where('d.txntype', '<>', '02');
+        $use_card_member_daily = DB::table('sale_terminal_daily as t')
+            ->join('cardsub_info as c', 't.card_no', '=', 'c.card_no')
+            ->leftjoin('vendor_info as v', 't.vendor_id', '=', 'v.vendor_id')
+            ->select(
+                't.txndate',
+                't.vendor_id as term_id',
+                DB::raw("cast(v.vendor_name as varchar(100)) as ref_name"),
+                't.amount as total'
+            )
+            ->where('t.card_no', $member_data->card_no)
+            ->whereraw('t.txndate >= c.issuedate')
+            ->where('t.void_flag', '0')
+            ->unionall($use_card) // นำ query แรกมา union all
+            ->orderby('txndate', 'desc') // เรียงลำดับจากวันที่ล่าสุด
             ->get();
-        // dd($use_card);
+        $use_card_backup = DB::table('sale_card_backup as d')
+            ->join('cardsub_info as c', 'd.card_no', '=', 'c.card_no')
+            ->select(
+                'd.txndate',
+                'd.clientno as term_id',
+                DB::raw("cast('cashier' as varchar(100)) as ref_name"),
+                DB::raw("(d.sale_amt + d.adj_amt) as total")
+            )
+            ->where('d.card_no', $member_data->card_no)
+            ->whereraw('d.txndate >= c.issuedate')
+            ->where('d.txntype', '<>', '02');
+        $use_card_member_backup = DB::table('sale_terminal_daily as t')
+            ->join('cardsub_info as c', 't.card_no', '=', 'c.card_no')
+            ->leftjoin('vendor_info as v', 't.vendor_id', '=', 'v.vendor_id')
+            ->select(
+                't.txndate',
+                't.vendor_id as term_id',
+                DB::raw("cast(v.vendor_name as varchar(100)) as ref_name"),
+                't.amount as total'
+            )
+            ->where('t.card_no', $member_data->card_no)
+            ->whereraw('t.txndate >= c.issuedate')
+            ->where('t.void_flag', '0')
+            ->unionall($use_card_backup) // นำ query แรกมา union all
+            ->orderby('txndate', 'desc') // เรียงลำดับจากวันที่ล่าสุด
+            ->get();
+
         Log::channel('activity')->info('Member Edit Page', [
             'user_id' => session('auth_user.user_id'),
             'action' => 'edit',
@@ -163,7 +209,7 @@ class MemberController extends Controller
         ]);
         $lengthCard = DB::table('system_info')->value('lengthcard');
 
-        return view('pages.member.edit', compact('member_data', 'card_sub', 'use_card', 'lengthCard'));
+        return view('pages.member.edit', compact('member_data', 'card_sub', 'use_card_member_daily', 'use_card_member_backup', 'lengthCard'));
     }
     public function update(Request $request, $id)
     {

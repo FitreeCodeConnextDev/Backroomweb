@@ -43,6 +43,12 @@ return [
     'use_card_valid' => 'โปรดกรอก',
     'card_desc_valid' => 'โปรดกรอก',
 
+    'txn_date_th' => 'วันที่',
+    'term_id_th' => 'เครื่อง',
+    'ref_name_th' => 'ร้านค้า',
+    'amount_th' => 'จำนวนเงิน',
+
+    'empty_data' => 'ไม่มีข้อมูล',
 
 
 ];
