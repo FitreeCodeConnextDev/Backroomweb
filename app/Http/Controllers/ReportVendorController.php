@@ -145,8 +145,8 @@ class ReportVendorController extends Controller
     public function gen_rpt_sum_salecard_by_groupvendor($format, $start_date, $end_date)
     {
         $data = $this->getBusinessDates($start_date, $end_date);
-        $reportPath = '/vendor/rpt_sum_salecard_by_vendor';
-        $filename  = 'rpt_sum_salecard_by_vendor' . date('Y-m-d');
+        $reportPath = '/vendor/rpt_sum_salecard_by_groupvendor';
+        $filename  = 'rpt_sum_salecard_by_groupvendor' . date('Y-m-d');
 
         $params = [
             'branch_id' => session('auth_user.branch_id'),
