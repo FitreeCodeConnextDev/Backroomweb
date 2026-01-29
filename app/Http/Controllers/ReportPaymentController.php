@@ -130,7 +130,7 @@ class ReportPaymentController extends Controller
             );
         } else if ($report == 'rpt_sum_use_true') {
             return redirect()->route(
-                'rpt_sum_use_wechat',
+                'rpt_sum_use_true',
                 [
                     'start_date' => $start_date,
                     'end_date' => $end_date,
@@ -241,8 +241,8 @@ class ReportPaymentController extends Controller
             'user_name' => session('auth_user.user_name'),
             'b_start' => $data['b_start'],
             'b_end' => $data['b_end'],
-            'start_date' => $start_date,
-            'end_date' => $end_date,
+            'batch_start' => $start_date,
+            'batch_end' => $end_date,
         ];
         // dd($params);
 
@@ -260,8 +260,8 @@ class ReportPaymentController extends Controller
             'user_name' => session('auth_user.user_name'),
             'b_start' => $data['b_start'],
             'b_end' => $data['b_end'],
-            'start_date' => $start_date,
-            'end_date' => $end_date,
+            'batch_start' => $start_date,
+            'batch_end' => $end_date,
         ];
         // dd($params);
 
@@ -279,8 +279,8 @@ class ReportPaymentController extends Controller
             'user_name' => session('auth_user.user_name'),
             'b_start' => $data['b_start'],
             'b_end' => $data['b_end'],
-            'start_date' => $start_date,
-            'end_date' => $end_date,
+            'batch_start' => $start_date,
+            'batch_end' => $end_date,
         ];
         // dd($params);
 
@@ -299,8 +299,8 @@ class ReportPaymentController extends Controller
             'user_name' => session('auth_user.user_name'),
             'b_start' => $data['b_start'],
             'b_end' => $data['b_end'],
-            'start_date' => $start_date,
-            'end_date' => $end_date,
+            'batch_start' => $start_date,
+            'batch_end' => $end_date,
         ];
         // dd($params);
 
@@ -318,8 +318,8 @@ class ReportPaymentController extends Controller
             'user_name' => session('auth_user.user_name'),
             'b_start' => $data['b_start'],
             'b_end' => $data['b_end'],
-            'start_date' => $start_date,
-            'end_date' => $end_date,
+            'batch_start' => $start_date,
+            'batch_end' => $end_date,
         ];
         // dd($params);
 
@@ -338,8 +338,8 @@ class ReportPaymentController extends Controller
             'user_name' => session('auth_user.user_name'),
             'b_start' => $data['b_start'],
             'b_end' => $data['b_end'],
-            'start_date' => $start_date,
-            'end_date' => $end_date,
+            'batch_start' => $start_date,
+            'batch_end' => $end_date,
         ];
         // dd($params);
 
@@ -358,8 +358,8 @@ class ReportPaymentController extends Controller
             'user_name' => session('auth_user.user_name'),
             'b_start' => $data['b_start'],
             'b_end' => $data['b_end'],
-            'start_date' => $start_date,
-            'end_date' => $end_date,
+            'batch_start' => $start_date,
+            'batch_end' => $end_date,
         ];
         // dd($params);
 
@@ -377,8 +377,8 @@ class ReportPaymentController extends Controller
             'user_name' => session('auth_user.user_name'),
             'b_start' => $data['b_start'],
             'b_end' => $data['b_end'],
-            'start_date' => $start_date,
-            'end_date' => $end_date,
+            'batch_start' => $start_date,
+            'batch_end' => $end_date,
         ];
         // dd($params);
 
@@ -396,8 +396,8 @@ class ReportPaymentController extends Controller
             'user_name' => session('auth_user.user_name'),
             'b_start' => $data['b_start'],
             'b_end' => $data['b_end'],
-            'start_date' => $start_date,
-            'end_date' => $end_date,
+            'batch_start' => $start_date,
+            'batch_end' => $end_date,
         ];
         // dd($params);
 
@@ -416,8 +416,8 @@ class ReportPaymentController extends Controller
             'user_name' => session('auth_user.user_name'),
             'b_start' => $data['b_start'],
             'b_end' => $data['b_end'],
-            'start_date' => $start_date,
-            'end_date' => $end_date,
+            'batch_start' => $start_date,
+            'batch_end' => $end_date,
         ];
         // dd($params);
 
@@ -434,8 +434,8 @@ class ReportPaymentController extends Controller
             'user_name' => session('auth_user.user_name'),
             'b_start' => $data['b_start'],
             'b_end' => $data['b_end'],
-            'start_date' => $start_date,
-            'end_date' => $end_date,
+            'batch_start' => $start_date,
+            'batch_end' => $end_date,
         ];
         // dd($params);
         return $this->generateJasperReport($reportPath, $filename, $params, $format, 'Generated report: ' . $start_date . ' - ' . $end_date);
@@ -452,8 +452,8 @@ class ReportPaymentController extends Controller
             'user_name' => session('auth_user.user_name'),
             'b_start' => $data['b_start'],
             'b_end' => $data['b_end'],
-            'start_date' => $start_date,
-            'end_date' => $end_date,
+            'batch_start' => $start_date,
+            'batch_end' => $end_date,
         ];
         // dd($params);
 

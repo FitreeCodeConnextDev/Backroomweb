@@ -160,10 +160,10 @@ Route::middleware(['auth_user'])->group(function () {
 
         Route::get('/report-vendor', [ReportVendorController::class, 'index'])->name('report.vendor');
         Route::post('/report-generateVendorReport', [ReportVendorController::class, 'generateVendorReport'])->name('report.generateVendorReport');
-        Route::get('/report-gen_rpt_sum_salecard_by_vendor/{format}/{start_date}/{end_date}/{report_name}', [ReportVendorController::class, 'gen_rpt_sum_salecard_by_vendor'])->name('rpt_sum_salecard_by_vendor');
-        Route::get('/report-gen_rpt_sum_salecard_by_groupvendor/{format}/{start_date}/{end_date}/{report_name}', [ReportVendorController::class, 'gen_rpt_sum_salecard_by_groupvendor'])->name('rpt_sum_salecard_by_groupvendor');
-        Route::get('/report-gen_rpt_sum_salecard_by_typeofcard/{format}/{start_date}/{end_date}/{report_name}', [ReportVendorController::class, 'gen_rpt_sum_salecard_by_typeofcard'])->name('rpt_sum_salecard_by_typeofcard');
-        Route::get('/report-gen_rpt_sum_salecard_by_refcode/{format}/{start_date}/{end_date}/{report_name}', [ReportVendorController::class, 'gen_rpt_sum_salecard_by_refcode'])->name('rpt_sum_salecard_by_refcode');
+        Route::get('/report-gen_rpt_sum_salecard_by_vendor/{format}/{start_date}/{end_date}', [ReportVendorController::class, 'gen_rpt_sum_salecard_by_vendor'])->name('rpt_sum_salecard_by_vendor');
+        Route::get('/report-gen_rpt_sum_salecard_by_groupvendor/{format}/{start_date}/{end_date}', [ReportVendorController::class, 'gen_rpt_sum_salecard_by_groupvendor'])->name('rpt_sum_salecard_by_groupvendor');
+        Route::get('/report-gen_rpt_sum_salecard_by_typeofcard/{format}/{start_date}/{end_date}', [ReportVendorController::class, 'gen_rpt_sum_salecard_by_typeofcard'])->name('rpt_sum_salecard_by_typeofcard');
+        Route::get('/report-gen_rpt_sum_salecard_by_refcode/{format}/{start_date}/{end_date}', [ReportVendorController::class, 'gen_rpt_sum_salecard_by_refcode'])->name('rpt_sum_salecard_by_refcode');
 
         Route::get('/report-item', [ReportItemController::class, 'index'])->name('report.item');
         Route::post('/report-toReportItem', [ReportItemController::class, 'toReportItem'])->name('report.toReportItem');

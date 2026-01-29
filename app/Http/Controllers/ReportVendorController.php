@@ -48,31 +48,23 @@ class ReportVendorController extends Controller
                 'report_name' => $report_name_input,
                 'open_mode' => $request->input('open_mode')
             ]);
-        } else if ($report_name_input == 'rpt_sum_salecard_by_groupvendor') {
-            return redirect()->route('rpt_sum_salecard_by_groupvendor', [
+        } else if ($report_name_input == 'rpt_sum_salecard_by_typeofcard') {
+            return redirect()->route('rpt_sum_salecard_by_typeofcard', [
                 'format' => $format,
                 'start_date' => $start_date,
                 'end_date' => $end_date,
                 'report_name' => $report_name_input,
                 'open_mode' => $request->input('open_mode')
             ]);
-        } else if ($report_name_input == 'rpt_sum_salecard_by_groupvendor') {
-            return redirect()->route('rpt_sum_salecard_by_groupvendor', [
+        } else if ($report_name_input == 'rpt_sum_salecard_by_refcode') {
+            return redirect()->route('rpt_sum_salecard_by_refcode', [
                 'format' => $format,
                 'start_date' => $start_date,
                 'end_date' => $end_date,
                 'report_name' => $report_name_input,
                 'open_mode' => $request->input('open_mode')
             ]);
-        } else if ($report_name_input == 'rpt_sum_salecard_by_groupvendor') {
-            return redirect()->route('rpt_sum_salecard_by_groupvendor', [
-                'format' => $format,
-                'start_date' => $start_date,
-                'end_date' => $end_date,
-                'report_name' => $report_name_input,
-                'open_mode' => $request->input('open_mode')
-            ]);
-        } else {
+        } {
             sweetalert()
                 ->error(__('report.report_not_found') . __('report.report_select_again'));
             return redirect()->back();
@@ -132,31 +124,73 @@ class ReportVendorController extends Controller
         ], 500);
     }
 
-    public function gen_rpt_sum_salecard_by_vendor($format, $start_date, $end_date, $report_name)
+    public function gen_rpt_sum_salecard_by_vendor($format, $start_date, $end_date)
     {
-        $params = $this->getBusinessDates($start_date, $end_date);
-        $filename = $report_name . '_' . date('Y-m-d');
-        return $this->generateJasperReport('/vendor/rpt_sum_salecard_by_vendor', $filename, $params, $format, 'Generate Report');
+        $data = $this->getBusinessDates($start_date, $end_date);
+        $reportPath = '/vendor/rpt_sum_salecard_by_vendor';
+        $filename  = 'rpt_sum_salecard_by_vendor' . date('Y-m-d');
+
+        $params = [
+            'branch_id' => session('auth_user.branch_id'),
+            'branch_name' => $data['branch_name'],
+            'user_name' => session('auth_user.user_name'),
+            'b_start' => $data['b_start'],
+            'b_end' => $data['b_end'],
+            'batch_start' => $start_date,
+            'batch_end' => $end_date,
+        ];
+        return $this->generateJasperReport($reportPath, $filename, $params, $format, 'Generated vendor summary report');
     }
 
-    public function gen_rpt_sum_salecard_by_groupvendor($format, $start_date, $end_date, $report_name)
+    public function gen_rpt_sum_salecard_by_groupvendor($format, $start_date, $end_date)
     {
-        $params = $this->getBusinessDates($start_date, $end_date);
-        $filename = $report_name . '_' . date('Y-m-d');
-        return $this->generateJasperReport('/vendor/rpt_sum_salecard_by_groupvendor', $filename, $params, $format, 'Generate Report');
-    }
+        $data = $this->getBusinessDates($start_date, $end_date);
+        $reportPath = '/vendor/rpt_sum_salecard_by_vendor';
+        $filename  = 'rpt_sum_salecard_by_vendor' . date('Y-m-d');
 
-    public function gen_rpt_sum_salecard_by_typeofcard($format, $start_date, $end_date, $report_name)
-    {
-        $params = $this->getBusinessDates($start_date, $end_date);
-        $filename = $report_name . '_' . date('Y-m-d');
-        return $this->generateJasperReport('/vendor/rpt_sum_salecard_by_typeofcard', $filename, $params, $format, 'Generate Report');
+        $params = [
+            'branch_id' => session('auth_user.branch_id'),
+            'branch_name' => $data['branch_name'],
+            'user_name' => session('auth_user.user_name'),
+            'b_start' => $data['b_start'],
+            'b_end' => $data['b_end'],
+            'batch_start' => $start_date,
+            'batch_end' => $end_date,
+        ];
+        return $this->generateJasperReport($reportPath, $filename, $params, $format, 'Generated report');
     }
-
-    public function gen_rpt_sum_salecard_by_refcode($format, $start_date, $end_date, $report_name)
+    public function gen_rpt_sum_salecard_by_typeofcard($format, $start_date, $end_date)
     {
-        $params = $this->getBusinessDates($start_date, $end_date);
-        $filename = $report_name . '_' . date('Y-m-d');
-        return $this->generateJasperReport('/vendor/rpt_sum_salecard_by_refcode', $filename, $params, $format, 'Generate Report');
+        $data = $this->getBusinessDates($start_date, $end_date);
+        $reportPath = '/vendor/rpt_sum_salecard_by_typeofcard';
+        $filename  = 'rpt_sum_salecard_by_typeofcard' . date('Y-m-d');
+
+        $params = [
+            'branch_id' => session('auth_user.branch_id'),
+            'branch_name' => $data['branch_name'],
+            'user_name' => session('auth_user.user_name'),
+            'b_start' => $data['b_start'],
+            'b_end' => $data['b_end'],
+            'batch_start' => $start_date,
+            'batch_end' => $end_date,
+        ];
+        return $this->generateJasperReport($reportPath, $filename, $params, $format, 'Generated report');
+    }
+    public function gen_rpt_sum_salecard_by_refcode($format, $start_date, $end_date)
+    {
+        $data = $this->getBusinessDates($start_date, $end_date);
+        $reportPath = '/vendor/rpt_sum_salecard_by_refcode';
+        $filename  = 'rpt_sum_salecard_by_refcode' . date('Y-m-d');
+        $params = [
+            'branch_id' => session('auth_user.branch_id'),
+            'branch_name' => $data['branch_name'],
+            'user_name' => session('auth_user.user_name'),
+            'b_start' => $data['b_start'],
+            'b_end' => $data['b_end'],
+            'batch_start' => $start_date,
+            'batch_end' => $end_date,
+        ];
+        // dd($params, $reportPath, $filename, $format);
+        return $this->generateJasperReport($reportPath, $filename, $params, $format, 'Generated report');
     }
 }

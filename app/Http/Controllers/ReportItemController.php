@@ -190,8 +190,8 @@ class ReportItemController extends Controller
             'user_name' => session('auth_user.user_name'),
             'b_start' => $data['b_start'],
             'b_end' => $data['b_end'],
-            'start_date' => $start_date,
-            'end_date' => $end_date,
+            'batch_start' => $start_date,
+            'batch_end' => $end_date,
         ];
         // dd($params);
 
@@ -209,8 +209,8 @@ class ReportItemController extends Controller
             'user_name' => session('auth_user.user_name'),
             'b_start' => $data['b_start'],
             'b_end' => $data['b_end'],
-            'start_date' => $start_date,
-            'end_date' => $end_date,
+            'batch_start' => $start_date,
+            'batch_end' => $end_date,
         ];
         // dd($params);
 
@@ -228,8 +228,8 @@ class ReportItemController extends Controller
             'user_name' => session('auth_user.user_name'),
             'b_start' => $data['b_start'],
             'b_end' => $data['b_end'],
-            'start_date' => $start_date,
-            'end_date' => $end_date,
+            'batch_start' => $start_date,
+            'batch_end' => $end_date,
         ];
         // dd($params);
 
@@ -247,8 +247,8 @@ class ReportItemController extends Controller
             'user_name' => session('auth_user.user_name'),
             'b_start' => $data['b_start'],
             'b_end' => $data['b_end'],
-            'start_date' => $start_date,
-            'end_date' => $end_date,
+            'batch_start' => $start_date,
+            'batch_end' => $end_date,
         ];
         // dd($params);
 
@@ -266,8 +266,8 @@ class ReportItemController extends Controller
             'user_name' => session('auth_user.user_name'),
             'b_start' => $data['b_start'],
             'b_end' => $data['b_end'],
-            'start_date' => $start_date,
-            'end_date' => $end_date,
+            'batch_start' => $start_date,
+            'batch_end' => $end_date,
         ];
         // dd($params);
 
@@ -285,8 +285,8 @@ class ReportItemController extends Controller
             'user_name' => session('auth_user.user_name'),
             'b_start' => $data['b_start'],
             'b_end' => $data['b_end'],
-            'start_date' => $start_date,
-            'end_date' => $end_date,
+            'batch_start' => $start_date,
+            'batch_end' => $end_date,
         ];
         // dd($params);
 
@@ -304,8 +304,8 @@ class ReportItemController extends Controller
             'user_name' => session('auth_user.user_name'),
             'b_start' => $data['b_start'],
             'b_end' => $data['b_end'],
-            'start_date' => $start_date,
-            'end_date' => $end_date,
+            'batch_start' => $start_date,
+            'batch_end' => $end_date,
         ];
         // dd($params);
 
@@ -323,8 +323,8 @@ class ReportItemController extends Controller
             'user_name' => session('auth_user.user_name'),
             'b_start' => $data['b_start'],
             'b_end' => $data['b_end'],
-            'start_date' => $start_date,
-            'end_date' => $end_date,
+            'batch_start' => $start_date,
+            'batch_end' => $end_date,
         ];
         // dd($params);
 
