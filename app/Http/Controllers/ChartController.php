@@ -143,13 +143,13 @@ class ChartController extends Controller
         if ($sale_terminal_rpt->isEmpty()) {
             sweetalert()
                 ->error(__('chart.sale_not_found') . ' ' . $start_date . ' - ' . $end_date,);
-            return redirect()->route('daily-backup-charts');
+            return redirect()->back();
         }
         $count_data = count($sale_terminal_rpt);
         if ($count_data > 1500) {
             sweetalert()
                 ->warning(__('chart.sale_not_found') . ' ' . $start_date . ' - ' . $end_date, 'จำนวนข้อมูลมากเกินไป กรุณาเลือกช่วงวันที่ใหม่');
-            return redirect()->route('daily-backup-charts');
+            return redirect()->back();
         }
 
 
