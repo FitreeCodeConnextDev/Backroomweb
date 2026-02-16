@@ -64,6 +64,14 @@ class ReportVendorController extends Controller
                 'report_name' => $report_name_input,
                 'open_mode' => $request->input('open_mode')
             ]);
+        } elseif ($report_name_input == 'rpt_sum_salecard_by_payment') {
+            return redirect()->route('rpt_sum_salecard_by_payment', [
+                'format' => $format,
+                'start_date' => $start_date,
+                'end_date' => $end_date,
+                'report_name' => $report_name_input,
+                'open_mode' => $request->input('open_mode')
+            ]);
         } {
             sweetalert()
                 ->error(__('report.report_not_found') . __('report.report_select_again'));
@@ -191,6 +199,23 @@ class ReportVendorController extends Controller
             'batch_end' => $end_date,
         ];
         // dd($params, $reportPath, $filename, $format);
+        return $this->generateJasperReport($reportPath, $filename, $params, $format, 'Generated report');
+    }
+    public function gen_rpt_sum_salecard_by_payment($format, $start_date, $end_date)
+    {
+        $data = $this->getBusinessDates($start_date, $end_date);
+        $reportPath = '/vendor/rpt_sum_salecard_by_payment';
+        $filename  = 'rpt_sum_salecard_by_payment' . date('Y-m-d');
+
+        $params = [
+            'branch_id' => session('auth_user.branch_id'),
+            'branch_name' => $data['branch_name'],
+            'user_name' => session('auth_user.user_name'),
+            'b_start' => $data['b_start'],
+            'b_end' => $data['b_end'],
+            'batch_start' => $start_date,
+            'batch_end' => $end_date,
+        ];
         return $this->generateJasperReport($reportPath, $filename, $params, $format, 'Generated report');
     }
 }

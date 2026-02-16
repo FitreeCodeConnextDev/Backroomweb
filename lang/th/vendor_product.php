@@ -165,5 +165,15 @@ return [
     'ten_rows' => '10 แถว',
     'all_rows' => 'ทั้งหมด',
 
+    'choose_vendor' => 'เลือกร้านค้า',
+    'clone_vendor' => 'ร้านค้า ต้นทาง',
+
+    'clone_failed_no_products' => 'ไม่พบรายการสินค้าจาก Vendor ต้นทาง',
+    'clone_product' => 'โคลนสินค้าไปร้านค้าอื่น',
+    'clone_product_success' => 'โคลนสินค้าสำเร็จ',
+    'clone_product_failed' => 'โคลนสินค้าไม่สำเร็จ',
+    'clone_failed_product_exists' => 'โคลนสินค้าล้มเหลว หรือร้านค้าเป้าหมายมีสินค้าบางรายการที่ตรงกับร้านค้าเดิมอยู่แล้ว',
+
+
 
 ];

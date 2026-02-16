@@ -121,12 +121,13 @@ return [
     'gp_member_required' => 'โปรดกรอก GP% บัตรสมาชิก',
     'gp_staff_required' => 'โปรดกรอก GP% บัตรพนักงาน',
 
-    'vendor_garantee_title' => 'คิดยอดขาย',
+    'vendor_garantee_title' => 'ข้อมูลยอดรับประกันส่วนต่าง',
     'vendor_garantee' => 'ยอดรับประกันส่วนต่าง',
     'min_garantee1' => 'วันที่ 1-15',
     'min_garantee2' => 'วันที่ 16-สิ้นเดือน',
     'min_garantee3' => 'ทั้งเดือน',
     'dis_garantee' => 'ส่วนลด',
+    'select_product' => 'ไม่มีรายการสินค้า',
 
 
     'vendor_id_required' => 'โปรดกรอกรหัสร้านค้า',

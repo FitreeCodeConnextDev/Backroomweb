@@ -59,7 +59,16 @@
                             <div class="font-medium truncate"> User: {{ session('auth_user.user_name') }}</div>
                             <div class="font-medium truncate"> Branch: {{ session('auth_user.branch_id') }}</div>
                         </div>
-                        <ul class="py-1" role="none">
+                        <ul class="py-1 border-t border-gray-200" role="none">
+                            <li class=" border-b border-gray-200 mb-0.5">
+                                <form action="">
+                                    <button type="button" id="ChangePasswordButton" data-modal-target="ChangePassword"
+                                        data-modal-toggle="ChangePassword"
+                                        class="block px-4 py-2 text-sm w-full text-gray-700 hover:bg-gray-100">
+                                        {{ __('users.change_password') }}
+                                    </button>
+                                </form>
+                            </li>
                             <li>
                                 <form action="{{ route('logout') }}" method="post">
                                     @csrf
@@ -77,6 +86,7 @@
         </div>
     </div>
 </nav>
+@include('layouts.password')
 
 <aside id="logo-sidebar"
     class="fixed top-0 left-0 z-40 w-64 h-screen pt-24 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 "
@@ -126,7 +136,7 @@
                         <li>
                             <div class=" bg-white border-b border-gray-200 ">
                                 <a href="{{ route('vendor-page.index') }}"
-                                    class="flex items-center w-full p-2 mb-2 text-gray-900 transition duration-75 hover:bg-gray-100 rounded-lg pl-5 group {{ request()->routeIs(['vendor-page.*' , 'vendor_product_info_search']) ? 'active_menu' : 'text-gray-500' }}">
+                                    class="flex items-center w-full p-2 mb-2 text-gray-900 transition duration-75 hover:bg-gray-100 rounded-lg pl-5 group {{ request()->routeIs(['vendor-page.*', 'vendor_product_info_search']) ? 'active_menu' : 'text-gray-500' }}">
                                     <span class="ms-3"> {{ __('menu.vendor') }} </span>
                                 </a>
                             </div>

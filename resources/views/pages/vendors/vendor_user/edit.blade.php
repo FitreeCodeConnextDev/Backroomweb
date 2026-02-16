@@ -2,7 +2,7 @@
 
 <section>
     <div class="grid grid-cols-1 gap-6 border border-gray-200 rounded-lg p-5">
-        <div>
+        <div class="flex justify-end ">
             <button data-modal-target="authentication-modal" data-modal-toggle="authentication-modal"
                 class="modal_button_add" type="button">
                 {{ __('menu.button.add') }}

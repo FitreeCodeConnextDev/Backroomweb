@@ -148,7 +148,7 @@ class ChartController extends Controller
         $count_data = count($sale_terminal_rpt);
         if ($count_data > 1500) {
             sweetalert()
-                ->warning(__('chart.sale_not_found') . ' ' . $start_date . ' - ' . $end_date, 'จำนวนข้อมูลมากเกินไป กรุณาเลือกช่วงวันที่ใหม่');
+                ->warning(__('chart.too_many_records') . ' ' . $start_date . ' - ' . $end_date);
             return redirect()->back();
         }
 

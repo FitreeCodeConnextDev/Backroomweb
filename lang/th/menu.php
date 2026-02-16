@@ -153,6 +153,7 @@ return [
         'button.cancel' => 'ยกเลิก',
         'button.confirm' => 'ตกลง',
         'button.reset' => 'รีเซ็ต',
+        
 
         'input.username' => 'ชื่อผู้ใช้',
         'input.password' => 'รหัสผ่าน',
@@ -165,6 +166,7 @@ return [
         'delete_is_success' => 'ลบข้อมูลสำเร็จ',
         'delete_is_failed' => 'ลบข้อมูลไม่สำเร็จ',
 
+        'is_success' => 'ดำเนินการสำเร็จ',
         'is_warning' => 'คำเตือน!!!',
         'is_failed' => 'เกิดข้อผิดพลาด',
         'is_loading' => 'โปรดรอสักครู่...',

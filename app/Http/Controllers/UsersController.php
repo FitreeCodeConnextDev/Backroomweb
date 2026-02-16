@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
 
 class UsersController extends Controller
 {
@@ -664,6 +665,39 @@ class UsersController extends Controller
                 ->option('timeout', 3000)
                 ->error(__('menu.delete_is_failed'));
             return redirect()->route('users.index');
+        }
+    }
+
+    public function changePassword(Request $request)
+    {
+
+        $request->validate(
+            [
+                'current_password' => 'required',
+                'new_password' => 'required|confirmed',
+            ],
+            [
+                'current_password.required' => __('users.current_password_required'),
+                'new_password.required' => __('users.new_password_required'),
+                'new_password.confirmed' => __('users.new_password_confirmed'),
+            ]
+        );
+
+
+        $userId = session('auth_user.user_id');
+        $user = DB::table('user_info')->where('user_id', $userId)->first();
+
+        if ($request->input('current_password') !== $user->user_pass) {
+            return back()->with('swal_error', __('users.current_password_incorrect'));
+        }
+
+        try {
+            DB::table('user_info')->where('user_id', $userId)
+                ->update(['user_pass' => $request->input('new_password')]);
+
+            return back()->with('swal_success', __('users.password_change_success'));
+        } catch (\Exception $e) {
+            return back()->with('swal_error', __('users.password_change_failed'));
         }
     }
 }

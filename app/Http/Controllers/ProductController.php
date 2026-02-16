@@ -6,7 +6,9 @@ use App\Helpers\PermissionHelper;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -77,56 +79,42 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-        $productData = $request->validate(
-            [
-                'product_id' => 'required|max:6|unique:product_info,product_id',
-                'product_barcode' => 'required',
-                'product_desc' => 'required',
-                'product_sdesc' => 'nullable',
-                'product_group' => 'required',
-                'subno' => 'required',
-                'unit_id' => 'nullable',
-                'show_color' => 'nullable',
-                'catproduct_group' => 'nullable',
-                'product_edesc' => 'nullable',
-                'rabbit_discount' => 'nullable',
-                'show_kiosk' => 'nullable',
-                'type_group' => 'nullable',
-                'gtype_group' => 'nullable',
-            ],
-            [
-                'product_id.required' => __('product.product_id_valid'),
-                'product_id.max' => __('product.product_id_valid'),
-                'product_id.unique' => __('product.product_id_unique'),
-                'product_desc.required' => __('product.product_desc_valid'),
-                'product_barcode.required' => __('product.product_barcode_valid'),
-                'product_group.required' => __('product.product_group_valid'),
-                'subno.required' => __('product.subno_valid'),
-                'unit_id.required' => __('product.unit_id_valid'),
+        try {
+            $productData = $request->validate(
+                [
+                    'product_id' => 'required|max:6|unique:product_info,product_id',
+                    'product_barcode' => 'required',
+                    'product_desc' => 'required',
+                    'product_sdesc' => 'nullable',
+                    'product_group' => 'required',
+                    'subno' => 'required',
+                    'unit_id' => 'nullable',
+                    'show_color' => 'nullable',
+                    'catproduct_group' => 'nullable',
+                    'product_edesc' => 'nullable',
+                    'rabbit_discount' => 'nullable',
+                    'show_kiosk' => 'nullable',
+                    'type_group' => 'nullable',
+                    'gtype_group' => 'nullable',
+                    'product_img' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+                ],
+                [
+                    'product_id.required' => __('product.product_id_valid'),
+                    'product_id.max' => __('product.product_id_valid'),
+                    'product_id.unique' => __('product.product_id_unique'),
+                    'product_desc.required' => __('product.product_desc_valid'),
+                    'product_barcode.required' => __('product.product_barcode_valid'),
+                    'product_group.required' => __('product.product_group_valid'),
+                    'subno.required' => __('product.subno_valid'),
+                    'unit_id.required' => __('product.unit_id_valid'),
+                    'product_img.image' => __('product.product_img_valid'),
+                    'product_img.mimes' => __('product.product_img_mimes'),
+                    'product_img.max' => __('product.product_img_max'),
 
-            ]
-        );
+                ]
+            );
 
-        $insert_product = DB::table('product_info')->insert([
-            'product_id' => $productData['product_id'],
-            'product_barcode' => $productData['product_barcode'],
-            'product_desc' => $productData['product_desc'],
-            'product_sdesc' => $productData['product_sdesc'],
-            'product_group' => $productData['product_group'],
-            'subno' => $productData['subno'],
-            'unit_id' => $productData['unit_id'],
-            'show_color' => $productData['show_color'],
-            'product_edesc' => $productData['product_edesc'],
-            'rabbit_discount' => $productData['rabbit_discount'],
-            'catproduct_group' => $productData['catproduct_group'],
-            'show_kiosk' => $productData['show_kiosk'],
-            'type_group' => $productData['type_group'],
-            'gtype_group' => $productData['gtype_group'],
-            'activeflag' => 1,
-        ]);
-
-        if (isset($insert_product)) {
-            Log::channel('activity')->notice(session('auth_user.user_id') . ' created product: ' . $productData['product_id'], [
+            $insert_product = DB::table('product_info')->insert([
                 'product_id' => $productData['product_id'],
                 'product_barcode' => $productData['product_barcode'],
                 'product_desc' => $productData['product_desc'],
@@ -135,30 +123,68 @@ class ProductController extends Controller
                 'subno' => $productData['subno'],
                 'unit_id' => $productData['unit_id'],
                 'show_color' => $productData['show_color'],
+                'product_edesc' => $productData['product_edesc'],
+                'rabbit_discount' => $productData['rabbit_discount'],
                 'catproduct_group' => $productData['catproduct_group'],
-                'action' => 'create',
-                'created_at' => Carbon::now()->toDateTimeString(),
-                'created_by' => session('auth_user.user_id'),
+                'show_kiosk' => $productData['show_kiosk'],
+                'type_group' => $productData['type_group'] ?? null,
+                'gtype_group' => $productData['gtype_group'] ?? null,
+                'activeflag' => 1,
             ]);
-            flash()
-                ->option('position', 'bottom-right')
-                ->option('timeout', 3000)
-                ->success(__('menu.save_is_success'));
-            return redirect()->route('products.index');
-        } else {
-            Log::channel('activity')->error(session('auth_user.user_id') . ' failed to create product: ' . $productData['product_id'], [
-                'product_id' => $productData['product_id'],
-                'product_barcode' => $productData['product_barcode'],
-                'product_desc' => $productData['product_desc'],
-                'product_sdesc' => $productData['product_sdesc'],
-                'product_group' => $productData['product_group'],
-                'subno' => $productData['subno'],
-                'unit_id' => $productData['unit_id'],
-                'show_color' => $productData['show_color'],
-                'catproduct_group' => $productData['catproduct_group'],
+            if ($request->hasFile('product_img')) {
+                upload_product_bmp(
+                    $request->file('product_img'),
+                    $productData['product_id'] . '.bmp'
+                );
+            }
+
+            if (isset($insert_product)) {
+                Log::channel('activity')->notice(session('auth_user.user_id') . ' created product: ' . $productData['product_id'], [
+                    'product_id' => $productData['product_id'],
+                    'product_barcode' => $productData['product_barcode'],
+                    'product_desc' => $productData['product_desc'],
+                    'product_sdesc' => $productData['product_sdesc'],
+                    'product_group' => $productData['product_group'],
+                    'subno' => $productData['subno'],
+                    'unit_id' => $productData['unit_id'],
+                    'show_color' => $productData['show_color'],
+                    'catproduct_group' => $productData['catproduct_group'],
+                    'action' => 'create',
+                    'created_at' => Carbon::now()->toDateTimeString(),
+                    'created_by' => session('auth_user.user_id'),
+                ]);
+                flash()
+                    ->option('position', 'bottom-right')
+                    ->option('timeout', 3000)
+                    ->success(__('menu.save_is_success'));
+                return redirect()->route('products.index');
+            } else {
+                Log::channel('activity')->error(session('auth_user.user_id') . ' failed to create product: ' . $productData['product_id'], [
+                    'product_id' => $productData['product_id'],
+                    'product_barcode' => $productData['product_barcode'],
+                    'product_desc' => $productData['product_desc'],
+                    'product_sdesc' => $productData['product_sdesc'],
+                    'product_group' => $productData['product_group'],
+                    'subno' => $productData['subno'],
+                    'unit_id' => $productData['unit_id'],
+                    'show_color' => $productData['show_color'],
+                    'catproduct_group' => $productData['catproduct_group'],
+                    'action' => 'create',
+                    'created_at' => Carbon::now()->toDateTimeString(),
+                    'created_by' => session('auth_user.user_id'),
+                ]);
+                flash()
+                    ->option('position', 'bottom-right')
+                    ->option('timeout', 3000)
+                    ->error(__('menu.save_is_failed'));
+                return redirect()->route('products.create');
+            }
+        } catch (\Exception $e) {
+            Log::channel('activity')->error(session('auth_user.user_id') . ' exception when creating product: ' . $request->input('product_id') . ' - ' . $e->getMessage(), [
+                'product_id' => $request->input('product_id'),
+                'error' => $e->getMessage(),
                 'action' => 'create',
-                'created_at' => Carbon::now()->toDateTimeString(),
-                'created_by' => session('auth_user.user_id'),
+                'timestamp' => Carbon::now()->toDateTimeString(),
             ]);
             flash()
                 ->option('position', 'bottom-right')
@@ -202,91 +228,120 @@ class ProductController extends Controller
 
     public function update(Request $request, $id)
     {
-        $productData = $request->validate(
-            [
-                'product_barcode' => 'required',
-                'product_desc' => 'required',
-                'product_sdesc' => 'nullable',
-                'product_group' => 'required',
-                'subno' => 'required',
-                'unit_id' => 'nullable',
-                'show_color' => 'nullable',
-                'catproduct_group' => 'nullable',
-                'product_edesc' => 'nullable',
-                'rabbit_discount' => 'nullable',
-                'show_kiosk' => 'nullable',
-                'type_group' => 'nullable',
-                'gtype_group' => 'nullable',
-            ],
-            [
-                'product_desc.required' => __('product.product_desc_valid'),
-                'product_barcode.required' => __('product.product_barcode_valid'),
-                'product_group.required' => __('product.product_group_valid'),
-                'subno.required' => __('product.subno_valid'),
-                'unit_id.required' => __('product.unit_id_valid'),
+        // dd($request->all());
+        try {
+            $productData = $request->validate(
+                [
+                    'product_barcode' => 'required',
+                    'product_desc' => 'required',
+                    'product_sdesc' => 'nullable',
+                    'product_group' => 'required',
+                    'subno' => 'required',
+                    'unit_id' => 'nullable',
+                    'show_color' => 'nullable',
+                    'catproduct_group' => 'nullable',
+                    'product_edesc' => 'nullable',
+                    'rabbit_discount' => 'nullable',
+                    'show_kiosk' => 'nullable',
+                    'type_group' => 'nullable',
+                    'gtype_group' => 'nullable',
+                    'product_img' => 'nullable|image|mimes:jpeg,png,jpg|max:1048',
 
-            ]
-        );
+                ],
+                [
+                    'product_desc.required' => __('product.product_desc_valid'),
+                    'product_barcode.required' => __('product.product_barcode_valid'),
+                    'product_group.required' => __('product.product_group_valid'),
+                    'subno.required' => __('product.subno_valid'),
+                    'unit_id.required' => __('product.unit_id_valid'),
+                    'product_img.image' => __('product.product_img_valid'),
+                    'product_img.mimes' => __('product.product_img_mimes'),
+                    'product_img.max' => __('product.product_img_max'),
+                    'product_img.dimensions' => __('product.product_img_dimensions'),
 
-        // dd($productData);
+                ]
+            );
 
-        $update_product = DB::table('product_info')->where('product_id', $id)
-            ->update([
-                'product_barcode' => $productData['product_barcode'],
-                'product_desc' => $productData['product_desc'],
-                'product_sdesc' => $productData['product_sdesc'],
-                'product_group' => $productData['product_group'],
-                'subno' => $productData['subno'],
-                'unit_id' => $productData['unit_id'],
-                'show_color' => $productData['show_color'],
-                'product_edesc' => $productData['product_edesc'],
-                'rabbit_discount' => $productData['rabbit_discount'],
-                'catproduct_group' => $productData['catproduct_group'],
-                'show_kiosk' => $productData['show_kiosk'],
-                'type_group' => $productData['type_group'],
-                'gtype_group' => $productData['gtype_group'],
-            ]);
-        if (isset($update_product)) {
-            Log::channel('activity')->notice(session('auth_user.user_id') . ' updated product: ' . $id, [
+            $update_product = DB::table('product_info')->where('product_id', $id)
+                ->update([
+                    'product_barcode' => $productData['product_barcode'],
+                    'product_desc' => $productData['product_desc'],
+                    'product_sdesc' => $productData['product_sdesc'],
+                    'product_group' => $productData['product_group'],
+                    'subno' => $productData['subno'],
+                    'unit_id' => $productData['unit_id'],
+                    'show_color' => $productData['show_color'],
+                    'product_edesc' => $productData['product_edesc'],
+                    'rabbit_discount' => $productData['rabbit_discount'],
+                    'catproduct_group' => $productData['catproduct_group'],
+                    'show_kiosk' => $productData['show_kiosk'],
+                    'type_group' => $productData['type_group'] ?? null,
+                    'gtype_group' => $productData['gtype_group'] ?? null,
+                ]);
+            if ($request->hasFile('product_img')) {
+                upload_product_bmp(
+                    $request->file('product_img'),
+                    $id . '.bmp'
+                );
+            }
+
+            if (isset($update_product)) {
+                Log::channel('activity')->notice(session('auth_user.user_id') . ' updated product: ' . $id, [
+                    'product_id' => $id,
+                    'product_barcode' => $productData['product_barcode'],
+                    'product_desc' => $productData['product_desc'],
+                    'product_sdesc' => $productData['product_sdesc'],
+                    'product_group' => $productData['product_group'],
+                    'subno' => $productData['subno'],
+                    'unit_id' => $productData['unit_id'],
+                    'show_color' => $productData['show_color'],
+                    'catproduct_group' => $productData['catproduct_group'],
+                    'action' => 'update',
+                    'update detail' => $productData,
+                    'updated_at' => Carbon::now()->toDateTimeString(),
+                    'updated_by' => session('auth_user.user_id'),
+                ]);
+                flash()
+                    ->option('position', 'bottom-right')
+                    ->option('timeout', 3000)
+                    ->success(__('menu.edit_is_success'));
+                return redirect()->route('products.index');
+            } else {
+                Log::channel('activity')->error(session('auth_user.user_id') . ' failed to update product: ' . $id, [
+                    'product_id' => $id,
+                    'product_barcode' => $productData['product_barcode'],
+                    'product_desc' => $productData['product_desc'],
+                    'product_sdesc' => $productData['product_sdesc'],
+                    'product_group' => $productData['product_group'],
+                    'subno' => $productData['subno'],
+                    'unit_id' => $productData['unit_id'],
+                    'show_color' => $productData['show_color'],
+                    'catproduct_group' => $productData['catproduct_group'],
+                    'action' => 'update',
+                    'update detail' => $productData,
+                    'updated_at' => Carbon::now()->toDateTimeString(),
+                    'updated_by' => session('auth_user.user_id'),
+                ]);
+                flash()
+                    ->option('position', 'bottom-right')
+                    ->option('timeout', 3000)
+                    ->error(__('menu.edit_is_failed'));
+                return redirect()->route('products.edit', $id);
+            }
+        } catch (\Exception $e) {
+            Log::channel('activity')->error(session('auth_user.user_id') . ' exception when updating product: ' . $id . ' - ' . $e->getMessage(), [
                 'product_id' => $id,
-                'product_barcode' => $productData['product_barcode'],
-                'product_desc' => $productData['product_desc'],
-                'product_sdesc' => $productData['product_sdesc'],
-                'product_group' => $productData['product_group'],
-                'subno' => $productData['subno'],
-                'unit_id' => $productData['unit_id'],
-                'show_color' => $productData['show_color'],
-                'catproduct_group' => $productData['catproduct_group'],
+                'error' => $e->getMessage(),
                 'action' => 'update',
-                'update detail' => $productData,
-                'updated_at' => Carbon::now()->toDateTimeString(),
-                'updated_by' => session('auth_user.user_id'),
+                'timestamp' => Carbon::now()->toDateTimeString(),
             ]);
-            flash()
-                ->option('position', 'bottom-right')
-                ->option('timeout', 3000)
-                ->success(__('menu.edit_is_success'));
-            return redirect()->route('products.index');
-        } else {
-            Log::channel('activity')->error(session('auth_user.user_id') . ' failed to update product: ' . $id, [
-                'product_id' => $id,
-                'product_barcode' => $productData['product_barcode'],
-                'product_desc' => $productData['product_desc'],
-                'product_sdesc' => $productData['product_sdesc'],
-                'product_group' => $productData['product_group'],
-                'subno' => $productData['subno'],
-                'unit_id' => $productData['unit_id'],
-                'show_color' => $productData['show_color'],
-                'catproduct_group' => $productData['catproduct_group'],
-                'action' => 'update',
-                'update detail' => $productData,
-                'updated_at' => Carbon::now()->toDateTimeString(),
-                'updated_by' => session('auth_user.user_id'),
-            ]);
-            flash()
-                ->option('position', 'bottom-right')
-                ->option('timeout', 3000)
-                ->error(__('menu.edit_is_failed'));
+            // flash()
+            //     ->option('position', 'bottom-right')
+            //     ->option('timeout', 3000)
+            //     ->error($e->getMessage());
+            sweetalert()
+                ->timer(15000)
+                ->error($e->getMessage());
             return redirect()->route('products.edit', $id);
         }
     }

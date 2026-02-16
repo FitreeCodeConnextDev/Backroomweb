@@ -17,7 +17,7 @@
     {{ __('menu.product_add') }}
 @endsection
 @section('form-section')
-    <form id="product_form" action="{{ route('products.store') }}" method="post">
+    <form id="product_form" action="{{ route('products.store') }}" method="post" enctype="multipart/form-data">
         @csrf
         <div class="grid_page">
             <div>
@@ -154,6 +154,15 @@
                         <option value=" {{ $item_gtype->gtype_group }} "> {{ $item_gtype->description }} </option>
                     @endforeach
                 </select>
+            </div>
+            <div>
+                <label for="product_img" class=" label_input">{{ __('product.product_img') }}</label>
+                <input type="file" accept=".jpg,.jpeg,.png" aria-describedby="file_input_help" id="file_input"
+                    id="product_img" name="product_img" class="input_text" />
+                @error('product_img')
+                    <p class="mt-2 text-sm text-red-600"><span class="font-medium"> {{ __('menu.is_warning') }}
+                        </span>{{ $message }}</p>
+                @enderror
             </div>
         </div>
         <button type="submit" class="submit_btn"> {{ __('menu.button.save') }} </button>

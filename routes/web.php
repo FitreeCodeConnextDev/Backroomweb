@@ -84,6 +84,8 @@ Route::middleware(['auth_user'])->group(function () {
         Route::get('/vendor-page/{vendor_id}/{pages_search}', [VendorProductController::class, 'vendor_product_info_search'])->name('vendor_product_info_search');
         Route::get('/vendor-page/{vendor_id}', [VendorProductController::class, 'vendor_product_info_search_show'])->name('vendor_product_info_search_show');
 
+        Route::post('/vendor-product-cloneproduct', [VendorProductController::class, 'clone_product'])->name('vendor_product_clone_product');
+
 
         Route::resource('/member', MemberController::class);
         Route::resource('/users', UsersController::class,);
@@ -164,6 +166,7 @@ Route::middleware(['auth_user'])->group(function () {
         Route::get('/report-gen_rpt_sum_salecard_by_groupvendor/{format}/{start_date}/{end_date}', [ReportVendorController::class, 'gen_rpt_sum_salecard_by_groupvendor'])->name('rpt_sum_salecard_by_groupvendor');
         Route::get('/report-gen_rpt_sum_salecard_by_typeofcard/{format}/{start_date}/{end_date}', [ReportVendorController::class, 'gen_rpt_sum_salecard_by_typeofcard'])->name('rpt_sum_salecard_by_typeofcard');
         Route::get('/report-gen_rpt_sum_salecard_by_refcode/{format}/{start_date}/{end_date}', [ReportVendorController::class, 'gen_rpt_sum_salecard_by_refcode'])->name('rpt_sum_salecard_by_refcode');
+        Route::get('/report-gen_rpt_sum_salecard_by_payment/{format}/{start_date}/{end_date}', [ReportVendorController::class, 'gen_rpt_sum_salecard_by_payment'])->name('rpt_sum_salecard_by_payment');
 
         Route::get('/report-item', [ReportItemController::class, 'index'])->name('report.item');
         Route::post('/report-toReportItem', [ReportItemController::class, 'toReportItem'])->name('report.toReportItem');
@@ -200,4 +203,6 @@ Route::middleware(['auth_user'])->group(function () {
         Route::post('/expense_vendor_other_store', [ExpenseVendorController::class, 'store_other'])->name('expensevendor_other_store');
         Route::delete('/expense_vendor_other_destroy/{txnyear}/{txnmonth}/{vendor_id}/{exp_code}', [ExpenseVendorController::class, 'destroy_expensevendor_other'])->name('expensevendor_other_destroy');
         Route::get('/get-expense-details/{exp_code}', [ExpenseVendorController::class, 'fetch_expensevendor_other'])->name('get_expense_details');
+
+        Route::post('/change-password', [UsersController::class, 'changePassword'])->name('change_password');
 });

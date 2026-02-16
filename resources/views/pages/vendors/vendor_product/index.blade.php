@@ -26,7 +26,7 @@
                 <button class="tab_button_2 hover:border-gray-300 dark:hover:text-gray-300"
                     id="vendorproduct_promo_print-tab" data-tabs-target="#vendorproduct_promo_print" type="button"
                     role="tab" aria-controls="vendorproduct_promo_print" aria-selected="false">
-                    {{ __('vendor_product.vendor_product_promo') }}
+                    {{ __('vendor_product.vendor_product_promoprint') }}
                 </button>
             </li>
         </ul>

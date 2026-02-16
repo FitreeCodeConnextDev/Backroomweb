@@ -23,7 +23,7 @@
         <div class="flex flex-col mx-auto">
             <div class="p-4 mt-12 sm:ml-64">
                 <div class="w-full bg-white p-4 md:p-6">
-
+                    @yield('body')
                 </div>
             </div>
         </div>

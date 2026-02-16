@@ -5,6 +5,11 @@
         ->where('vendor_id', $vendor_id)
         ->first();
 
+    $product_info = DB::table('product_info')
+        ->select('product_id', 'product_desc')
+        ->where('rabbit_discount', 'Y')
+        ->get();
+
     // Check if $vendor_rabbit is not null before processing
     if ($vendor_rabbit && !empty($vendor_rabbit->day_use)) {
         $day_split = str_split($vendor_rabbit->day_use);
@@ -122,8 +127,14 @@
                 </div>
                 <div class="mt-6">
                     <label for="product_id" class="label_input"> {{ __('vendor.product_id') }} </label>
-                    <input type="text" class="input_text" name="product_id" id="product_id"
-                        value="{{ $vendor_rabbit->product_id ?? ' ' }}">
+                    <select name="product_id" class="input_text" id="product_id">
+                        <option value="" selected> {{ __('vendor.select_product') }} </option>
+                        @foreach ($product_info as $item)
+                            <option value="{{ $item->product_id }}" @if ($vendor_rabbit->product_id == $item->product_id) selected @endif>
+                                {{ $item->product_desc }}
+                            </option>
+                        @endforeach
+                    </select>
                 </div>
             </div>
             <div class="mt-4">

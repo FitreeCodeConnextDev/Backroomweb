@@ -36,7 +36,8 @@
         },
         "files": [
             "app/Helpers/PermissionHelper.php",
-            "app/Helpers/JasperReportHelper.php"
+            "app/Helpers/JasperReportHelper.php",
+            "app/Helpers/ImageHelper.php"
         ]
     },
     "autoload-dev": {

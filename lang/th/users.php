@@ -113,4 +113,18 @@ return [
     'user_name_required' => 'กรุณากรอกชื่อผู้ใช้',
     'user_pass_required' => 'กรุณากรอกรหัสผ่าน',
 
+
+    'change_password' => 'เปลี่ยนรหัสผ่าน',
+    'old_password' => 'รหัสผ่านเก่า',
+    'new_password' => 'รหัสผ่านใหม่',
+    'confirm_password' => 'ยืนยันรหัสผ่าน',
+    'old_password_required' => 'กรุณากรอกรหัสผ่านเก่า',
+    'new_password_required' => 'กรุณากรอกรหัสผ่านใหม่',
+    'confirm_new_password_required' => 'กรุณากรอกยืนยันรหัสผ่านใหม่',
+
+    'current_password_incorrect' => 'รหัสผ่านเดิมไม่ถูกต้อง',
+    'password_change_success' => 'เปลี่ยนรหัสผ่านสำเร็จ',
+    'password_change_failed' => 'เปลี่ยนรหัสผ่านไม่สำเร็จ',
+    'new_password_confirmed' => 'รหัสผ่านใหม่และยืนยันรหัสผ่านต้องตรงกัน',
+
 ];

@@ -155,7 +155,7 @@
             </div>
             <div>
                 <label for="businessdate" class="label_input">{{ __('branch.businessdate') }}</label>
-                <input type="date" pattern="\d{2}/\d{2}/\d{4}" id="businessdate" name="businessdate"
+                <input type="date" id="businessdate" name="businessdate"
                     class="input_text" />
                 @error('businessdate')
                     <p class="mt-2 text-sm text-red-600"><span class=" font-medium"> {{ __(__('menu.is_warning')) }} </span>

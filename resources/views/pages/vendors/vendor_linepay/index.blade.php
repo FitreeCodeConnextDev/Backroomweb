@@ -1,6 +1,10 @@
 @vite(['resources/css/app.css', 'resources/js/app.js'])
 @php
     $vendor_linepay = DB::table('vendorpromotionlinepay_info')->where('vendor_id', $vendor_id)->first();
+    $product_info = DB::table('product_info')
+        ->select('product_id', 'product_desc')
+        ->where('rabbit_discount', 'Y')
+        ->get();
 
     // Check if $vendor_linepay is not null before processing
     if ($vendor_linepay && !empty($vendor_linepay->day_use)) {
@@ -121,8 +125,14 @@
                 </div>
                 <div class="mt-6">
                     <label for="product_id" class="label_input"> {{ __('vendor.product_id') }} </label>
-                    <input type="text" class="input_text" name="product_id" id="product_id" readonly disabled
-                        value="{{ $vendor_linepay->product_id ?? ' ' }}">
+                    <select class="input_text" name="product_id" id="product_id" readonly disabled>
+                        <option value="" selected> {{ __('vendor.select_product') }} </option>
+                        @foreach ($product_info as $product)
+                            <option value="{{ $product->product_id }}"
+                                @if (isset($vendor_linepay->product_id) && $vendor_linepay->product_id == $product->product_id) selected @endif>
+                                {{ $product->product_desc }}</option>
+                        @endforeach
+                    </select>
                 </div>
             </div>
             <div class="mt-4">

@@ -17,7 +17,8 @@
     {{ __('menu.product_edit') }}
 @endsection
 @section('form-section')
-    <form id="product_form" action="{{ route('products.update', $product->product_id) }}" method="post">
+    <form id="product_form" action="{{ route('products.update', $product->product_id) }}" method="post"
+        enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div class="grid_page">
@@ -149,7 +150,7 @@
             <div>
                 <label for="type_group" class=" label_input">{{ __('product.type_group') }}</label>
                 <select name="type_group" class="input_text" id="type_group">
-                    <option value="  " selected disabled> {{ __('product.non_select') }} </option>
+                    <option value="null" selected disabled> {{ __('product.non_select') }} </option>
                     @foreach ($group_type as $item_type)
                         <option value=" {{ $item_type->type_group }} " @if ($product->type_group == $item_type->type_group) selected @endif>
                             {{ $item_type->description }} </option>
@@ -159,17 +160,43 @@
             <div>
                 <label for="gtype_group" class=" label_input">{{ __('product.gtype_group') }}</label>
                 <select name="gtype_group" class="input_text" id="gtype_group">
-                    <option value="  " selected disabled> {{ __('product.non_select') }} </option>
+                    <option value="null" selected disabled> {{ __('product.non_select') }} </option>
                     @foreach ($gtype_group as $item_gtype)
                         <option value=" {{ $item_gtype->gtype_group }} "
                             @if ($product->gtype_group == $item_gtype->gtype_group) selected @endif> {{ $item_gtype->description }} </option>
                     @endforeach
                 </select>
             </div>
+            <div>
+                @if (file_exists(storage_path('app/public/product/' . $product->product_id . '.bmp')))
+                    <img id="preview" class="h-auto max-w-xs rounded-2xl mb-2"
+                        src="{{ asset('storage/product/' . $product->product_id . '.bmp') }}?v={{ time() }}"
+                        alt="{{ __('product.product_img') }}" />
+                @else
+                    <img id="preview" class="h-auto max-w-xs rounded-2xl mb-2" src="{{ asset('storage/blank.jpg') }}"
+                        alt="{{ __('product.product_img') }}" />
+                @endif
+
+                <label for="product_img" class="label_input">{{ __('product.product_img') }}</label>
+
+                <input type="file" accept="image/*" aria-describedby="file_input_help" id="file_input"
+                    id="product_img" name="product_img" class="input_text" onchange="previewImage(this)" />
+                @error('product_img')
+                    <p class="mt-2 text-sm text-red-600"><span class="font-medium"> {{ __('menu.is_warning') }}
+                        </span>{{ $message }}</p>
+                @enderror
+                {{-- @if ($errors->any())
+                    <div class="error_alert" role="alert">
+                        <span class="font-medium text-xl">!{{ __('menu.is_warning') }}</span> {{ $errors->first() }}
+                    </div>
+                @endif --}}
+            </div>
 
         </div>
         <button type="submit" class="submit_btn"> {{ __('menu.button.save') }} </button>
-        <button type="button" onclick="history.back()" class="cancel_btn">{{ __('menu.button.cancel') }}</button>
+        <a href="{{ route('products.index') }}">
+            <button type="button" class="cancel_btn">{{ __('menu.button.cancel') }}</button>
+        </a>
     </form>
 @endsection
 @section('js-scripts')
