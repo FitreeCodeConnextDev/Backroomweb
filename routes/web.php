@@ -57,7 +57,7 @@ Route::middleware(['auth_user'])->group(function () {
 
         Route::resource('/vendor-page', VendorController::class);
         Route::post('/vendor_user', [VendorController::class, 'vendor_user'])->name('vendor_user');
-        Route::put('/vendor_user_delete/{vendor_id}/{user_id}', [VendorController::class, 'vendor_user_delete'])->name('vendor_user_delete');
+        Route::put('/vendor_user_delete/{user_id}/{vendor_id}', [VendorController::class, 'vendor_user_delete'])->name('vendor_user_delete');
 
         Route::put('vendor_funtion/{id}', [VendorController::class, 'vendor_function_update'])->name('vendor_function_update');
         Route::put('/vendor_promo_dis/{id}', [VendorController::class, 'vendor_promo_dis'])->name('vendor_promo_dis');

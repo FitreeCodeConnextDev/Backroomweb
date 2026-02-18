@@ -379,40 +379,52 @@ class VendorController extends Controller
             return response()->json(['error' => true]);
         }
     }
-    public function vendor_user_delete($vendor_id, $user_id)
+    public function vendor_user_delete($user_id, $vendor_id)
     {
 
-        // dd($vendor_user_data);
-        $delete_vendor_user = DB::table('vendoruser_info')
-            ->where('vendor_id', $vendor_id)
-            ->where('user_id', $user_id)
-            ->delete();
-        if (isset($delete_vendor_user)) {
-            Log::channel('activity')->notice(session('auth_user.user_id') . ' Removed User from Vendor', [
+        // dd($vendor_id, $user_id);
+        try {
+            $delete_vendor_user = DB::table('vendoruser_info')
+                ->where('vendor_id', $vendor_id)
+                ->where('user_id', $user_id)
+                ->delete();
+            if (isset($delete_vendor_user)) {
+                Log::channel('activity')->notice(session('auth_user.user_id') . ' Removed User from Vendor', [
+                    'action' => 'remove_user',
+                    'vendor_id' => $vendor_id,
+                    'user_id' => $user_id,
+                    'timestamp' => Carbon::now()->toDateTimeString(),
+                    'action_by' => session('auth_user.user_id'),
+
+                ]);
+                sweetalert()
+                    ->success(__('menu.delete_is_success'));
+                return redirect()->back();
+            } else {
+                Log::channel('activity')->error(session('auth_user.user_id') . ' Failed to Remove User from Vendor', [
+                    'action' => 'remove_user',
+                    'vendor_id' => $vendor_id,
+                    'user_id' => $user_id,
+                    'action_by' => session('auth_user.user_id'),
+
+                ]);
+                sweetalert()
+                    ->error(__('menu.delete_is_failed'));
+                return redirect()->back();
+            }
+        } catch (\Exception $e) {
+            Log::channel('activity')->error(session('auth_user.user_id') . ' Failed to Remove User from Vendor', [
                 'action' => 'remove_user',
                 'vendor_id' => $vendor_id,
                 'user_id' => $user_id,
                 'timestamp' => Carbon::now()->toDateTimeString(),
                 'action_by' => session('auth_user.user_id'),
-
-            ]);
-            // return response()->json(['success' => true]);
-            sweetalert()
-
-                ->success(__('menu.delete_is_success'));
-            return redirect()->back();
-        } else {
-            Log::channel('activity')->error(session('auth_user.user_id') . ' Failed to Remove User from Vendor', [
-                'action' => 'remove_user',
-                'vendor_id' => $vendor_id,
-                'user_id' => $user_id,
-                'action_by' => session('auth_user.user_id'),
+                'error_message' => $e->getMessage(),
 
             ]);
             sweetalert()
-                ->error(__('menu.delete_is_failed'));
+                ->error(__('menu.delete_is_failed') . ' ' . $e->getMessage());
             return redirect()->back();
-            // return response()->json(['error' => true]);
         }
     }
     public function vendor_function_update(Request $request, $id)
