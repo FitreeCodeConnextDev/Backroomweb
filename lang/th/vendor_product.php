@@ -173,6 +173,7 @@ return [
     'clone_product_success' => 'โคลนสินค้าสำเร็จ',
     'clone_product_failed' => 'โคลนสินค้าไม่สำเร็จ',
     'clone_failed_product_exists' => 'โคลนสินค้าล้มเหลว หรือร้านค้าเป้าหมายมีสินค้าบางรายการที่ตรงกับร้านค้าเดิมอยู่แล้ว',
+    'clone_failed_no_target_vendor' => 'โปรดเลือก Vendor ปลายทางสำหรับการโคลนสินค้า',
 
 
 

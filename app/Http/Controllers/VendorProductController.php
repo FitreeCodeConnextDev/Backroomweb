@@ -933,6 +933,11 @@ class VendorProductController extends Controller
         $product_vendor_id = $request->input('product_vendor_id');
         $clone_vendor_id = $request->input('clone_vendor_id');
 
+        if ($clone_vendor_id == null) {
+            
+            return back()->with('clone_error', __('vendor_product.clone_failed_no_target_vendor'));
+        }
+
         try {
             // 1. ดึงรายการสินค้าทั้งหมดจาก Vendor ต้นทาง
             $product_to_clone = DB::table('vendorproduct_info')
@@ -940,7 +945,7 @@ class VendorProductController extends Controller
                 ->get();
 
             if ($product_to_clone->isEmpty()) {
-                return back()->with('clone_failed', __('vendor_product.clone_failed_no_products'));
+                return back()->with('clone_error', __('vendor_product.clone_failed_no_products'));
             }
 
             // 2. ดึงรายการสินค้าที่ใช้งานอยู่ (activeflag = 1) ของ Vendor ปลายทางมาเพื่อเช็คซ้ำ
@@ -965,7 +970,14 @@ class VendorProductController extends Controller
 
                         DB::table('vendorproduct_info')->insert($new_product);
                     } else {
-
+                        Log::channel('activity')->warning(session('auth_user.user_id') . ' attempted to clone product that already exists in target vendor: ' . $product->product_id, [
+                            'source_vendor_id' => $product->vendor_id,
+                            'target_vendor_id' => $clone_vendor_id,
+                            'product_id' => $product->product_id,
+                            'action' => 'clone_skipped',
+                            'cloned_at' => now()->toDateTimeString(),
+                            'cloned_by' => session('auth_user.user_id'),
+                        ]);
                         return back()->with('clone_error', __('vendor_product.clone_failed_product_exists'));
                     }
                 }
