@@ -934,7 +934,7 @@ class VendorProductController extends Controller
         $clone_vendor_id = $request->input('clone_vendor_id');
 
         if ($clone_vendor_id == null) {
-            
+
             return back()->with('clone_error', __('vendor_product.clone_failed_no_target_vendor'));
         }
 
@@ -947,6 +947,9 @@ class VendorProductController extends Controller
             if ($product_to_clone->isEmpty()) {
                 return back()->with('clone_error', __('vendor_product.clone_failed_no_products'));
             }
+            $vendor_info = DB::table('vendor_info')
+                ->where('vendor_id', $clone_vendor_id)
+                ->first();
 
             // 2. ดึงรายการสินค้าที่ใช้งานอยู่ (activeflag = 1) ของ Vendor ปลายทางมาเพื่อเช็คซ้ำ
             // ใช้ pluck เพื่อดึงเฉพาะ product_id เก็บไว้ใน Array เพื่อความรวดเร็วในการเช็ค
@@ -957,7 +960,7 @@ class VendorProductController extends Controller
                 ->toArray();
 
             // 3. ใช้ Transaction เพื่อป้องกันข้อมูลเข้าไม่ครบหากเกิด Error ระหว่างทาง
-            DB::transaction(function () use ($product_to_clone, $clone_vendor_id, $existing_product_ids) {
+            DB::transaction(function () use ($product_to_clone, $clone_vendor_id, $existing_product_ids, $vendor_info) {
                 foreach ($product_to_clone as $product) {
 
                     // 4. เช็คเรื่องซ้ำ: ถ้าไม่มี product_id นี้ในรายการสินค้าที่ active ของปลายทาง ให้ทำการ Insert
@@ -966,7 +969,9 @@ class VendorProductController extends Controller
 
                         // อัปเดตข้อมูลเป็นของ Vendor ใหม่
                         $new_product['vendor_id'] = $clone_vendor_id;
-                        $new_product['term_id']   = $product->term_id;
+                        $new_product['branch_id'] = $vendor_info->branch_id;
+                        $new_product['term_id']   = $vendor_info->term_id;
+
 
                         DB::table('vendorproduct_info')->insert($new_product);
                     } else {

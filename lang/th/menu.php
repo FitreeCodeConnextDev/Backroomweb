@@ -189,4 +189,6 @@ return [
         'deleted_yes' => 'ใช่ ลบเลย',
         'deleted_no' => 'ไม่ ยกเลิก',
 
+        'required_field' => '*',
+
 ];

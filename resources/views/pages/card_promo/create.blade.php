@@ -22,7 +22,8 @@
         @csrf
         <div class="grid gap-6 mb-4 md:grid-cols-3 border-b-2 border-gray-200 py-4">
             <div>
-                <label for="promo_code" class="label_input"> {{ __('card_promo.promo_code') }} </label>
+                <label for="promo_code" class="label_input"> {{ __('card_promo.promo_code') }} <span
+                        class="text-red-600 text-md">{{ __('menu.required_field') }}</span></label>
                 <input type="text" id="promo_code" name="promo_code" maxlength="2" placeholder="..." class="input_text"
                     value="" required />
                 @error('promo_code')
@@ -32,7 +33,8 @@
                 @enderror
             </div>
             <div>
-                <label for="promo_desc" class=" label_input"> {{ __('card_promo.promo_desc') }} </label>
+                <label for="promo_desc" class=" label_input"> {{ __('card_promo.promo_desc') }} <span
+                        class="text-red-600 text-md">{{ __('menu.required_field') }}</span></label>
                 <input type="text" id="promo_desc" name="promo_desc" class="input_text " value="" required />
                 @error('promo_desc')
                     <p class="mt-2 text-sm text-red-600 "><span class="font-medium">{{ __('menu.is_warning') }}</span>
@@ -41,7 +43,8 @@
                 @enderror
             </div>
             <div>
-                <label for="promo_seq" class=" label_input"> {{ __('card_promo.promo_seq') }} </label>
+                <label for="promo_seq" class=" label_input"> {{ __('card_promo.promo_seq') }} <span
+                        class="text-red-600 text-md">{{ __('menu.required_field') }}</span></label>
                 <input type="number" id="promo_seq" name="promo_seq" placeholder=" 1, 2" class="input_text" value=""
                     required />
                 @error('promo_seq')
@@ -51,7 +54,8 @@
                 @enderror
             </div>
             <div>
-                <label for="start_date" class=" label_input"> {{ __('card_promo.start_date') }} </label>
+                <label for="start_date" class=" label_input"> {{ __('card_promo.start_date') }} <span
+                        class="text-red-600 text-md">{{ __('menu.required_field') }}</span></label>
                 <input type="date" id="start_date" name="start_date" class="input_text" />
                 @error('start_date')
                     <p class="mt-2 text-sm text-red-600 "><span class="font-medium">{{ __('menu.is_warning') }}</span>
@@ -60,7 +64,8 @@
                 @enderror
             </div>
             <div>
-                <label for="end_date" class=" label_input">{{ __('card_promo.end_date') }}</label>
+                <label for="end_date" class=" label_input">{{ __('card_promo.end_date') }} <span
+                        class="text-red-600 text-md">{{ __('menu.required_field') }}</span></label>
                 <input type="date" id="end_date" name="end_date" class="input_text" />
                 @error('end_date')
                     <p class="mt-2 text-sm text-red-600 "><span class="font-medium">{{ __('menu.is_warning') }}</span>
@@ -169,7 +174,8 @@
                         <div class=" rounded-lg shadow  p-4 md:p-6 mt-2 m-2">
                             <h2 class="text-md font-semibold">การซื้อ</h2>
                             <section class="mt-2">
-                                <label for="buy_amt" class=" label_input">{{ __('card_promo.buy_amt') }}</label>
+                                <label for="buy_amt" class=" label_input">{{ __('card_promo.buy_amt') }} <span
+                                        class="text-red-600 text-md">{{ __('menu.required_field') }}</span></label>
                                 <input type="number" id="buy_amt" name="buy_amt" class="input_text " value=""
                                     required />
                                 @error('buy_amt')
@@ -180,7 +186,8 @@
                                 @enderror
                             </section>
                             <section class="mt-2">
-                                <label for="get_amt" class=" label_input">{{ __('card_promo.get_amt') }}</label>
+                                <label for="get_amt" class=" label_input">{{ __('card_promo.get_amt') }} <span
+                                        class="text-red-600 text-md">{{ __('menu.required_field') }}</span></label>
                                 <input type="number" id="get_amt" name="get_amt" class="input_text " value=""
                                     required />
                                 @error('get_amt')
@@ -191,7 +198,8 @@
                                 @enderror
                             </section>
                             <section class="mt-2">
-                                <label for="get_point" class=" label_input">{{ __('card_promo.get_point') }}</label>
+                                <label for="get_point" class=" label_input">{{ __('card_promo.get_point') }} <span
+                                        class="text-red-600 text-md">{{ __('menu.required_field') }}</span></label>
                                 <input type="number" id="get_point" name="get_point" class="input_text "
                                     value="" required />
                                 @error('get_point')
@@ -206,7 +214,8 @@
                         <div class=" rounded-lg shadow  p-4 md:p-6 mt-2 m-2">
                             <h2 class="text-md font-semibold">{{ __('card_promo.adjust') }}</h2>
                             <section class="mt-2">
-                                <label for="adj_amt" class=" label_input">{{ __('card_promo.adj_amt') }}</label>
+                                <label for="adj_amt" class=" label_input">{{ __('card_promo.adj_amt') }} <span
+                                        class="text-red-600 text-md">{{ __('menu.required_field') }}</span></label>
                                 <input type="number" id="adj_amt" name="adj_amt" class="input_text " value=""
                                     required />
                                 @error('adj_amt')
@@ -217,7 +226,8 @@
                                 @enderror
                             </section>
                             <section class="mt-2">
-                                <label for="adjget_amt" class=" label_input">{{ __('card_promo.adjget_amt') }}</label>
+                                <label for="adjget_amt" class=" label_input">{{ __('card_promo.adjget_amt') }} <span
+                                        class="text-red-600 text-md">{{ __('menu.required_field') }}</span></label>
                                 <input type="number" id="adjget_amt" name="adjget_amt" class="input_text "
                                     value="" required />
                                 @error('adjget_amt')
@@ -228,8 +238,8 @@
                                 @enderror
                             </section>
                             <section class="mt-2">
-                                <label for="adjget_point"
-                                    class=" label_input">{{ __('card_promo.adjget_point') }}</label>
+                                <label for="adjget_point" class=" label_input">{{ __('card_promo.adjget_point') }} <span
+                                        class="text-red-600 text-md">{{ __('menu.required_field') }}</span></label>
                                 <input type="number" id="adjget_point" name="adjget_point" class="input_text "
                                     value="" required />
                                 @error('adjget_point')
@@ -298,18 +308,21 @@
                 </div>
                 <div class="grid gap-6 mb-4 md:grid-cols-3 mt-3">
                     <div>
-                        <label for="expire_day" class="label_input">{{ __('card_promo.expire_day') }}</label>
+                        <label for="expire_day" class="label_input">{{ __('card_promo.expire_day') }} <span
+                                class="text-red-600 text-md">{{ __('menu.required_field') }}</span></label>
                         <input type="number" id="expire_day" name="expire_day" class="input_text "
-                            value="{{ old('expire_day') }}" />
+                            value="{{ old('expire_day') }}" required />
                     </div>
                     <div>
-                        <label for="pio_rity" class="label_input">{{ __('card_promo.priority') }}</label>
+                        <label for="pio_rity" class="label_input">{{ __('card_promo.priority') }} <span
+                                class="text-red-600 text-md">{{ __('menu.required_field') }}</span></label>
                         <input type="number" id="pio_rity" name="priority" class="input_text "
-                            value="{{ old('priority') }}" />
+                            value="{{ old('priority') }}" required />
                     </div>
                     <div>
-                        <label for="deposit" class="label_input">{{ __('card_promo.deposit') }}</label>
-                        <input type="number" id="deposit" name="deposit" class="input_text "
+                        <label for="deposit" class="label_input">{{ __('card_promo.deposit') }} <span
+                                class="text-red-600 text-md">{{ __('menu.required_field') }}</span></label>
+                        <input type="number" id="deposit" name="deposit" class="input_text" required
                             value="{{ old('deposit') }}" />
                     </div>
                     <div>
@@ -354,11 +367,11 @@
             </a>
         </div>
     </form>
-    @if ($errors->any())
+    {{-- @if ($errors->any())
         <div class="error_alert" role="alert">
             <span class="font-medium text-xl">!{{ __('menu.is_warning') }}</span> {{ $errors->first() }}
         </div>
-    @endif
+    @endif --}}
 @endsection
 @section('js-scripts')
     <script type="module">
@@ -378,6 +391,9 @@
                     adj_amt: "required",
                     adjget_amt: "required",
                     adjget_point: "required",
+                    expire_day: "required",
+                    priority: "required",
+                    deposit: "required",
                 },
                 messages: {
                     promo_code: `{{ __('card_promo.promo_code_valid') }}`,
@@ -393,6 +409,9 @@
                     adj_amt: `{{ __('card_promo.adj_amt_valid') }}`,
                     adjget_amt: `{{ __('card_promo.adjget_amt_valid') }}`,
                     adjget_point: `{{ __('card_promo.adjget_point_valid') }}`,
+                    expire_day: `{{ __('card_promo.expire_day_required') }}`,
+                    priority: `{{ __('card_promo.piority_required') }}`,
+                    deposit: `{{ __('card_promo.deposit_required') }}`,
                 }
             });
         });

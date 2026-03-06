@@ -74,4 +74,5 @@ return [
     'piority_required' =>'โปรดกรอกลำดับการตัดเงินบนบัตร',
     'deposit_required' =>'โปรดกรอกค่ามัดจำ',
     'expire_checkby_required' =>'โปรดเลือกวิธีการนับวัน',
+    ''
 ];

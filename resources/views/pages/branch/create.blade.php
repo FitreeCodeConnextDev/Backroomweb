@@ -22,7 +22,8 @@
         @csrf
         <div class="grid gap-6 mb-4 grid-cols-1 lg:grid-cols-3">
             <div>
-                <label for="branch_id" class="label_input">{{ __('branch.branch_id') }}</label>
+                <label for="branch_id" class="label_input">{{ __('branch.branch_id') }} <span
+                        class="text-red-600 text-md">{{ __('menu.required_field') }}</span></label>
                 <input type="text" id="branch_id" maxlength="6" name="branch_id" placeholder="..." class="input_text"
                     value="" required />
                 @error('branch_id')
@@ -31,7 +32,8 @@
                 @enderror
             </div>
             <div>
-                <label for="branch_name" class="label_input">{{ __('branch.branch_name') }}</label>
+                <label for="branch_name" class="label_input">{{ __('branch.branch_name') }} <span
+                        class="text-red-600 text-md">{{ __('menu.required_field') }}</span></label>
                 <input type="text" id="branch_name" name="branch_name" placeholder=" Kevin, David" class="input_text "
                     value="" required />
                 @error('branch_name')
@@ -51,7 +53,8 @@
                 </label>
             </div>
             <div>
-                <label for="branch_addr1" class="label_input">{{ __('branch.branch_addr1') }}</label>
+                <label for="branch_addr1" class="label_input">{{ __('branch.branch_addr1') }} <span
+                        class="text-red-600 text-md">{{ __('menu.required_field') }}</span></label>
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-2">
                     <div>
                         <input type="text" id="branch_addr1" name="branch_addr1" placeholder="..." class="input_text "
@@ -68,7 +71,8 @@
                 </div>
             </div>
             <div>
-                <label for="branch_tel" class=" label_input">{{ __('branch.branch_tel') }}</label>
+                <label for="branch_tel" class=" label_input">{{ __('branch.branch_tel') }} <span
+                        class="text-red-600 text-md">{{ __('menu.required_field') }}</span></label>
                 <input type="text" id="branch_tel" maxlength="10" name="branch_tel" placeholder="000-000-0000"
                     class="input_text " value="" required />
                 @error('branch_tel')
@@ -77,7 +81,8 @@
                 @enderror
             </div>
             <div>
-                <label for="tax_id" class=" label_input">{{ __('branch.tax_id') }}</label>
+                <label for="tax_id" class=" label_input">{{ __('branch.tax_id') }} <span
+                        class="text-red-600 text-md">{{ __('menu.required_field') }}</span></label>
                 <input type="text" id="tax_id" maxlength="13" name="tax_id" placeholder="..." class="input_text "
                     value="" required />
                 @error('tax_id')
@@ -86,7 +91,8 @@
                 @enderror
             </div>
             <div>
-                <label for="tax_name" class=" label_input">{{ __('branch.tax_name') }}</label>
+                <label for="tax_name" class=" label_input">{{ __('branch.tax_name') }} <span
+                        class="text-red-600 text-md">{{ __('menu.required_field') }}</span></label>
                 <input type="text" id="tax_name" name="tax_name" placeholder="..." class="input_text " value=""
                     required />
                 @error('tax_name')
@@ -95,11 +101,14 @@
                 @enderror
             </div>
             <div>
-                <label for="tax_branchseq" class=" label_input">{{ __('branch.tax_branchseq') }}</label>
-                <input type="text" id="tax_branchseq" name="tax_branchseq" maxlength="30" placeholder="..." class="input_text" />
+                <label for="tax_branchseq" class=" label_input">{{ __('branch.tax_branchseq') }} <span
+                        class="text-red-600 text-md">{{ __('menu.required_field') }}</span></label>
+                <input type="text" id="tax_branchseq" name="tax_branchseq" maxlength="30" placeholder="..."
+                    class="input_text" />
             </div>
             <div>
-                <label for="tax_addr1" class="label_input">{{ __('branch.tax_addr1') }}</label>
+                <label for="tax_addr1" class="label_input">{{ __('branch.tax_addr1') }} <span
+                        class="text-red-600 text-md">{{ __('menu.required_field') }}</span></label>
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-2">
                     <div>
                         <textarea id="tax_addr1" name="tax_addr1" placeholder="..." class="input_text " required></textarea>
@@ -149,21 +158,20 @@
                 @enderror
             </div>
             <div>
-                <label for="batchno" class=" label_input">{{ __('branch.batchno') }}</label>
+                <label for="batchno" class=" label_input">{{ __('branch.batchno') }} <span class="text-red-600 text-md">{{ __('menu.required_field') }}</span></label>
                 <input type="text" id="batchno" name="batchno" placeholder="78" class="input_text" value=""
                     required />
             </div>
             <div>
                 <label for="businessdate" class="label_input">{{ __('branch.businessdate') }}</label>
-                <input type="date" id="businessdate" name="businessdate"
-                    class="input_text" />
+                <input type="date" id="businessdate" name="businessdate" class="input_text" />
                 @error('businessdate')
                     <p class="mt-2 text-sm text-red-600"><span class=" font-medium"> {{ __(__('menu.is_warning')) }} </span>
                         {{ $message }} </p>
                 @enderror
             </div>
             <div>
-                <label for="deposit" class=" label_input">{{ __('branch.deposit') }}</label>
+                <label for="deposit" class=" label_input">{{ __('branch.deposit') }} <span class="text-red-600 text-md">{{ __('menu.required_field') }}</span></label>
                 <input type="text" id="deposit" name="deposit" placeholder="0.00" class="input_text "
                     value="0.00" required />
                 @error('deposit')
@@ -172,7 +180,7 @@
                 @enderror
             </div>
             <div>
-                <label for="vatrate" class=" label_input">{{ __('branch.vatrate') }}</label>
+                <label for="vatrate" class=" label_input">{{ __('branch.vatrate') }} <span class="text-red-600 text-md">{{ __('menu.required_field') }}</span></label>
                 <input type="text" id="vatrate" name="vatrate" placeholder="0.00" value="7.00"
                     class="input_text " value="" required />
                 @error('vatrate')

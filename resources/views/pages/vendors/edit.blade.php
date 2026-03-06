@@ -22,16 +22,19 @@
         <div class="flex flex-row border border-gray-200 rounded-lg mt-3 ">
             <div class="grid grid-cols-1 lg:grid-cols-6 gap-3 p-7 w-full ">
                 <div>
-                    <label for="vendor_id" class="label_input"> {{ __('vendor.vendor_id') }} </label>
+                    <label for="vendor_id" class="label_input"> {{ __('vendor.vendor_id') }} <span
+                            class="text-red-600 text-md">{{ __('menu.required_field') }}</span></label>
                     <input type="text" id="vendor_id" class="input_text" value="{{ $vendor_data->vendor_id }}" disabled>
                 </div>
                 <div>
-                    <label for="branch_id" class="label_input">{{ __('vendor.branch_id') }}</label>
+                    <label for="branch_id" class="label_input">{{ __('vendor.branch_id') }} <span
+                            class="text-red-600 text-md">{{ __('menu.required_field') }}</span></label>
                     <input type="text" id="branch_id" name="branch_id" class="input_text"
                         value="{{ $vendor_data->branch_id }}" readonly>
                 </div>
                 <div>
-                    <label for="term_id" class="label_input">{{ __('vendor.term_id') }}</label>
+                    <label for="term_id" class="label_input">{{ __('vendor.term_id') }} <span
+                            class="text-red-600 text-md">{{ __('menu.required_field') }}</span></label>
                     {{-- <input type="text" id="term_id" class="input_text" value="{{ $vendor_data->term_id }}"> --}}
                     <select name="term_id" id="term_id" class="input_text">
                         <option value="000000" @if ($vendor_data->term_id == 000000) selected @endif>000000</option>
@@ -43,27 +46,32 @@
                     </select>
                 </div>
                 <div>
-                    <label for="term_seq" class="label_input"> {{ __('vendor.term_seq') }} </label>
-                    <input type="text" id="term_seq" name="term_seq" class="input_text"
+                    <label for="term_seq" class="label_input"> {{ __('vendor.term_seq') }} <span
+                            class="text-red-600 text-md">{{ __('menu.required_field') }}</span></label>
+                    <input type="number" id="term_seq" name="term_seq" class="input_text"
                         value="{{ $vendor_data->term_seq }}">
                 </div>
                 <div>
-                    <label for="issuedate" class="label_input"> {{ __('vendor.issuedate') }} </label>
+                    <label for="issuedate" class="label_input"> {{ __('vendor.issuedate') }} <span
+                            class="text-red-600 text-md">{{ __('menu.required_field') }}</span></label>
                     <input type="date" name="issuedate" id="issuedate" class="input_text"
                         value="{{ date('Y-m-d', strtotime($vendor_data->issuedate)) }}">
                 </div>
                 <div>
-                    <label for="validdate" class="label_input"> {{ __('vendor.validdate') }} </label>
+                    <label for="validdate" class="label_input"> {{ __('vendor.validdate') }} <span
+                            class="text-red-600 text-md">{{ __('menu.required_field') }}</span></label>
                     <input type="date" id="validdate" name="validdate" class="input_text"
                         value="{{ date('Y-m-d', strtotime($vendor_data->validdate)) }}">
                 </div>
                 <div>
-                    <label for="vendor_name" class="label_input"> {{ __('vendor.vendor_name') }} </label>
+                    <label for="vendor_name" class="label_input"> {{ __('vendor.vendor_name') }} <span
+                            class="text-red-600 text-md">{{ __('menu.required_field') }}</span></label>
                     <input type="text" id="vendor_name" name="vendor_name" class="input_text"
                         value="{{ $vendor_data->vendor_name }}">
                 </div>
                 <div>
-                    <label for="vendor_food" class="label_input"> {{ __('vendor.vendor_food') }} </label>
+                    <label for="vendor_food" class="label_input"> {{ __('vendor.vendor_food') }} <span
+                            class="text-red-600 text-md">{{ __('menu.required_field') }}</span></label>
                     <input type="text" id="vendor_food" name="vendor_food" class="input_text"
                         value="{{ $vendor_data->vendor_food }}">
                 </div>
@@ -74,16 +82,18 @@
                 </div>
                 <div>
                     <label for="ar_sap" class="label_input"> {{ __('vendor.ar_sap') }} </label>
-                    <input type="text" id="ar_sap" name="ar_sap" class="input_text"
+                    <input type="number" id="ar_sap" name="ar_sap" class="input_text"
                         value="{{ $vendor_data->ar_sap }}">
                 </div>
                 <div>
-                    <label for="vendorno" class="label_input"> {{ __('vendor.vendor_no') }} </label>
+                    <label for="vendorno" class="label_input"> {{ __('vendor.vendor_no') }} <span
+                            class="text-red-600 text-md">{{ __('menu.required_field') }}</span></label>
                     <input type="text" id="vendorno" name="vendorno" class="input_text"
                         value="{{ $vendor_data->vendorno }}">
                 </div>
                 <div>
-                    <label for="productno" class="label_input"> {{ __('vendor.product_no') }} </label>
+                    <label for="productno" class="label_input"> {{ __('vendor.product_no') }} <span
+                            class="text-red-600 text-md">{{ __('menu.required_field') }}</span></label>
                     <input type="text" id="productno" name="productno" class="input_text"
                         value="{{ $vendor_data->productno }}">
                 </div>
@@ -98,7 +108,8 @@
                         value="{{ $vendor_data->taxbranch }}">
                 </div>
                 <div>
-                    <label for="owner_shop" class="label_input"> {{ __('vendor.owner_shop') }} </label>
+                    <label for="owner_shop" class="label_input"> {{ __('vendor.owner_shop') }} <span
+                            class="text-red-600 text-md">{{ __('menu.required_field') }}</span></label>
                     <select class="input_text" id="owner_shop" name="owner_shop">
                         {{-- <option value="N" @if ($vendor_data->owner_shop == ' ') selected @endif> </option> --}}
                         <option value="N" @if ($vendor_data->owner_shop == 'N') selected @endif>
@@ -123,17 +134,20 @@
                         value="{{ $vendor_data->ipaddress }}">
                 </div>
                 <div>
-                    <label for="txnno" class="label_input"> {{ __('vendor.txnno') }} </label>
+                    <label for="txnno" class="label_input"> {{ __('vendor.txnno') }} <span
+                            class="text-red-600 text-md">{{ __('menu.required_field') }}</span></label>
                     <input type="text" id="txnno" name="txnno" class="input_text" readonly
                         value="{{ $vendor_data->txnno }}">
                 </div>
                 <div>
-                    <label for="vendor_batchno" class="label_input"> {{ __('vendor.vendor_batchno') }} </label>
+                    <label for="vendor_batchno" class="label_input"> {{ __('vendor.vendor_batchno') }} <span
+                            class="text-red-600 text-md">{{ __('menu.required_field') }}</span></label>
                     <input type="text" id="vendor_batchno" name="vendor_batchno" class="input_text" readonly
                         value="{{ $vendor_data->vendor_batchno }}">
                 </div>
                 <div>
-                    <label for="billcount" class="label_input"> {{ __('vendor.vendor_billcount') }} </label>
+                    <label for="billcount" class="label_input"> {{ __('vendor.vendor_billcount') }} <span
+                            class="text-red-600 text-md">{{ __('menu.required_field') }}</span></label>
                     <input type="text" id="billcount" name="billcount" class="input_text" readonly
                         value="{{ $vendor_data->billcount }}">
                 </div>
@@ -389,8 +403,8 @@
             // const table = document.querySelector("#vendorproduct_promo-table");
             // const table = document.querySelector("#vendorproduct_promo_print-table");
 
-            
-            
+
+
         });
     </script>
 @endsection

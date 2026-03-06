@@ -29,7 +29,8 @@
                         $vendor_ids = str_pad(($select_vendor_id ?? 0) + 1, 6, '0', STR_PAD_LEFT);
                     @endphp
                     <div>
-                        <label for="vendor_id" class="label_input"> {{ __('vendor.vendor_id') }} </label>
+                        <label for="vendor_id" class="label_input"> {{ __('vendor.vendor_id') }} <span
+                                class="text-red-600 text-md">{{ __('menu.required_field') }}</span></label>
                         <input type="text" id="vendor_id" readonly name="vendor_id" class="input_text"
                             value="{{ $vendor_ids }}" maxlength="6">
                         @error('vendor_id')
@@ -40,7 +41,8 @@
                     </div>
                     @if (session('auth_user.branch_id') == '000000')
                         <div>
-                            <label for="branch_id" class="label_input">{{ __('vendor.branch_id') }}</label>
+                            <label for="branch_id" class="label_input">{{ __('vendor.branch_id') }} <span
+                                    class="text-red-600 text-md">{{ __('menu.required_field') }}</span></label>
                             <select name="branch_id" id="branch_id" class="input_text" required>
                                 <option value="000000" selected>000000</option>
                                 @foreach ($branch as $branches)
@@ -57,7 +59,8 @@
                         </div>
                     @else
                         <div>
-                            <label for="branch_id" class="label_input">{{ __('vendor.branch_id') }}</label>
+                            <label for="branch_id" class="label_input">{{ __('vendor.branch_id') }} <span
+                                    class="text-red-600 text-md">{{ __('menu.required_field') }}</span></label>
                             <input type="text" readonly id="branch_id" name="branch_id" value="{{ $user_branch_id }}"
                                 class="input_text" required>
                             <div>
@@ -72,7 +75,8 @@
                         </div>
                     @endif
                     <div>
-                        <label for="term_id" class="label_input">{{ __('vendor.term_id') }}</label>
+                        <label for="term_id" class="label_input">{{ __('vendor.term_id') }} <span
+                                class="text-red-600 text-md">{{ __('menu.required_field') }}</span></label>
                         <select name="term_id" id="term_id" class="input_text" required>
                             <option value="000000" selected>000000</option>
                         </select>
@@ -84,8 +88,9 @@
                         @enderror
                     </div>
                     <div>
-                        <label for="term_seq" class="label_input"> {{ __('vendor.term_seq') }} </label>
-                        <input type="text" name="term_seq" id="term_seq" class="input_text">
+                        <label for="term_seq" class="label_input"> {{ __('vendor.term_seq') }} <span
+                                class="text-red-600 text-md">{{ __('menu.required_field') }}</span></label>
+                        <input type="number" name="term_seq" id="term_seq" class="input_text" required>
                         @error('term_seq')
                             <p class="mt-2 text-sm text-red-600 "><span class="font-medium"> {{ __('menu.is_warning') }}
                                 </span>
@@ -94,8 +99,9 @@
                         @enderror
                     </div>
                     <div>
-                        <label for="issuedate" class="label_input"> {{ __('vendor.issuedate') }} </label>
-                        <input type="date" name="issuedate" id="issuedate" class="input_text">
+                        <label for="issuedate" class="label_input"> {{ __('vendor.issuedate') }} <span
+                                class="text-red-600 text-md">{{ __('menu.required_field') }}</span></label>
+                        <input type="date" name="issuedate" id="issuedate" class="input_text" required>
                         @error('issuedate')
                             <p class="mt-2 text-sm text-red-600 "><span class="font-medium"> {{ __('menu.is_warning') }}
                                 </span>
@@ -104,8 +110,9 @@
                         @enderror
                     </div>
                     <div>
-                        <label for="validdate" class="label_input"> {{ __('vendor.validdate') }} </label>
-                        <input type="date" name="validdate" id="validdate" class="input_text">
+                        <label for="validdate" class="label_input"> {{ __('vendor.validdate') }} <span
+                                class="text-red-600 text-md">{{ __('menu.required_field') }}</span></label>
+                        <input type="date" name="validdate" id="validdate" class="input_text" required>
                         @error('validdate')
                             <p class="mt-2 text-sm text-red-600 "><span class="font-medium"> {{ __('menu.is_warning') }}
                                 </span>
@@ -114,8 +121,9 @@
                         @enderror
                     </div>
                     <div>
-                        <label for="vendor_name" class="label_input"> {{ __('vendor.vendor_name') }} </label>
-                        <input type="text" name="vendor_name" id="vendor_name" class="input_text">
+                        <label for="vendor_name" class="label_input"> {{ __('vendor.vendor_name') }} <span
+                                class="text-red-600 text-md">{{ __('menu.required_field') }}</span></label>
+                        <input type="text" name="vendor_name" id="vendor_name" class="input_text" required>
                         @error('vendor_name')
                             <p class="mt-2 text-sm text-red-600 "><span class="font-medium"> {{ __('menu.is_warning') }}
                                 </span>
@@ -124,8 +132,9 @@
                         @enderror
                     </div>
                     <div>
-                        <label for="vendor_food" class="label_input"> {{ __('vendor.vendor_food') }} </label>
-                        <input type="text" name="vendor_food" id="vendor_food" class="input_text">
+                        <label for="vendor_food" class="label_input"> {{ __('vendor.vendor_food') }} <span
+                                class="text-red-600 text-md">{{ __('menu.required_field') }}</span></label>
+                        <input type="text" name="vendor_food" id="vendor_food" class="input_text" required>
                         @error('vendor_food')
                             <p class="mt-2 text-sm text-red-600 "><span class="font-medium"> {{ __('menu.is_warning') }}
                                 </span>
@@ -145,7 +154,7 @@
                     </div>
                     <div>
                         <label for="ar_sap" class="label_input"> {{ __('vendor.ar_sap') }} </label>
-                        <input type="text" name="ar_sap" id="ar_sap" class="input_text">
+                        <input type="number" name="ar_sap" id="ar_sap" class="input_text">
                         @error('ar_sap')
                             <p class="mt-2 text-sm text-red-600 "><span class="font-medium"> {{ __('menu.is_warning') }}
                                 </span>
@@ -154,8 +163,9 @@
                         @enderror
                     </div>
                     <div>
-                        <label for="vendorno" class="label_input"> {{ __('vendor.vendor_no') }} </label>
-                        <input type="text" name="vendorno" id="vendorno" class="input_text">
+                        <label for="vendorno" class="label_input"> {{ __('vendor.vendor_no') }} <span
+                                class="text-red-600 text-md">{{ __('menu.required_field') }}</span></label>
+                        <input type="text" name="vendorno" id="vendorno" class="input_text" required>
                         @error('vendorno')
                             <p class="mt-2 text-sm text-red-600 "><span class="font-medium"> {{ __('menu.is_warning') }}
                                 </span>
@@ -164,8 +174,9 @@
                         @enderror
                     </div>
                     <div>
-                        <label for="productno" class="label_input"> {{ __('vendor.product_no') }} </label>
-                        <input type="text" name="productno" id="productno" class="input_text">
+                        <label for="productno" class="label_input"> {{ __('vendor.product_no') }} <span
+                                class="text-red-600 text-md">{{ __('menu.required_field') }}</span></label>
+                        <input type="text" name="productno" id="productno" class="input_text" required>
                         @error('productno')
                             <p class="mt-2 text-sm text-red-600 "><span class="font-medium"> {{ __('menu.is_warning') }}
                                 </span>
@@ -194,8 +205,9 @@
                         @enderror
                     </div>
                     <div>
-                        <label for="owner_shop" class="label_input"> {{ __('vendor.owner_shop') }} </label>
-                        <select class="input_text" name="owner_shop" id="owner_shop">
+                        <label for="owner_shop" class="label_input"> {{ __('vendor.owner_shop') }} <span
+                                class="text-red-600 text-md">{{ __('menu.required_field') }}</span></label>
+                        <select class="input_text" name="owner_shop" id="owner_shop" required>
                             <option value="N">
                                 {{ __('vendor.vendor_normal') }}</option>
                             <option value="Y">
@@ -239,8 +251,9 @@
                         @enderror
                     </div>
                     <div>
-                        <label for="txnno" class="label_input"> {{ __('vendor.txnno') }} </label>
-                        <input type="text" name="txnno" id="txnno" value="1" class="input_text">
+                        <label for="txnno" class="label_input"> {{ __('vendor.txnno') }} <span
+                                class="text-red-600 text-md">{{ __('menu.required_field') }}</span></label>
+                        <input type="number" name="txnno" id="txnno" value="1" class="input_text" required>
                         @error('txnno')
                             <p class="mt-2 text-sm text-red-600 "><span class="font-medium"> {{ __('menu.is_warning') }}
                                 </span>
@@ -249,9 +262,10 @@
                         @enderror
                     </div>
                     <div>
-                        <label for="vendor_batchno" class="label_input"> {{ __('vendor.vendor_batchno') }} </label>
-                        <input type="text" name="vendor_batchno" value="1" id="vendor_batchno"
-                            class="input_text">
+                        <label for="vendor_batchno" class="label_input"> {{ __('vendor.vendor_batchno') }} <span
+                                class="text-red-600 text-md">{{ __('menu.required_field') }}</span></label>
+                        <input type="number" name="vendor_batchno" value="1" id="vendor_batchno"
+                            class="input_text" required>
                         @error('vendor_batchno')
                             <p class="mt-2 text-sm text-red-600 "><span class="font-medium"> {{ __('menu.is_warning') }}
                                 </span>
@@ -260,8 +274,10 @@
                         @enderror
                     </div>
                     <div>
-                        <label for="billcount" class="label_input"> {{ __('vendor.vendor_billcount') }} </label>
-                        <input type="text" name="billcount" value="1" id="billcount" class="input_text">
+                        <label for="billcount" class="label_input"> {{ __('vendor.vendor_billcount') }} <span
+                                class="text-red-600 text-md">{{ __('menu.required_field') }}</span></label>
+                        <input type="number" name="billcount" value="1" id="billcount" class="input_text"
+                            required>
                         @error('billcount')
                             <p class="mt-2 text-sm text-red-600 "><span class="font-medium"> {{ __('menu.is_warning') }}
                                 </span>
