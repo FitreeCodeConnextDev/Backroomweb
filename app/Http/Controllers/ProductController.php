@@ -132,7 +132,7 @@ class ProductController extends Controller
                 'activeflag' => 1,
             ]);
             if ($request->hasFile('product_img')) {
-                upload_product_bmp(
+                \upload_product_bmp(
                     $request->file('product_img'),
                     $productData['product_id'] . '.bmp'
                 );
@@ -279,7 +279,7 @@ class ProductController extends Controller
                     'gtype_group' => $productData['gtype_group'] ?? null,
                 ]);
             if ($request->hasFile('product_img')) {
-                upload_product_bmp(
+                \upload_product_bmp(
                     $request->file('product_img'),
                     $id . '.bmp'
                 );
