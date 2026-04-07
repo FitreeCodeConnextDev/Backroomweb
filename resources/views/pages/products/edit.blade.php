@@ -4,7 +4,7 @@
     $imageUrl = asset('images/no-image.png'); // เปลี่ยน path รูป default ตามของจริงของคุณ
 
     // 2. กำหนดนามสกุลไฟล์ที่อนุญาตให้อัปโหลด
-    $extensions = ['jpg', 'jpeg', 'png'];
+    $extensions = ['jpg', 'jpeg', 'png', 'bmp']; // เพิ่มนามสกุลที่ต้องการตรวจสอบ
 
     // 3. วนลูปเช็คว่ามีไฟล์นามสกุลไหนอยู่ในโฟลเดอร์บ้าง
     foreach ($extensions as $ext) {
