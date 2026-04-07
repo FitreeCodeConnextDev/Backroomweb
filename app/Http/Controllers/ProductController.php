@@ -96,7 +96,7 @@ class ProductController extends Controller
                     'show_kiosk' => 'nullable',
                     'type_group' => 'nullable',
                     'gtype_group' => 'nullable',
-                    'product_img' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+                    'product_img' => 'nullable|image|mimes:jpeg,png,jpg,bmp|max:2048',
                 ],
                 [
                     'product_id.required' => __('product.product_id_valid'),
@@ -131,11 +131,28 @@ class ProductController extends Controller
                 'gtype_group' => $productData['gtype_group'] ?? null,
                 'activeflag' => 1,
             ]);
-            if ($request->hasFile('product_img')) {
-                \upload_product_bmp(
-                    $request->file('product_img'),
-                    $productData['product_id'] . '.bmp'
-                );
+            if ($request->hasFile('product_img') && $request->file('product_img')->isValid()) {
+
+                $file = $request->file('product_img');
+                $img_name = $productData['product_id'] . '.' . $file->getClientOriginalExtension();
+                $destinationPath = storage_path('app/public/product');
+
+                // 1. ตรวจสอบและสร้างโฟลเดอร์ถ้ายังไม่มี
+                if (!File::exists($destinationPath)) {
+                    File::makeDirectory($destinationPath, 0755, true, true);
+                }
+
+                // 2. ค้นหาและลบรูปเก่าที่ชื่อตรงกับ ID นี้ (ค้นหาทุกนามสกุลไฟล์ เช่น 1.jpg, 1.png)
+                // การใช้ * คือการหาไฟล์ที่ชื่อเป็น $productData['product_id'] แล้วตามด้วยนามสกุลอะไรก็ได้
+                $oldFiles = File::glob($destinationPath . '/' . $productData['product_id'] . '.*');
+
+                if (!empty($oldFiles)) {
+                    // ใช้ File::delete ลบไฟล์เก่าที่เจอทั้งหมด
+                    File::delete($oldFiles);
+                }
+
+                // 3. ทำการย้ายรูปใหม่เข้าไป
+                $file->move($destinationPath, $img_name);
             }
 
             if (isset($insert_product)) {
@@ -173,11 +190,15 @@ class ProductController extends Controller
                     'created_at' => Carbon::now()->toDateTimeString(),
                     'created_by' => session('auth_user.user_id'),
                 ]);
-                flash()
-                    ->option('position', 'bottom-right')
-                    ->option('timeout', 3000)
+                // flash()
+                //     ->option('position', 'bottom-right')
+                //     ->option('timeout', 3000)
+                //     ->error(__('menu.save_is_failed'));
+                // return redirect()->route('products.create');
+                sweetalert()
+                    ->timer(5000)
+                    ->showConfirmButton(false)
                     ->error(__('menu.save_is_failed'));
-                return redirect()->route('products.create');
             }
         } catch (\Exception $e) {
             Log::channel('activity')->error(session('auth_user.user_id') . ' exception when creating product: ' . $request->input('product_id') . ' - ' . $e->getMessage(), [
@@ -186,10 +207,17 @@ class ProductController extends Controller
                 'action' => 'create',
                 'timestamp' => Carbon::now()->toDateTimeString(),
             ]);
-            flash()
-                ->option('position', 'bottom-right')
-                ->option('timeout', 3000)
-                ->error(__('menu.save_is_failed'));
+            // flash()
+            //     ->option('position', 'bottom-right')
+            //     ->option('timeout', 3000)
+            //     ->message($e->getMessage())
+            //     ->error(__('menu.save_is_failed'));
+            sweetalert()
+                ->timer(5000)
+                ->showConfirmButton(false)
+                ->title(__('menu.save_is_failed'))
+                ->error($e->getMessage());
+
             return redirect()->route('products.create');
         }
     }
@@ -230,61 +258,72 @@ class ProductController extends Controller
     {
         // dd($request->all());
         try {
-            $productData = $request->validate(
-                [
-                    'product_barcode' => 'required',
-                    'product_desc' => 'required',
-                    'product_sdesc' => 'nullable',
-                    'product_group' => 'required',
-                    'subno' => 'required',
-                    'unit_id' => 'nullable',
-                    'show_color' => 'nullable',
-                    'catproduct_group' => 'nullable',
-                    'product_edesc' => 'nullable',
-                    'rabbit_discount' => 'nullable',
-                    'show_kiosk' => 'nullable',
-                    'type_group' => 'nullable',
-                    'gtype_group' => 'nullable',
-                    'product_img' => 'nullable|image|mimes:jpeg,png,jpg|max:1048',
+            $productData = $request->validate([
+                'product_barcode' => 'required',
+                'product_desc' => 'required',
+                'product_sdesc' => 'nullable',
+                'product_group' => 'required',
+                'subno' => 'required',
+                'unit_id' => 'nullable',
+                'show_color' => 'nullable',
+                'catproduct_group' => 'nullable',
+                'product_edesc' => 'nullable',
+                'rabbit_discount' => 'nullable',
+                'show_kiosk' => 'nullable',
+                'type_group' => 'nullable',
+                'gtype_group' => 'nullable',
+                'product_img' => 'nullable|image|mimes:jpeg,png,jpg,bmp|max:2048',
+            ], [
+                'product_desc.required' => __('product.product_desc_valid'),
+                'product_barcode.required' => __('product.product_barcode_valid'),
+                'product_group.required' => __('product.product_group_valid'),
+                'subno.required' => __('product.subno_valid'),
+                'unit_id.required' => __('product.unit_id_valid'),
+                'product_img.image' => __('product.product_img_valid'),
+                'product_img.mimes' => __('product.product_img_mimes'),
+                'product_img.max' => __('product.product_img_max'),
+                'product_img.dimensions' => __('product.product_img_dimensions'),
+            ]);
 
-                ],
-                [
-                    'product_desc.required' => __('product.product_desc_valid'),
-                    'product_barcode.required' => __('product.product_barcode_valid'),
-                    'product_group.required' => __('product.product_group_valid'),
-                    'subno.required' => __('product.subno_valid'),
-                    'unit_id.required' => __('product.unit_id_valid'),
-                    'product_img.image' => __('product.product_img_valid'),
-                    'product_img.mimes' => __('product.product_img_mimes'),
-                    'product_img.max' => __('product.product_img_max'),
-                    'product_img.dimensions' => __('product.product_img_dimensions'),
+            $update_product = DB::table('product_info')->where('product_id', $id)->update([
+                'product_barcode' => $productData['product_barcode'],
+                'product_desc' => $productData['product_desc'],
+                'product_sdesc' => $productData['product_sdesc'],
+                'product_group' => $productData['product_group'],
+                'subno' => $productData['subno'],
+                'unit_id' => $productData['unit_id'],
+                'show_color' => $productData['show_color'],
+                'product_edesc' => $productData['product_edesc'],
+                'rabbit_discount' => $productData['rabbit_discount'],
+                'catproduct_group' => $productData['catproduct_group'],
+                'show_kiosk' => $productData['show_kiosk'],
+                'type_group' => $productData['type_group'] ?? null,
+                'gtype_group' => $productData['gtype_group'] ?? null,
+            ]);
 
-                ]
-            );
+            if ($request->hasFile('product_img') && $request->file('product_img')->isValid()) {
 
-            $update_product = DB::table('product_info')->where('product_id', $id)
-                ->update([
-                    'product_barcode' => $productData['product_barcode'],
-                    'product_desc' => $productData['product_desc'],
-                    'product_sdesc' => $productData['product_sdesc'],
-                    'product_group' => $productData['product_group'],
-                    'subno' => $productData['subno'],
-                    'unit_id' => $productData['unit_id'],
-                    'show_color' => $productData['show_color'],
-                    'product_edesc' => $productData['product_edesc'],
-                    'rabbit_discount' => $productData['rabbit_discount'],
-                    'catproduct_group' => $productData['catproduct_group'],
-                    'show_kiosk' => $productData['show_kiosk'],
-                    'type_group' => $productData['type_group'] ?? null,
-                    'gtype_group' => $productData['gtype_group'] ?? null,
-                ]);
-            if ($request->hasFile('product_img')) {
-                \upload_product_bmp(
-                    $request->file('product_img'),
-                    $id . '.bmp'
-                );
+                $file = $request->file('product_img');
+                $img_name = $id . '.' . $file->getClientOriginalExtension();
+                $destinationPath = storage_path('app/public/product');
+
+                // 1. ตรวจสอบและสร้างโฟลเดอร์ถ้ายังไม่มี
+                if (!File::exists($destinationPath)) {
+                    File::makeDirectory($destinationPath, 0755, true, true);
+                }
+
+                // 2. ค้นหาและลบรูปเก่าที่ชื่อตรงกับ ID นี้ (ค้นหาทุกนามสกุลไฟล์ เช่น 1.jpg, 1.png)
+                // การใช้ * คือการหาไฟล์ที่ชื่อเป็น $id แล้วตามด้วยนามสกุลอะไรก็ได้
+                $oldFiles = File::glob($destinationPath . '/' . $id . '.*');
+
+                if (!empty($oldFiles)) {
+                    // ใช้ File::delete ลบไฟล์เก่าที่เจอทั้งหมด
+                    File::delete($oldFiles);
+                }
+
+                // 3. ทำการย้ายรูปใหม่เข้าไป
+                $file->move($destinationPath, $img_name);
             }
-
             if (isset($update_product)) {
                 Log::channel('activity')->notice(session('auth_user.user_id') . ' updated product: ' . $id, [
                     'product_id' => $id,
@@ -298,34 +337,31 @@ class ProductController extends Controller
                     'catproduct_group' => $productData['catproduct_group'],
                     'action' => 'update',
                     'update detail' => $productData,
-                    'updated_at' => Carbon::now()->toDateTimeString(),
+                    'updated_at' => Carbon::now()->toDateTimeString(), // เรียกใช้งาน Carbon ให้ถูกต้อง
                     'updated_by' => session('auth_user.user_id'),
                 ]);
+
                 flash()
                     ->option('position', 'bottom-right')
                     ->option('timeout', 3000)
                     ->success(__('menu.edit_is_success'));
+
                 return redirect()->route('products.index');
             } else {
                 Log::channel('activity')->error(session('auth_user.user_id') . ' failed to update product: ' . $id, [
                     'product_id' => $id,
-                    'product_barcode' => $productData['product_barcode'],
-                    'product_desc' => $productData['product_desc'],
-                    'product_sdesc' => $productData['product_sdesc'],
-                    'product_group' => $productData['product_group'],
-                    'subno' => $productData['subno'],
-                    'unit_id' => $productData['unit_id'],
-                    'show_color' => $productData['show_color'],
-                    'catproduct_group' => $productData['catproduct_group'],
+                    // ... (ข้อมูล log เหมือนด้านบน)
                     'action' => 'update',
                     'update detail' => $productData,
                     'updated_at' => Carbon::now()->toDateTimeString(),
                     'updated_by' => session('auth_user.user_id'),
                 ]);
+
                 flash()
                     ->option('position', 'bottom-right')
                     ->option('timeout', 3000)
                     ->error(__('menu.edit_is_failed'));
+
                 return redirect()->route('products.edit', $id);
             }
         } catch (\Exception $e) {

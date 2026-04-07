@@ -1,5 +1,24 @@
 @extends('layouts.createpage')
+@php
+    // 1. สร้างตัวแปรเก็บ URL รูปภาพ (ตั้งค่า Default Image ไว้เผื่อกรณีที่สินค้านั้นไม่มีรูป)
+    $imageUrl = asset('images/no-image.png'); // เปลี่ยน path รูป default ตามของจริงของคุณ
 
+    // 2. กำหนดนามสกุลไฟล์ที่อนุญาตให้อัปโหลด
+    $extensions = ['jpg', 'jpeg', 'png'];
+
+    // 3. วนลูปเช็คว่ามีไฟล์นามสกุลไหนอยู่ในโฟลเดอร์บ้าง
+    foreach ($extensions as $ext) {
+        // ใช้ public_path() เพื่อเช็คไฟล์จริงในโฟลเดอร์
+        // สมมติว่าตัวแปรที่ส่งมาจาก Controller ชื่อ $product และใช้ฟิลด์ product_id
+        $filePath = public_path('storage/product/' . $product->product_id . '.' . $ext);
+
+        if (file_exists($filePath)) {
+            // ถ้าเจอไฟล์ ให้เปลี่ยน $imageUrl เป็น path ของรูปนั้น แล้วหยุดลูปทันที
+            $imageUrl = asset('storage/product/' . $product->product_id . '.' . $ext);
+            break;
+        }
+    }
+@endphp
 @section('title_page')
     {{ __('menu.product_edit') }}
 @endsection
@@ -168,9 +187,11 @@
                 </select>
             </div>
             <div>
-                @if (file_exists(storage_path('app/public/product/' . $product->product_id . '.bmp')))
+                @if (file_exists(storage_path('app/public/product/' . $product->product_id . '.' . 'jpg')) ||
+                        file_exists(storage_path('app/public/product/' . $product->product_id . '.' . 'jpeg')) ||
+                        file_exists(storage_path('app/public/product/' . $product->product_id . '.' . 'png')))
                     <img id="preview" class="h-auto max-w-xs rounded-2xl mb-2"
-                        src="{{ asset('storage/product/' . $product->product_id . '.bmp') }}?v={{ time() }}"
+                        src="{{ $imageUrl }}?v={{ time() }}"
                         alt="{{ __('product.product_img') }}" />
                 @else
                     <img id="preview" class="h-auto max-w-xs rounded-2xl mb-2" src="{{ asset('storage/blank.jpg') }}"

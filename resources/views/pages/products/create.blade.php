@@ -156,9 +156,10 @@
                 </select>
             </div>
             <div>
-                <label for="product_img" class=" label_input">{{ __('product.product_img') }}</label>
-                <input type="file" accept=".jpg,.jpeg,.png" aria-describedby="file_input_help" id="file_input"
-                    id="product_img" name="product_img" class="input_text" />
+                <label for="product_img" class="label_input">{{ __('product.product_img') }}</label>
+
+                <input type="file" accept="image/*" aria-describedby="file_input_help" id="file_input"
+                    id="product_img" name="product_img" class="input_text" onchange="previewImage(this)" />
                 @error('product_img')
                     <p class="mt-2 text-sm text-red-600"><span class="font-medium"> {{ __('menu.is_warning') }}
                         </span>{{ $message }}</p>

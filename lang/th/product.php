@@ -33,7 +33,7 @@ return [
     'subno_valid' => "โปรดเลือกประเภทบัตร",
     'unit_id_valid' => "โปรดเลือกหน่วยนับ",
     'product_img_valid' => 'โปรดเลือกไฟล์รูปภาพ',
-    'product_img_mimes' => 'ไฟล์รูปภาพต้องเป็นชนิด: jpeg, png, jpg',
+    'product_img_mimes' => 'ไฟล์รูปภาพต้องเป็นชนิด: jpeg, png, jpg หรือ bmp',
     'product_img_max' => 'ขนาดไฟล์รูปภาพต้องไม่เกิน 2MB',
     'product_img_dimensions' => 'ขนาดรูปภาพต้องไม่เกิน 500x500 พิกเซล',
 

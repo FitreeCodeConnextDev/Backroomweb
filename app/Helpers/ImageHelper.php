@@ -15,10 +15,6 @@ if (!function_exists('upload_product_bmp')) {
         $relativePath = $directory . '/' . $fileName;
         $fullPath = storage_path('app/public/' . $relativePath);
 
-        if (!extension_loaded('gd') || !function_exists('imagecreatefromjpeg') || !function_exists('imagecreatefrompng') || !function_exists('imagebmp')) {
-            throw new Exception('PHP GD extension is required to process product images.');
-        }
-
         // ลบไฟล์เก่า
         if (Storage::disk('public')->exists($relativePath)) {
             Storage::disk('public')->delete($relativePath);
