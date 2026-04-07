@@ -189,10 +189,10 @@
             <div>
                 @if (file_exists(storage_path('app/public/product/' . $product->product_id . '.' . 'jpg')) ||
                         file_exists(storage_path('app/public/product/' . $product->product_id . '.' . 'jpeg')) ||
-                        file_exists(storage_path('app/public/product/' . $product->product_id . '.' . 'png')))
+                        file_exists(storage_path('app/public/product/' . $product->product_id . '.' . 'png')) ||
+                        file_exists(storage_path('app/public/product/' . $product->product_id . '.' . 'bmp')))
                     <img id="preview" class="h-auto max-w-xs rounded-2xl mb-2"
-                        src="{{ $imageUrl }}?v={{ time() }}"
-                        alt="{{ __('product.product_img') }}" />
+                        src="{{ $imageUrl }}?v={{ time() }}" alt="{{ __('product.product_img') }}" />
                 @else
                     <img id="preview" class="h-auto max-w-xs rounded-2xl mb-2" src="{{ asset('storage/blank.jpg') }}"
                         alt="{{ __('product.product_img') }}" />
