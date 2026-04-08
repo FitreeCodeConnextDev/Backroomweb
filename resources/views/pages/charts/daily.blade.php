@@ -18,7 +18,6 @@
 @endsection
 @section('scripts')
     <script type="text/javascript">
-        
         document.addEventListener("DOMContentLoaded", function() {
             let donutCharts = new ApexCharts(document.getElementById("daily-chart"), getdonutChartsOptions());
             donutCharts.render();
@@ -50,8 +49,8 @@
             ];
             const bathUnit = `{{ __('chart.bath') }}`;
             return {
-                series: [@php echo isset($sale_terminal_daily_chart['total_amount']) && is_array($sale_terminal_daily_chart['total_amount']) ? implode(',', $sale_terminal_daily_chart['total_amount']) : '0' @endphp],
-                labels: [@php echo isset($sale_terminal_daily_chart['vendor_name']) && is_array($sale_terminal_daily_chart['vendor_name']) ? "'" . implode("','", $sale_terminal_daily_chart['vendor_name']) . "'" : "'No Data'" @endphp],
+                series: [<?php echo isset($sale_terminal_daily_chart['total_amount']) && is_array($sale_terminal_daily_chart['total_amount']) ? implode(',', $sale_terminal_daily_chart['total_amount']) : '0'; ?>],
+                labels: [<?php echo isset($sale_terminal_daily_chart['vendor_name']) && is_array($sale_terminal_daily_chart['vendor_name']) ? "'" . implode("','", $sale_terminal_daily_chart['vendor_name']) . "'" : "'No Data'"; ?>],
                 colors: chartColors,
                 chart: {
                     height: 520,

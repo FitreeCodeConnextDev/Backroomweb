@@ -23,6 +23,7 @@ class ChartController extends Controller
             ->orderBy('total_amount', 'DESC')
             ->get();
 
+
         $data = [];
         foreach ($sale_terminal_daily as $item) {
             $data[] = [
@@ -32,18 +33,10 @@ class ChartController extends Controller
             ];
         }
         $data_json = json_encode($data);
-        // dd($data);
-        $sale_terminal_daily_chart['vendor_name'] = " ";
-        $sale_terminal_daily_chart['total_amount'] = " ";
-        $sale_terminal_daily_chart['vendor_id'] = " ";
-        foreach ($data as $item) {
-            $sale_terminal_daily_chart['vendor_name'] .= "'" . $item['vendor_name'] . "'" . ', ';
-            $sale_terminal_daily_chart['total_amount'] .= $item['total_amount'] . ', ';
-            $sale_terminal_daily_chart['vendor_id'] .= $item['vendor_id'] . ', ';
-        }
 
-
-        // dd($data);
+        $sale_terminal_daily_chart['vendor_name'] = array_column($data, 'vendor_name');
+        $sale_terminal_daily_chart['total_amount'] = array_column($data, 'total_amount');
+        $sale_terminal_daily_chart['vendor_id'] = array_column($data, 'vendor_id');
 
         return view('pages.charts.daily', compact('sale_terminal_daily_chart'));
 
@@ -125,7 +118,7 @@ class ChartController extends Controller
             ->select('vendor_id', 'vendor_name', DB::raw('SUM(amount) as total_amount'))
             ->whereBetween('batch', [$start_date, $end_date])
             ->groupBy('vendor_id', 'vendor_name')
-            ->orderBy('total_amount', 'DESC') // เรียงลำดับตามยอดรวมจากมากไปน้อย
+            ->orderBy('total_amount', 'DESC')
             ->get();
 
         // เตรียมข้อมูลที่ส่งกลับ
