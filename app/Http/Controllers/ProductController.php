@@ -425,4 +425,29 @@ class ProductController extends Controller
             return redirect()->route('products.index')->with('error', 'ไม่สามารถลบข้อมูลสินค้าได้');
         }
     }
+
+    public function showImage($id)
+    {
+        // กำหนด Path ที่เก็บรูป
+        $directory = storage_path('app/public/product');
+
+        // ค้นหาไฟล์ที่ชื่อตรงกับ $id (นามสกุลอะไรก็ได้)
+        $files = File::glob($directory . '/' . $id . '.*');
+
+        // ถ้าค้นเจอไฟล์ (มีอย่างน้อย 1 ไฟล์)
+        if (!empty($files)) {
+            // ส่งไฟล์ภาพนั้นกลับไปแสดงผลบน Browser เลย
+            return response()->file($files[0]);
+        }
+
+        // (Optional) ถ้าไม่เจอรูปเลย ให้ส่งรูป Default คืนไปแทน
+        // สมมติว่ามีรูป no-image.png อยู่ในโฟลเดอร์ public/images/
+        $defaultImage = storage_path('app/public/blank.png');
+        if (File::exists($defaultImage)) {
+            return response()->file($defaultImage);
+        }
+
+        // ถ้าไม่มีรูป Default ให้แสดง Error 404
+        abort(404, 'Image not found');
+    }
 }

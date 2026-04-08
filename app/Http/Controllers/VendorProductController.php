@@ -412,7 +412,7 @@ class VendorProductController extends Controller
             'vendor_id' => 'required',
             'product_id' => 'required',
             'productdetail_id' => 'required',
-            'qty' => 'required|numeric|min:1',
+            'qty' => 'required|numeric|min:0.00',
         ], [
             'vendor_id.required' => __('vendor_product.vendor_id_required'),
             'product_id.required' => __('vendor_product.product_id_required'),

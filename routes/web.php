@@ -30,8 +30,6 @@ use App\Http\Controllers\VendorProductController;
 use App\Http\Controllers\VendorPromoController;
 use App\Http\Controllers\VendorTypeController;
 use Illuminate\Support\Facades\Route;
-use Jaspersoft\Client\Client;
-use Jaspersoft\Service\Criteria\RepositorySearchCriteria;
 
 // Route::get('/', function () {
 //     return view('login');
@@ -91,6 +89,7 @@ Route::middleware(['auth_user'])->group(function () {
         Route::resource('/users', UsersController::class,);
         Route::resource('/terminal', TerminalController::class,);
         Route::resource('/products', ProductController::class,);
+        Route::get('/product/image/{id}', [ProductController::class, 'showImage'])->name('product.image');
         Route::resource('/products-groups', ProductGroupController::class,);
         Route::resource('/product-units', ProductUnitController::class,);
         Route::resource('/product-sap', ProductSapController::class,);
