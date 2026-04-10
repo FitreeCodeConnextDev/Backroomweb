@@ -20,7 +20,7 @@
         $user_branch_id = $user_session['branch_id'];
     @endphp
     @section('form-section')
-        <form id="vendor_form" action="{{ route('vendor-page.store') }}" onsubmit="SaveToLocal()" method="post">
+        <form action="{{ route('vendor-page.store') }}" method="post">
             @csrf
             <div class="flex flex-row border border-gray-200 rounded-lg mt-3 ">
                 <div class="grid grid-cols-1 lg:grid-cols-6 gap-3 p-7 w-full ">
@@ -79,6 +79,11 @@
                                 class="text-red-600 text-md">{{ __('menu.required_field') }}</span></label>
                         <select name="term_id" id="term_id" class="input_text" required>
                             <option value="000000" selected>000000</option>
+                            @foreach ($terminal as $term_id)
+                                <option value="{{ $term_id->term_id }}">
+                                    {{ $term_id->term_id }}
+                                </option>
+                            @endforeach
                         </select>
                         @error('term_id')
                             <p class="mt-2 text-sm text-red-600 "><span class="font-medium"> {{ __('menu.is_warning') }}
@@ -303,7 +308,7 @@
             </div>
         @endif --}}
     @endsection
-    @section('js-scripts')
+    @push('scripts')
         <script src="/js/vendor_create.js"></script>
         <script type="module">
             $('#vendor_form').validate({
@@ -342,4 +347,4 @@
                 }
             });
         </script>
-    @endsection
+    @endpush

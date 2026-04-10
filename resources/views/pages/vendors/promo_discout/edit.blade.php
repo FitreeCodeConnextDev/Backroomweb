@@ -123,8 +123,10 @@
     </section>
 </div>
 
-<script>
-    function cancel() {
-        localStorage.clear();
-    }
-</script>
+@push('scripts')
+    <script>
+        function cancel() {
+            localStorage.clear();
+        }
+    </script>
+@endpush

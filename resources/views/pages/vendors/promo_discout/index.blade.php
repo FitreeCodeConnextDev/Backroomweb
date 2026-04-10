@@ -76,7 +76,8 @@
                                             clip-rule="evenodd" />
                                     </svg>
                                 </div>
-                                <input type="time" id="discount_btime" name="discount_btime" class="input_text" disabled
+                                <input type="time" id="discount_btime" name="discount_btime" class="input_text"
+                                    disabled
                                     value="{{ !empty($promo_dis->discount_btime) ? date('H:i', strtotime($promo_dis->discount_btime)) : '-' }}" />
                             </div>
                         </section>
@@ -97,7 +98,8 @@
                                             clip-rule="evenodd" />
                                     </svg>
                                 </div>
-                                <input type="time" id="discount_etime" name="discount_etime" class="input_text" disabled
+                                <input type="time" id="discount_etime" name="discount_etime" class="input_text"
+                                    disabled
                                     value="{{ !empty($promo_dis->discount_etime) ? date('H:i', strtotime($promo_dis->discount_etime)) : '-' }}" />
                             </div>
                         </section>
@@ -112,79 +114,76 @@
         </form>
     </section>
 </div>
-<script>
-    // Wait for DOM to be fully loaded
-    document.addEventListener('DOMContentLoaded', function() {
-        const form = document.getElementById('vendor_promo_f');
-        const saveButton = document.getElementById('saveButton');
+@push('scripts')
+    <script>
+        // Wait for DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('vendor_promo_f');
+            const saveButton = document.getElementById('saveButton');
 
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            submitForm();
-        });
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                submitForm();
+            });
 
-        function submitForm() {
-            // Disable submit button to prevent double submission
-            saveButton.disabled = true;
+            function submitForm() {
+                // Disable submit button to prevent double submission
+                saveButton.disabled = true;
 
-            // Get form data
-            const formData = new FormData(form);
+                // Get form data
+                const formData = new FormData(form);
 
-            // Get the form action URL
-            const url = form.getAttribute('action');
+                // Get the form action URL
+                const url = form.getAttribute('action');
 
-            // Show loading state
-            saveButton.innerHTML = 'กำลังบันทึก...';
+                // Show loading state
+                saveButton.innerHTML = 'กำลังบันทึก...';
 
-            // Make Ajax request
-            fetch(url, {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest',
-                        'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
-                    },
-                    credentials: 'same-origin'
-                })
-                .then(response => {
-                    console.log('Response status:', response.status);
-                    return response.json();
-                })
-                .then(data => {
-                    if (data.success) {
-                        // Show success message without confirmButtonText
+                // Make Ajax request
+                fetch(url, {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+                        },
+                        credentials: 'same-origin'
+                    })
+                    .then(response => {
+                        console.log('Response status:', response.status);
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.success) {
+                            // Show success message without confirmButtonText
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'บันทึกสำเร็จ',
+                                text: 'ข้อมูลถูกบันทึกเรียบร้อยแล้ว',
+                                showConfirmButton: false,
+                                timer: 1000,
+                            }).then(() => {
+                                // Optionally reload page or update UI
+                                window.location.reload();
+                            });
+                        } else {
+                            throw new Error(data.message || 'เกิดข้อผิดพลาดในการบันทึกข้อมูล');
+                        }
+                    })
+                    .catch(error => {
+                        // Show error message
                         Swal.fire({
-                            icon: 'success',
-                            title: 'บันทึกสำเร็จ',
-                            text: 'ข้อมูลถูกบันทึกเรียบร้อยแล้ว',
-                            showConfirmButton: false,
-                            timer: 1000,
-                        }).then(() => {
-                            // Optionally reload page or update UI
-                            window.location.reload();
+                            icon: 'error',
+                            title: 'เกิดข้อผิดพลาด',
+                            text: error.message || 'กรุณาลองใหม่อีกครั้ง',
                         });
-                    } else {
-                        throw new Error(data.message || 'เกิดข้อผิดพลาดในการบันทึกข้อมูล');
-                    }
-                })
-                .catch(error => {
-                    // Show error message
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'เกิดข้อผิดพลาด',
-                        text: error.message || 'กรุณาลองใหม่อีกครั้ง',
+                    })
+                    .finally(() => {
+                        // Re-enable submit button and restore original text
+                        saveButton.disabled = false;
+                        saveButton.innerHTML = document.querySelector('button.submit_btn').textContent;
                     });
-                })
-                .finally(() => {
-                    // Re-enable submit button and restore original text
-                    saveButton.disabled = false;
-                    saveButton.innerHTML = document.querySelector('button.submit_btn').textContent;
-                });
-        }
-    });
-</script>
-<script>
-    function cancel() {
-        localStorage.clear();
-    }
-</script>
+            }
+        });
+    </script>
+@endpush

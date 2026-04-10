@@ -93,10 +93,3 @@
         </form>
     </section>
 </div>
-
-<script>
-    function back() {
-        localStorage.clear();
-        window.history.back(); // ใช้ย้อนกลับไปยังหน้าก่อนหน้า
-    }
-</script>

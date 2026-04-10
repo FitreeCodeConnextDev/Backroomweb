@@ -293,7 +293,7 @@
         </div>
     </div>
 @endsection
-@section('js-scripts')
+@push('scripts')
     @vite(['resources/js/vendor_tab.js'])
     <script src="/js/delet_sweet.js"></script>
     <script src="/js/vendor_tab.js"></script>
@@ -406,5 +406,10 @@
 
 
         });
+
+        function back() {
+            localStorage.clear();
+            window.history.back(); // ใช้ย้อนกลับไปยังหน้าก่อนหน้า
+        }
     </script>
-@endsection
+@endpush

@@ -200,8 +200,9 @@
                 </li>
                 <li role="presentation">
                     <button class="tab_button hover:text-gray-600 hover:border-gray-300 " id="vender_garantee_tab"
-                        data-tabs-target="#vendor_garantee" type="button" role="tab" aria-controls="vendor_garantee"
-                        aria-selected="false"> {{ __('vendor.vendor_garantee_title') }} </button>
+                        data-tabs-target="#vendor_garantee" type="button" role="tab"
+                        aria-controls="vendor_garantee" aria-selected="false"> {{ __('vendor.vendor_garantee_title') }}
+                    </button>
                 </li>
                 {{-- <li role="presentation">
                     <button class="tab_button hover:text-gray-600 hover:border-gray-300 " id="contacts-tab"
@@ -269,7 +270,8 @@
         {{-- <div class="hidden p-4 rounded-lg " id="contacts" role="tabpanel" aria-labelledby="contacts-tab"> </div> --}}
     </div>
 @endsection
-@section('js-scripts')
+
+@push('scripts')
     @vite(['resources/js/vendor_tab.js'])
     <script>
         function back() {
@@ -286,4 +288,4 @@
             localStorage.removeItem('activeTab');
         }
     </script>
-@endsection
+@endpush

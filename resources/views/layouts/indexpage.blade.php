@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title_page')</title>
     @vite('resources/css/app.css')
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('logo/CodeConnextLogo.png') }}">
@@ -38,8 +39,10 @@
             </div>
         </div>
     </div>
+    <script src="https://jquery.com"></script>
     @vite('resources/js/app.js')
     @yield('js-scripts')
+    @stack('scripts')
 </body>
 
 </html>

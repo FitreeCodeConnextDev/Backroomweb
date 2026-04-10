@@ -379,115 +379,117 @@
         </div>
     </div>
 </div>
-<script type="module">
-    $(document).ready(function() { // Set up CSRF token for all Ajax requests
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
+@push('scripts')
+    <script type="module">
+        $(document).ready(function() { // Set up CSRF token for all Ajax requests
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
 
-        // Form submission handler
-        $('#vendor_productpromo_submit').on('click', function(e) {
-            e.preventDefault();
+            // Form submission handler
+            $('#vendor_productpromo_submit').on('click', function(e) {
+                e.preventDefault();
 
-            // Validate all required fields before submission
-            if (!$('#vendor_productpromo_form')[0].checkValidity()) {
-                $('#vendor_productpromo_form')[0].reportValidity();
-                return;
-            }
+                // Validate all required fields before submission
+                if (!$('#vendor_productpromo_form')[0].checkValidity()) {
+                    $('#vendor_productpromo_form')[0].reportValidity();
+                    return;
+                }
 
-            // Get form data
-            var formData = new FormData($('#vendor_productpromo_form')[0]);
-            $.ajax({
-                url: '{{ route('vendor_promotion_insert') }}', // URL ที่จะส่งข้อมูลไป
-                type: 'POST', // ใช้ Method POST
-                data: formData, // ข้อมูลที่ส่งไป
-                processData: false, // บอกว่าไม่ต้องแปลงข้อมูล
-                contentType: false, // บอกว่าไม่ต้องตั้ง Content-Type
-                success: function(response) {
-                    // เมื่อส่งข้อมูลสำเร็จ
-                    Swal.fire({
-                        text: `{{ __('menu.save_is_success') }}`,
-                        icon: 'success',
-                        showConfirmButton: false,
-                        timer: 3000,
-                    });
+                // Get form data
+                var formData = new FormData($('#vendor_productpromo_form')[0]);
+                $.ajax({
+                    url: '{{ route('vendor_promotion_insert') }}', // URL ที่จะส่งข้อมูลไป
+                    type: 'POST', // ใช้ Method POST
+                    data: formData, // ข้อมูลที่ส่งไป
+                    processData: false, // บอกว่าไม่ต้องแปลงข้อมูล
+                    contentType: false, // บอกว่าไม่ต้องตั้ง Content-Type
+                    success: function(response) {
+                        // เมื่อส่งข้อมูลสำเร็จ
+                        Swal.fire({
+                            text: `{{ __('menu.save_is_success') }}`,
+                            icon: 'success',
+                            showConfirmButton: false,
+                            timer: 3000,
+                        });
 
-                    // ปิด Modal
-                    $('#vedor_product_promo-modal').addClass('hidden');
+                        // ปิด Modal
+                        $('#vedor_product_promo-modal').addClass('hidden');
 
-                    // หากต้องการรีเฟรชข้อมูล หรือทำอะไรก่อนปิดฟอร์ม
-                    window.location.reload(); // รีโหลดหน้า (ถ้าต้องการ)
-                },
-                error: function(xhr, status, error) {
-                    let errorMessage = `{{ __('menu.is_failed') }}`;
+                        // หากต้องการรีเฟรชข้อมูล หรือทำอะไรก่อนปิดฟอร์ม
+                        window.location.reload(); // รีโหลดหน้า (ถ้าต้องการ)
+                    },
+                    error: function(xhr, status, error) {
+                        let errorMessage = `{{ __('menu.is_failed') }}`;
 
-                    // Check if the error is a validation error
-                    if (xhr.responseJSON && xhr.responseJSON.errors) {
-                        // Gather all validation errors and display them
-                        let errorList = '';
-                        for (let field in xhr.responseJSON.errors) {
-                            errorList +=
-                                `<li>${xhr.responseJSON.errors[field].join(', ')}</li>`;
+                        // Check if the error is a validation error
+                        if (xhr.responseJSON && xhr.responseJSON.errors) {
+                            // Gather all validation errors and display them
+                            let errorList = '';
+                            for (let field in xhr.responseJSON.errors) {
+                                errorList +=
+                                    `<li>${xhr.responseJSON.errors[field].join(', ')}</li>`;
+                            }
+                            errorMessage = `<ul>${errorList}</ul>`;
                         }
-                        errorMessage = `<ul>${errorList}</ul>`;
-                    }
 
-                    // Show error message with the validation errors
-                    Swal.fire({
-                        title: `{{ __('menu.save_is_failed') }}`, // Failure title
-                        html: errorMessage, // Show validation error list
-                        icon: 'error',
-                        confirmButtonText: 'ตกลง'
-                    });
-                    // เมื่อเกิดข้อผิดพลาด
-                    // alert('เกิดข้อผิดพลาด: ' + error);
-                    // console.log(xhr.responseText); // แสดงข้อผิดพลาดใน console
+                        // Show error message with the validation errors
+                        Swal.fire({
+                            title: `{{ __('menu.save_is_failed') }}`, // Failure title
+                            html: errorMessage, // Show validation error list
+                            icon: 'error',
+                            confirmButtonText: 'ตกลง'
+                        });
+                        // เมื่อเกิดข้อผิดพลาด
+                        // alert('เกิดข้อผิดพลาด: ' + error);
+                        // console.log(xhr.responseText); // แสดงข้อผิดพลาดใน console
+                    }
+                });
+            });
+
+            // ปิด Modal เมื่อคลิกปุ่มปิด
+            $('[data-modal-hide="vedor_product_promo-modal"]').on('click', function() {
+                $('#vedor_product_promo-modal').addClass('hidden');
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const productSelect = document.getElementById('product_id_1');
+            // const table = document.querySelector("#vendorproduct_promo-table");
+            // if (table) {
+            //     new DataTable(table, {
+            //         searchable: true,
+            //         sortable: true,
+            //         perPage: 5,
+            //         perPageSelect: [5, 10, 15]
+            //     });
+            // }
+
+            productSelect.addEventListener('change', function(event) {
+                const productId = event.target.value;
+
+                if (productId) {
+                    // ส่งคำขอไปยัง Laravel Route
+                    fetch(`/get-product-details/${productId}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.error) {
+                                // ถ้าข้อผิดพลาดเกิดขึ้น เช่น Product ไม่เจอ
+                                console.error(data.error);
+                                return;
+                            }
+
+                            // เติมค่าให้กับ input fields ตามที่ได้รับจาก Controller
+                            document.getElementById('product_desc_1').value = data.product_desc;
+                        })
+                        .catch(error => {
+                            console.error('Error fetching product details:', error);
+                        });
                 }
             });
         });
-
-        // ปิด Modal เมื่อคลิกปุ่มปิด
-        $('[data-modal-hide="vedor_product_promo-modal"]').on('click', function() {
-            $('#vedor_product_promo-modal').addClass('hidden');
-        });
-    });
-</script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const productSelect = document.getElementById('product_id_1');
-        // const table = document.querySelector("#vendorproduct_promo-table");
-        // if (table) {
-        //     new DataTable(table, {
-        //         searchable: true,
-        //         sortable: true,
-        //         perPage: 5,
-        //         perPageSelect: [5, 10, 15]
-        //     });
-        // }
-
-        productSelect.addEventListener('change', function(event) {
-            const productId = event.target.value;
-
-            if (productId) {
-                // ส่งคำขอไปยัง Laravel Route
-                fetch(`/get-product-details/${productId}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.error) {
-                            // ถ้าข้อผิดพลาดเกิดขึ้น เช่น Product ไม่เจอ
-                            console.error(data.error);
-                            return;
-                        }
-
-                        // เติมค่าให้กับ input fields ตามที่ได้รับจาก Controller
-                        document.getElementById('product_desc_1').value = data.product_desc;
-                    })
-                    .catch(error => {
-                        console.error('Error fetching product details:', error);
-                    });
-            }
-        });
-    });
-</script>
+    </script>
+@endpush

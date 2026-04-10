@@ -4,7 +4,7 @@
     {{ __('menu.product_sap') }}
 @endsection
 @section('breadcrumb-index')
-    <a href="{{ route('payment-group.index') }}" class="first_bc_a">
+    <a href="{{ route('product-sap.index') }}" class="first_bc_a">
         {{ __('menu.product_sap') }}
     </a>
 @endsection
@@ -22,8 +22,8 @@
         <div class="grid_page">
             <div>
                 <label for="catproduct_group" class="label_input">{{ __('product_sap.catproduct_group') }}</label>
-                <input type="text" id="catproduct_group" maxlength="10" name="catproduct_group" placeholder="..." class="input_text"
-                    value="" required />
+                <input type="text" id="catproduct_group" maxlength="10" name="catproduct_group" placeholder="..."
+                    class="input_text" value="" required />
                 @error('catproduct_group')
                     <p class="mt-2 text-sm text-red-600 "><span class="font-medium"> {{ __('menu.is_warning') }} </span>
                         {{ $message }}

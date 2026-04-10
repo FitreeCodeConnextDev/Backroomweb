@@ -195,7 +195,7 @@
                                                     <div class="mt-5">
                                                         <div>
                                                             <input id="product_groupvat_y" type="radio"
-                                                                value="1" checked name="groupvate"
+                                                                value="1" checked name="groupvat"
                                                                 class="input_checkbox"
                                                                 @if ($vendor_p->groupvat == 1) checked @endif>
                                                             <label for="product_groupvat_y"
@@ -203,8 +203,7 @@
                                                         </div>
                                                         <div>
                                                             <input id="product_groupvat_n" type="radio"
-                                                                value="0" name="groupvate"
-                                                                class="input_checkbox"
+                                                                value="0" name="groupvat" class="input_checkbox"
                                                                 @if ($vendor_p->groupvat == 0) checked @endif>
                                                             <label for="product_groupvat_n"
                                                                 class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">
@@ -693,157 +692,159 @@
     </div>
 </section>
 @include('pages.vendors.vendor_product.vendor_product_info.modal_create')
-<script type="module">
-    new TomSelect('#product_id', {
-        plugins: ['dropdown_input'],
-    });
-    $(document).ready(function() {
-        // เมื่อคลิกปุ่มที่มี id="saveButton"
-        $('#saveButton1').on('click', function(e) {
-            e.preventDefault(); // หยุดการทำงานของ submit แบบปกติ
+@push('scripts')
+    <script type="module">
+        new TomSelect('#product_id', {
+            plugins: ['dropdown_input'],
+        });
+        $(document).ready(function() {
+            // เมื่อคลิกปุ่มที่มี id="saveButton"
+            $('#saveButton1').on('click', function(e) {
+                e.preventDefault(); // หยุดการทำงานของ submit แบบปกติ
 
-            // ใช้ FormData เพื่อจับข้อมูลจากฟอร์ม
-            var formData = new FormData($('#vendor_product_form')[0]);
+                // ใช้ FormData เพื่อจับข้อมูลจากฟอร์ม
+                var formData = new FormData($('#vendor_product_form')[0]);
 
-            // ส่งข้อมูลไปยัง Route ที่กำหนดโดยใช้ Ajax
-            $.ajax({
-                url: '{{ route('vendor-product.store') }}', // URL ที่จะส่งข้อมูลไป
-                type: 'POST', // ใช้ Method POST
-                data: formData, // ข้อมูลที่ส่งไป
-                processData: false, // บอกว่าไม่ต้องแปลงข้อมูล
-                contentType: false, // บอกว่าไม่ต้องตั้ง Content-Type
-                success: function(response) {
-                    // เมื่อส่งข้อมูลสำเร็จ
-                    Swal.fire({
-                        text: `{{ __('menu.save_is_success') }}`,
-                        icon: 'success',
-                        showConfirmButton: false,
-                        timer: 3000,
-                    });
+                // ส่งข้อมูลไปยัง Route ที่กำหนดโดยใช้ Ajax
+                $.ajax({
+                    url: '{{ route('vendor-product.store') }}', // URL ที่จะส่งข้อมูลไป
+                    type: 'POST', // ใช้ Method POST
+                    data: formData, // ข้อมูลที่ส่งไป
+                    processData: false, // บอกว่าไม่ต้องแปลงข้อมูล
+                    contentType: false, // บอกว่าไม่ต้องตั้ง Content-Type
+                    success: function(response) {
+                        // เมื่อส่งข้อมูลสำเร็จ
+                        Swal.fire({
+                            text: `{{ __('menu.save_is_success') }}`,
+                            icon: 'success',
+                            showConfirmButton: false,
+                            timer: 3000,
+                        });
 
-                    // ปิด Modal
-                    $('#vedor_product_info').addClass('hidden');
+                        // ปิด Modal
+                        $('#vedor_product_info').addClass('hidden');
 
-                    // หากต้องการรีเฟรชข้อมูล หรือทำอะไรก่อนปิดฟอร์ม
-                    window.location.reload(); // รีโหลดหน้า (ถ้าต้องการ)
-                },
-                error: function(xhr, status, error) {
-                    let errorMessage = `{{ __('vendor_product.save_failure_unique') }}`;
+                        // หากต้องการรีเฟรชข้อมูล หรือทำอะไรก่อนปิดฟอร์ม
+                        window.location.reload(); // รีโหลดหน้า (ถ้าต้องการ)
+                    },
+                    error: function(xhr, status, error) {
+                        let errorMessage = `{{ __('vendor_product.save_failure_unique') }}`;
 
-                    // Check if the error is a validation error
-                    if (xhr.responseJSON && xhr.responseJSON.errors) {
-                        // Gather all validation errors and display them
-                        let errorList = '';
-                        for (let field in xhr.responseJSON.errors) {
-                            errorList +=
-                                `<li>${xhr.responseJSON.errors[field].join(', ')}</li>`;
+                        // Check if the error is a validation error
+                        if (xhr.responseJSON && xhr.responseJSON.errors) {
+                            // Gather all validation errors and display them
+                            let errorList = '';
+                            for (let field in xhr.responseJSON.errors) {
+                                errorList +=
+                                    `<li>${xhr.responseJSON.errors[field].join(', ')}</li>`;
+                            }
+                            errorMessage = `<ul>${errorList}</ul>`;
                         }
-                        errorMessage = `<ul>${errorList}</ul>`;
-                    }
 
-                    // Show error message with the validation errors
-                    Swal.fire({
-                        title: `{{ __('menu.save_is_failed') }}`, // Failure title
-                        html: errorMessage, // Show validation error list
-                        icon: 'error',
-                        confirmButtonText: 'ตกลง'
-                    });
-                    // เมื่อเกิดข้อผิดพลาด
-                    // alert('เกิดข้อผิดพลาด: ' + error);
-                    // console.log(xhr.responseText); // แสดงข้อผิดพลาดใน console
+                        // Show error message with the validation errors
+                        Swal.fire({
+                            title: `{{ __('menu.save_is_failed') }}`, // Failure title
+                            html: errorMessage, // Show validation error list
+                            icon: 'error',
+                            confirmButtonText: 'ตกลง'
+                        });
+                        // เมื่อเกิดข้อผิดพลาด
+                        // alert('เกิดข้อผิดพลาด: ' + error);
+                        // console.log(xhr.responseText); // แสดงข้อผิดพลาดใน console
+                    }
+                });
+            });
+
+            // ปิด Modal เมื่อคลิกปุ่มปิด
+            $('[data-modal-hide="vedor_product_info"]').on('click', function() {
+                $('#vedor_product_info').addClass('hidden');
+            });
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+            // ดักจับ Error จาก Validation ($request->validate)
+            @if ($errors->any())
+                Swal.fire({
+                    icon: 'warning',
+                    title: "{{ __('menu.is_warning') }}",
+                    html: '{!! implode('<br>', $errors->all()) !!}',
+                });
+            @endif
+
+            // ดักจับ Success จากที่เรา with('swal_success', ...)
+            @if (session('clone_success'))
+                Swal.fire({
+                    icon: 'success',
+                    title: "{{ __('menu.is_success') }}",
+                    text: "{{ session('clone_success') }}",
+                    timer: 2500,
+                    showConfirmButton: false
+                });
+            @endif
+
+            // ดักจับ Error จากที่เรา with('swal_error', ...)
+            @if (session('clone_error'))
+                Swal.fire({
+                    icon: 'error',
+                    title: "{{ __('menu.is_failed') }}",
+                    text: "{{ session('clone_error') }}",
+                });
+            @endif
+        });
+    </script>
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function() {
+            const productSelect = document.getElementById('product_id');
+
+            productSelect.addEventListener('change', function(event) {
+                const productId = event.target.value;
+
+                if (productId) {
+                    // ส่งคำขอไปยัง Laravel Route
+                    fetch(`/get-product-details/${productId}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.error) {
+                                // ถ้าข้อผิดพลาดเกิดขึ้น เช่น Product ไม่เจอ
+                                console.error(data.error);
+                                return;
+                            }
+
+                            // เติมค่าให้กับ input fields ตามที่ได้รับจาก Controller
+                            document.getElementById('product_barcode').value = data.product_barcode;
+                            document.getElementById('product_desc').value = data.product_desc;
+                            document.getElementById('product_sdesc').value = data.product_sdesc;
+                            document.getElementById('product_group').value = data.product_group;
+                        })
+                        .catch(error => {
+                            console.error('Error fetching product details:', error);
+                        });
                 }
             });
         });
 
-        // ปิด Modal เมื่อคลิกปุ่มปิด
-        $('[data-modal-hide="vedor_product_info"]').on('click', function() {
-            $('#vedor_product_info').addClass('hidden');
-        });
-    });
-    document.addEventListener('DOMContentLoaded', function() {
-        // ดักจับ Error จาก Validation ($request->validate)
-        @if ($errors->any())
-            Swal.fire({
-                icon: 'warning',
-                title: "{{ __('menu.is_warning') }}",
-                html: '{!! implode('<br>', $errors->all()) !!}',
+        function copyPriceToFields(sourceId, suffixList) {
+            const value = document.getElementById(sourceId).value;
+            suffixList.forEach(fieldId => {
+                const element = document.getElementById(fieldId);
+                if (element) {
+                    element.value = value;
+                }
             });
-        @endif
+        }
 
-        // ดักจับ Success จากที่เรา with('swal_success', ...)
-        @if (session('clone_success'))
-            Swal.fire({
-                icon: 'success',
-                title: "{{ __('menu.is_success') }}",
-                text: "{{ session('clone_success') }}",
-                timer: 2500,
-                showConfirmButton: false
-            });
-        @endif
+        function CopyValue() {
+            const fieldIds = ['pricediscount', 'pricemember', 'pricestaff', 'pricerabbit', 'priceqr', 'pricesp1',
+                'pricesp2', 'pricesp3', 'pricesp4', 'pricesp5', 'priceedc'
+            ];
+            copyPriceToFields('priceunit', fieldIds);
+        }
 
-        // ดักจับ Error จากที่เรา with('swal_error', ...)
-        @if (session('clone_error'))
-            Swal.fire({
-                icon: 'error',
-                title: "{{ __('menu.is_failed') }}",
-                text: "{{ session('clone_error') }}",
-            });
-        @endif
-    });
-</script>
-<script type="text/javascript">
-    document.addEventListener('DOMContentLoaded', function() {
-        const productSelect = document.getElementById('product_id');
-
-        productSelect.addEventListener('change', function(event) {
-            const productId = event.target.value;
-
-            if (productId) {
-                // ส่งคำขอไปยัง Laravel Route
-                fetch(`/get-product-details/${productId}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.error) {
-                            // ถ้าข้อผิดพลาดเกิดขึ้น เช่น Product ไม่เจอ
-                            console.error(data.error);
-                            return;
-                        }
-
-                        // เติมค่าให้กับ input fields ตามที่ได้รับจาก Controller
-                        document.getElementById('product_barcode').value = data.product_barcode;
-                        document.getElementById('product_desc').value = data.product_desc;
-                        document.getElementById('product_sdesc').value = data.product_sdesc;
-                        document.getElementById('product_group').value = data.product_group;
-                    })
-                    .catch(error => {
-                        console.error('Error fetching product details:', error);
-                    });
-            }
-        });
-    });
-
-    function copyPriceToFields(sourceId, suffixList) {
-        const value = document.getElementById(sourceId).value;
-        suffixList.forEach(fieldId => {
-            const element = document.getElementById(fieldId);
-            if (element) {
-                element.value = value;
-            }
-        });
-    }
-
-    function CopyValue() {
-        const fieldIds = ['pricediscount', 'pricemember', 'pricestaff', 'pricerabbit', 'priceqr', 'pricesp1',
-            'pricesp2', 'pricesp3', 'pricesp4', 'pricesp5', 'priceedc'
-        ];
-        copyPriceToFields('priceunit', fieldIds);
-    }
-
-    function copyPriceToInputs() {
-        const fieldIds = ['pricediscount_edit', 'pricemember_edit', 'pricestaff_edit', 'pricerabbit_edit',
-            'priceqr_edit', 'pricesp1_edit', 'pricesp2_edit', 'pricesp3_edit', 'pricesp4_edit', 'pricesp5_edit',
-            'priceedc_edit'
-        ];
-        copyPriceToFields('priceunit_edit', fieldIds);
-    }
-</script>
+        function copyPriceToInputs() {
+            const fieldIds = ['pricediscount_edit', 'pricemember_edit', 'pricestaff_edit', 'pricerabbit_edit',
+                'priceqr_edit', 'pricesp1_edit', 'pricesp2_edit', 'pricesp3_edit', 'pricesp4_edit', 'pricesp5_edit',
+                'priceedc_edit'
+            ];
+            copyPriceToFields('priceunit_edit', fieldIds);
+        }
+    </script>
+@endpush

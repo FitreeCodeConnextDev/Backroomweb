@@ -24,7 +24,7 @@
             <div>
                 <label for="promo_code" class="label_input"> {{ __('card_promo.promo_code') }} <span
                         class="text-red-600 text-md">{{ __('menu.required_field') }}</span></label>
-                <input type="text" id="promo_code" name="promo_code" maxlength="2" placeholder="..." class="input_text"
+                <input type="text" id="promo_code" name="promo_code" maxlength="10" placeholder="..." class="input_text"
                     value="" required />
                 @error('promo_code')
                     <p class="mt-2 text-sm text-red-600 "><span class="font-medium">{{ __('menu.is_warning') }}</span>

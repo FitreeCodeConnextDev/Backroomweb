@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\PermissionHelper;
+use App\Http\Requests\VendorRequest;
+use App\Models\VendorModel;
 use Carbon\Carbon;
 
 use Illuminate\Http\Request;
@@ -24,13 +26,9 @@ class VendorController extends Controller
                 ->error(__('menu.is_permission_denied'));
             return redirect()->back();
         }
-        $user_branch = session('auth_user.branch_id');
-        // dd($user_session_id);
-        $search = $request->input('search', '');
-
-        if ($user_branch == 000000) {
-            $vendor_data = DB::table('vendor_info')
-                ->select('vendor_id', 'vendor_name', 'branch_id')
+        $search = $request->input('search');
+        if (session('auth_user.branch_id') == 000000) {
+            $vendor_data = VendorModel::query()
                 ->where('activeflag', '=', 1)
                 ->where(function ($query) use ($search) {
                     // If search term is provided, filter by product description or product id
@@ -42,14 +40,10 @@ class VendorController extends Controller
                 })
                 ->orderBy('vendor_id', 'desc')
                 ->paginate(15);
-            // dd($vendor_data);
-
             return view('pages.vendors.index', compact('vendor_data', 'search'));
         } else {
-            $vendor_data = DB::table('vendor_info')
-                ->select('vendor_id', 'vendor_name')
+            $vendor_data = VendorModel::query()
                 ->where('activeflag', '=', 1)
-                ->where('branch_id', '=', $user_branch)
                 ->where(function ($query) use ($search) {
                     // If search term is provided, filter by product description or product id
                     if ($search) {
@@ -97,103 +91,106 @@ class VendorController extends Controller
             ->select('branch_id')
             ->orderBy('branch_id', 'asc')
             ->get();
-        return view('pages.vendors.create', compact('branch'));
+        if (session('auth_user.branch_id') == 000000) {
+            $terminal = DB::table('terminal_info')
+                ->select('term_id')
+                ->orderBy('term_id', 'asc')
+                ->get();
+        } else {
+            $terminal = DB::table('terminal_info')
+                ->select('term_id')
+                ->where('branch_id', session('auth_user.branch_id'))
+                ->orderBy('term_id', 'asc')
+                ->get();
+        }
+        return view('pages.vendors.create', compact('branch', 'terminal'));
     }
-    public function store(Request $request)
+    public function store(VendorRequest $request)
     {
-        $validate_data = $request->validate(
-            [
-                'vendor_id' => 'required|max:10|unique:vendor_info,vendor_id',
-                'branch_id' => 'required',
-                'term_id' => 'required',
-                'term_seq' => 'required',
-                'vendor_name' => 'required',
-                'vendor_food' => 'required',
-                'issuedate' => 'required|date',
-                'validdate' => 'required|date|after:issuedate',
-                'vendor_subfood' => 'nullable',
-                'ar_sap' => 'nullable',
-                'vendorno' => 'required',
-                'productno' => 'required',
-                'pmino' => 'nullable',
-                'taxbranch' => 'nullable',
-                'owner_shop' => 'required',
-                'vendor_locate' => 'nullable',
-                'serialno' => 'nullable',
-                'ipaddress' => 'nullable|ip',
-                'txnno' => 'required',
-                'vendor_batchno' => 'required',
-                'billcount' => 'required',
-            ],
-            [
-                'vendor_id.required' => __('vendor.vendor_id_required'),
-                'vendor_id.max' => __('vendor.vendor_id_max'),
-                'vendor_id.unique' => __('vendor.vendor_id_unique'),
-                'branch_id.required' => __('vendor.brand_id_required'),
-                'term_id.required' => __('vendor.term_id_required'),
-                'term_seq.required' => __('vendor.term_seq_required'),
-                'vendor_name.required' => __('vendor.vendor_name_required'),
-                'vendor_food.required' => __('vendor.vendor_food_required'),
-                'issuedate.required' => __('vendor.issuedate_required'),
-                'validdate.required' => __('vendor.validdate_required'),
-                'vendorno.required' => __('vendor.vendorno_required'),
-                'productno.required' => __('vendor.productno_required'),
-                'owner_shop.required' => __('vendor.owner_shop_required'),
-                'txnno.required' => __('vendor.txnno_required'),
-                'vendor_batchno.required' => __('vendor.vendor_batchno_required'),
-                'billcount.required' => __('vendor.vendor_billcount_required'),
-            ]
-        );
-        // dd($validate_data);
-        if (isset($validate_data)) {
-            DB::table('vendor_info')->insert([
-                'vendor_id' => $validate_data['vendor_id'],
-                'branch_id' => $validate_data['branch_id'],
-                'term_id' => $validate_data['term_id'],
-                'term_seq' => $validate_data['term_seq'],
-                'vendor_name' => $validate_data['vendor_name'],
-                'vendor_food' => $validate_data['vendor_food'],
-                'issuedate' => Carbon::parse($validate_data['issuedate'],)->format('Y-m-d'),
-                'validdate' => Carbon::parse($validate_data['validdate'],)->format('Y-m-d'),
-                'vendor_subfood' => $validate_data['vendor_subfood'],
-                'ar_sap' => $validate_data['ar_sap'],
-                'vendorno' => $validate_data['vendorno'],
-                'productno' => $validate_data['productno'],
-                'pmino' => $validate_data['pmino'],
-                'taxbranch' => $validate_data['taxbranch'],
-                'owner_shop' => $validate_data['owner_shop'],
-                'vendor_locate' => $validate_data['vendor_locate'],
-                'serialno' => $validate_data['serialno'],
-                'ipaddress' => $validate_data['ipaddress'],
-                'txnno' => $validate_data['txnno'],
-                'vendor_batchno' => $validate_data['vendor_batchno'],
-                'billcount' => $validate_data['billcount'],
-                'activeflag' => 1,
-            ]);
-            Log::channel('activity')->notice(session('auth_user.user_id') . ' Created Vendor', [
+        // dd($request->all());
+        try {
+            $vendor_info = new VendorModel();
+            $vendor_info->vendor_id = $request->vendor_id;
+            $vendor_info->branch_id = $request->branch_id;
+            $vendor_info->term_id = $request->term_id;
+            $vendor_info->term_seq = $request->term_seq;
+            $vendor_info->vendor_name = $request->vendor_name;
+            $vendor_info->vendor_food = $request->vendor_food;
+            $vendor_info->issuedate = Carbon::parse($request->issuedate)->format('Y-m-d');
+            $vendor_info->validdate = Carbon::parse($request->validdate)->format('Y-m-d');
+            $vendor_info->vendor_subfood = $request->vendor_subfood;
+            $vendor_info->ar_sap = $request->ar_sap;
+            $vendor_info->vendorno = $request->vendorno;
+            $vendor_info->productno = $request->productno;
+            $vendor_info->pmino = $request->pmino;
+            $vendor_info->taxbranch = $request->taxbranch;
+            $vendor_info->owner_shop = $request->owner_shop;
+            $vendor_info->vendor_locate = $request->vendor_locate;
+            $vendor_info->serialno = $request->serialno;
+            $vendor_info->ipaddress = $request->ipaddress;
+            $vendor_info->txnno = $request->txnno;
+            $vendor_info->vendor_batchno = $request->vendor_batchno;
+            $vendor_info->billcount = $request->billcount;
+            $vendor_info->forrent = '0';
+            $vendor_info->gprate_1 = '0';
+            $vendor_info->gprate_2 = '0';
+            $vendor_info->gprate_3 = '0';
+            $vendor_info->vatrate = '7';
+            $vendor_info->govvatrate = '0';
+            $vendor_info->includevat = '2';
+            $vendor_info->includegovvat = '1';
+            $vendor_info->invoiceprint = 'N';
+            $vendor_info->typediscount = '0';
+            $vendor_info->discountamt = '0';
+            $vendor_info->cur_discount = '0';
+            $vendor_info->def_discount = '0';
+            $vendor_info->use_discount = '0';
+            $vendor_info->vendor_function = '000330';
+            $vendor_info->min_garantee1 = '0';
+            $vendor_info->min_garantee2 = '0';
+            $vendor_info->min_garantee3 = '0';
+            $vendor_info->dis_garantee = '0';
+            $vendor_info->activeflag = '1';
+            if ($vendor_info->save()) {
+                Log::channel('activity')->notice(session('auth_user.user_id') . ' Created Vendor', [
+                    'action' => 'create',
+                    'vendor_id' => $vendor_info->vendor_id,
+                    'vendor_name' => $vendor_info->vendor_name,
+                    'branch_id' => $vendor_info->branch_id,
+                    'create_at' => Carbon::now()->toDateTimeString(),
+                    'create_by' => session('auth_user.user_id'),
+                ]);
+                sweetalert()
+                    ->timer(5000)
+                    ->success(__('menu.save_is_success'));
+                return redirect()->route('vendor-page.index');
+            } else {
+                Log::channel('activity')->error(session('auth_user.user_id') . ' Failed to Create Vendor', [
+                    'action' => 'create',
+                    'vendor_id' => $vendor_info->vendor_id,
+                    'vendor_name' => $vendor_info->vendor_name,
+                    'branch_id' => $vendor_info->branch_id,
+                    'create_at' => Carbon::now()->toDateTimeString(),
+                    'create_by' => session('auth_user.user_id'),
+                ]);
+                sweetalert()
+                    ->timer(5000)
+                    ->error(__('menu.save_is_failed'));
+                return redirect()->route('vendor-page.index');
+            }
+        } catch (\Exception $e) {
+            Log::channel('activity')->error(session('auth_user.user_id') . ' Failed to Create Vendor', [
                 'action' => 'create',
-                'vendor_id' => $validate_data['vendor_id'],
-                'vendor_name' => $validate_data['vendor_name'],
-                'branch_id' => $validate_data['branch_id'],
+                'error_message' => $e->getMessage(),
                 'create_at' => Carbon::now()->toDateTimeString(),
-                'ceate_by' => session('auth_user.user_id'),
+                'create_by' => session('auth_user.user_id'),
             ]);
-            flash()
+            sweetalert()
                 ->option('position', 'bottom-right')
                 ->option('timeout', 5000)
-                ->success(__('menu.save_is_success'));
+                ->error(__('menu.save_is_failed') . ' ' . $e->getMessage());
             return redirect()->route('vendor-page.index');
         }
-        Log::channel('activity')->error(session('auth_user.user_id') . ' Failed to Create Vendor', [
-            'action' => 'create',
-            'create_at' => Carbon::now()->toDateTimeString(),
-            'create_by' => session('auth_user.user_id'),
-        ]);
-        flash()
-            ->option('position', 'bottom-right')
-            ->option('timeout', 5000)
-            ->error(__('menu.save_is_failed'));
-        return redirect()->route('vendor-page.index');
     }
     public function edit($id)
     {
@@ -242,99 +239,74 @@ class VendorController extends Controller
         ]);
         return view('pages.vendors.edit', compact('vendor_data', 'vendor_user', 'terminal'));
     }
-    public function update(Request $request, $id)
+    public function update(VendorRequest $request, $id)
     {
-        $validate_data = $request->validate(
-            [
-                'branch_id' => 'required',
-                'term_id' => 'required',
-                'term_seq' => 'required',
-                'vendor_name' => 'required',
-                'vendor_food' => 'required',
-                'issuedate' => 'required|date',
-                'validdate' => 'required|date|after:issuedate',
-                'vendor_subfood' => 'nullable',
-                'ar_sap' => 'nullable',
-                'vendorno' => 'required',
-                'productno' => 'required',
-                'pmino' => 'nullable',
-                'taxbranch' => 'nullable',
-                'owner_shop' => 'required',
-                'vendor_locate' => 'nullable',
-                'serialno' => 'nullable',
-                'ipaddress' => 'nullable|ip',
-                'txnno' => 'required',
-                'vendor_batchno' => 'required',
-                'billcount' => 'required',
-            ],
-            [
-                'branch_id.required' => __('vendor.brand_id_required'),
-                'term_id.required' => __('vendor.term_id_required'),
-                'term_seq.required' => __('vendor.term_seq_required'),
-                'vendor_name.required' => __('vendor.vendor_name_required'),
-                'vendor_food.required' => __('vendor.vendor_food_required'),
-                'issuedate.required' => __('vendor.issuedate_required'),
-                'validdate.required' => __('vendor.validdate_required'),
-                'vendorno.required' => __('vendor.vendorno_required'),
-                'productno.required' => __('vendor.productno_required'),
-                'owner_shop.required' => __('vendor.owner_shop_required'),
-                'txnno.required' => __('vendor.txnno_required'),
-                'vendor_batchno.required' => __('vendor.vendor_batchno_required'),
-                'billcount.required' => __('vendor.vendor_billcount_required'),
-            ]
-        );
-        // dd($validate_data);
-        if (isset($validate_data)) {
-            DB::table('vendor_info')
-                ->where('vendor_id', $id)
-                ->update([
-                    'branch_id' => $validate_data['branch_id'],
-                    'term_id' => $validate_data['term_id'],
-                    'term_seq' => $validate_data['term_seq'],
-                    'vendor_name' => $validate_data['vendor_name'],
-                    'vendor_food' => $validate_data['vendor_food'],
-                    'issuedate' => Carbon::parse($validate_data['issuedate'],)->format('Y-m-d'),
-                    'validdate' => Carbon::parse($validate_data['validdate'],)->format('Y-m-d'),
-                    'vendor_subfood' => $validate_data['vendor_subfood'],
-                    'ar_sap' => $validate_data['ar_sap'],
-                    'vendorno' => $validate_data['vendorno'],
-                    'productno' => $validate_data['productno'],
-                    'pmino' => $validate_data['pmino'],
-                    'taxbranch' => $validate_data['taxbranch'],
-                    'owner_shop' => $validate_data['owner_shop'],
-                    'vendor_locate' => $validate_data['vendor_locate'],
-                    'serialno' => $validate_data['serialno'],
-                    'ipaddress' => $validate_data['ipaddress'],
-                    'txnno' => $validate_data['txnno'],
-                    'vendor_batchno' => $validate_data['vendor_batchno'],
-                    'billcount' => $validate_data['billcount'],
-                    'activeflag' => 1,
+        try {
+            $validate_data = VendorModel::find($id);
+
+            $validate_data->branch_id = $request->branch_id;
+            $validate_data->term_seq = $request->term_seq;
+            $validate_data->vendor_name = $request->vendor_name;
+            $validate_data->vendor_food = $request->vendor_food;
+            $validate_data->issuedate = $request->issuedate;
+            $validate_data->validdate = $request->validdate;
+            $validate_data->vendor_subfood = $request->vendor_subfood;
+            $validate_data->ar_sap = $request->ar_sap;
+            $validate_data->vendorno = $request->vendorno;
+            $validate_data->productno = $request->productno;
+            $validate_data->pmino = $request->pmino;
+            $validate_data->taxbranch = $request->taxbranch;
+            $validate_data->owner_shop = $request->owner_shop;
+            $validate_data->vendor_locate = $request->vendor_locate;
+            $validate_data->serialno = $request->serialno;
+            $validate_data->ipaddress = $request->ipaddress;
+            $validate_data->txnno = $request->txnno;
+            $validate_data->vendor_batchno = $request->vendor_batchno;
+            $validate_data->billcount = $request->billcount;
+
+            if ($validate_data->save()) {
+                Log::channel('activity')->notice(session('auth_user.user_id') . ' Updated Vendor', [
+                    'action' => 'update',
+                    'vendor_id' => $validate_data->vendor_id,
+                    'vendor_name' => $validate_data->vendor_name,
+                    'branch_id' => $validate_data->branch_id,
+                    'update_at' => Carbon::now()->toDateTimeString(),
+                    'update_by' => session('auth_user.user_id'),
                 ]);
-            Log::channel('activity')->notice(session('auth_user.user_id') . ' Updated Vendor', [
-                'action' => 'update',
-                'update detail' => $validate_data,
-                'vendor_id' => $id,
-                'vendor_name' => $validate_data['vendor_name'],
-                'branch_id' => $validate_data['branch_id'],
-                'update_at' => Carbon::now()->toDateTimeString(),
-                'update_by' => session('auth_user.user_id'),
-            ]);
-            sweetalert()
-                ->showConfirmButton(false)
-                ->success(__('menu.save_is_success'));
-            return redirect()->back();
-        } else {
+                sweetalert()
+                    ->showConfirmButton(false)
+                    ->timer(5000)
+                    ->title('Success')
+                    ->success(__('menu.save_is_success'));
+                return redirect()->route('vendor-page.index');
+            } else {
+                Log::channel('activity')->error(session('auth_user.user_id') . ' Failed to Update Vendor', [
+                    'action' => 'update',
+                    'vendor_id' => $validate_data->vendor_id,
+                    'vendor_name' => $validate_data->vendor_name,
+                    'branch_id' => $validate_data->branch_id,
+                    'update_at' => Carbon::now()->toDateTimeString(),
+                    'update_by' => session('auth_user.user_id'),
+                ]);
+                sweetalert()
+                    ->showConfirmButton(false)
+                    ->timer(5000)
+                    ->title('Error')
+                    ->error(__('menu.save_is_failed'));
+                return redirect()->route('vendor-page.edit', $id);
+            }
+        } catch (\Exception $e) {
             Log::channel('activity')->error(session('auth_user.user_id') . ' Failed to Update Vendor', [
                 'action' => 'update',
-                'update detail' => $validate_data,
-                'vendor_id' => $id,
+                'error_message' => $e->getMessage(),
                 'update_at' => Carbon::now()->toDateTimeString(),
                 'update_by' => session('auth_user.user_id'),
             ]);
             sweetalert()
                 ->showConfirmButton(false)
-                ->error(__('menu.save_is_failed'));
-            return redirect()->back();
+                ->timer(5000)
+                ->error(__('menu.save_is_failed') . ' ' . $e->getMessage());
+            return redirect()->route('vendor-page.edit', $id);
         }
     }
     public function destroy($id) {}

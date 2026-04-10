@@ -99,12 +99,14 @@
         </div>
     </div>
 </section>
-<script>
-    document.getElementById('vendor_user_id').addEventListener('change', function() {
-        var selectedOption = this.options[this.selectedIndex];
-        var userName = selectedOption.getAttribute('data-user-name');
+@push('scripts')
+    <script>
+        document.getElementById('vendor_user_id').addEventListener('change', function() {
+            var selectedOption = this.options[this.selectedIndex];
+            var userName = selectedOption.getAttribute('data-user-name');
 
-        // Set the corresponding user_name in the text input
-        document.getElementById('vendor_user_name').value = userName;
-    });
-</script>
+            // Set the corresponding user_name in the text input
+            document.getElementById('vendor_user_name').value = userName;
+        });
+    </script>
+@endpush

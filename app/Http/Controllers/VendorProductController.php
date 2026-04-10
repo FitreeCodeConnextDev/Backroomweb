@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\VendorProductRequest;
+use App\Models\VendorProductModel;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -27,148 +29,57 @@ class VendorProductController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(VendorProductRequest $request)
     {
-        $form_vendor_product = $request->validate([
-            'vendor_id' => 'required',
-            'branch_id' => 'required',
-            'term_id' => 'required',
-            'product_id' => 'required',
-            'product_free' => 'required',
-            'groupvate' => 'required',
-            'product_seq' => 'required|numeric|unique:vendorproduct_info,product_seq,NULL,id,activeflag,1,vendor_id,' . $request->input('vendor_id') . ',branch_id,' . $request->input('branch_id'),
-            'use_point' => 'required',
-            'add_point' => 'required',
-            'priceunit' => 'required',
-            'gp_normal' => 'required',
-            'pricediscount' => 'required',
-            'gp_promotion' => 'required',
-            'pricemember' => 'required',
-            'gp_member' => 'required',
-            'pricestaff' => 'required',
-            'gp_staff' => 'required',
-            'pricerabbit' => 'required',
-            'gp_rabbit' => 'required',
-            'priceqr' => 'required',
-            'gp_qr' => 'required',
-            'product_perunit' => 'required',
-            'vatrate' => 'required',
-            'pricesp1' => 'required',
-            'gp_sp1' => 'required',
-            'pricesp2' => 'required',
-            'gp_sp2' => 'required',
-            'pricesp3' => 'required',
-            'gp_sp3' => 'required',
-            'pricesp4' => 'required',
-            'gp_sp4' => 'required',
-            'pricesp5' => 'required',
-            'gp_sp5' => 'required',
-            'priceedc' => 'nullable',
-            'gp_edc' => 'nullable',
-            'campaing_code' => 'nullable',
-            'campaing_startdate' => 'nullable',
-            'campaing_enddate' => 'nullable',
-            'campaing_starttime' => 'nullable',
-            'campaing_endtime' => 'nullable',
 
-        ], [
-            'vendor_id.required' => __('vendor_product.vendor_id_required'),
-            'branch_id.required' => __('vendor_product.branch_id_required'),
-            'term_id.required' => __('vendor_product.term_id_required'),
-            'product_id.required' => __('vendor_product.product_id_required'),
-            'product_free.required' => __('vendor_product.product_free_required'),
-            'groupvate.required' => __('vendor_product.groupvat_required'),
-            'product_seq.required' => __('vendor_product.product_seq_required'),
-            'product_seq.numeric' => __('vendor_product.product_seq_numeric'),
-            'product_seq.unique' => __('vendor_product.product_seq_unique'),
-            'use_point.required' => __('vendor_product.product_use_point_required'),
-            'add_point.required' => __('vendor_product.product_add_point_required'),
-            'priceunit.required' => __('vendor_product.product_priceunit_required'),
-            'gp_normal.required' => __('vendor_product.product_gp_normal_required'),
-            'pricediscount.required' => __('vendor_product.product_pricediscount_required'),
-            'gp_promotion.required' => __('vendor_product.product_gp_promotion_required'),
-            'pricemember.required' => __('vendor_product.product_price_member_required'),
-            'gp_member.required' => __('vendor_product.product_gp_member_required'),
-            'pricestaff.required' => __('vendor_product.product_price_staff_required'),
-            'gp_staff.required' => __('vendor_product.product_gp_staff_required'),
-            'pricerabbit.required' => __('vendor_product.product_price_rabbit_required'),
-            'gp_rabbit.required' => __('vendor_product.product_gp_rabbit_required'),
-            'priceqr.required' => __('vendor_product.product_price_qr_required'),
-            'gp_qr.required' => __('vendor_product.product_gp_qr_required'),
-            'product_perunit.required' => __('vendor_product.product_perunit_required'),
-            'vatrate.required' => __('vendor_product.product_vatrate_required'),
-            'pricesp1.required' => __('vendor_product.product_sp1_required'),
-            'gp_sp1.required' => __('vendor_product.product_gp_sp1_required'),
-            'pricesp2.required' => __('vendor_product.product_sp2_required'),
-            'gp_sp2.required' => __('vendor_product.product_gp_sp2_required'),
-            'pricesp3.required' => __('vendor_product.product_sp3_required'),
-            'gp_sp3.required' => __('vendor_product.product_gp_sp3_required'),
-            'pricesp4.required' => __('vendor_product.product_sp4_required'),
-            'gp_sp4.required' => __('vendor_product.product_gp_sp4_required'),
-            'pricesp5.required' => __('vendor_product.product_sp5_required'),
-            'gp_sp5.required' => __('vendor_product.product_gp_sp5_required'),
-            'priceedc.required' => __('vendor_product.product_price_edc_required'),
-            'gp_edc.required' => __('vendor_product.product_gp_edc_required'),
+        try {
 
-        ]);
-
-        $campaing_startdate = Carbon::parse($form_vendor_product['campaing_startdate'])->format('Y-m-d');
-        $campaing_enddate = Carbon::parse($form_vendor_product['campaing_enddate'])->format('Y-m-d');
-        $campaing_start = Carbon::parse($campaing_startdate . ' ' . $form_vendor_product['campaing_starttime'])->format('Y-m-d H:i:s');
-        $campaing_end = Carbon::parse($campaing_enddate . ' ' . $form_vendor_product['campaing_endtime'])->format('Y-m-d H:i:s');
-        if ($form_vendor_product) {
-            $insertData = [
-                'vendor_id' => $form_vendor_product['vendor_id'],
-                'branch_id' => $form_vendor_product['branch_id'],
-                'term_id' => $form_vendor_product['term_id'],
-                'product_id' => $form_vendor_product['product_id'],
-                'product_free' => $form_vendor_product['product_free'],
-                'product_seq' => $form_vendor_product['product_seq'],
-                'groupvat' => $form_vendor_product['groupvate'],
-                'use_point' => $form_vendor_product['use_point'],
-                'add_point' => $form_vendor_product['add_point'],
-                'priceunit' => $form_vendor_product['priceunit'],
-                'gp_normal' => $form_vendor_product['gp_normal'],
-                'pricediscount' => $form_vendor_product['pricediscount'],
-                'gp_promotion' => $form_vendor_product['gp_promotion'],
-                'pricemember' => $form_vendor_product['pricemember'],
-                'gp_member' => $form_vendor_product['gp_member'],
-                'pricestaff' => $form_vendor_product['pricestaff'],
-                'gp_staff' => $form_vendor_product['gp_staff'],
-                'pricerabbit' => $form_vendor_product['pricerabbit'],
-                'gp_rabbit' => $form_vendor_product['gp_rabbit'],
-                'priceqr' => $form_vendor_product['priceqr'],
-                'gp_qr' => $form_vendor_product['gp_qr'],
-                'product_perunit' => $form_vendor_product['product_perunit'],
-                'vatrate' => $form_vendor_product['vatrate'],
-                'pricesp1' => $form_vendor_product['pricesp1'],
-                'gp_sp1' => $form_vendor_product['gp_sp1'],
-                'pricesp2' => $form_vendor_product['pricesp2'],
-                'gp_sp2' => $form_vendor_product['gp_sp2'],
-                'pricesp3' => $form_vendor_product['pricesp3'],
-                'gp_sp3' => $form_vendor_product['gp_sp3'],
-                'pricesp4' => $form_vendor_product['pricesp4'],
-                'gp_sp4' => $form_vendor_product['gp_sp4'],
-                'pricesp5' => $form_vendor_product['pricesp5'],
-                'gp_sp5' => $form_vendor_product['gp_sp5'],
-                'campaign_code' => $form_vendor_product['campaing_code'],
-                'campaign_startdate' => $campaing_start,
-                'campaign_enddate' => $campaing_end,
-                'activeflag' => 1,
-            ];
-
-            if ($form_vendor_product['priceedc'] !== null) {
-                $insertData['priceedc'] = $form_vendor_product['priceedc'];
-            }
-
-            if ($form_vendor_product['gp_edc'] !== null) {
-                $insertData['gp_edc'] = $form_vendor_product['gp_edc'];
-            }
-
-
-            $vendor_product_insert = DB::table('vendorproduct_info')
-                ->insert($insertData);
-            if ($vendor_product_insert) {
+            $form_vendor_product = new VendorProductModel();
+            $form_vendor_product->vendor_id = $request->vendor_id;
+            $form_vendor_product->branch_id = $request->input('branch_id');
+            $form_vendor_product->term_id = $request->input('term_id');
+            $form_vendor_product->product_id = $request->product_id;
+            $form_vendor_product->product_free = $request->product_free;
+            $form_vendor_product->product_seq = $request->product_seq;
+            $form_vendor_product->groupvat = $request->groupvat;
+            $form_vendor_product->use_point = $request->use_point;
+            $form_vendor_product->add_point = $request->add_point;
+            $form_vendor_product->priceunit = $request->priceunit;
+            $form_vendor_product->gp_normal = $request->gp_normal;
+            $form_vendor_product->pricediscount = $request->pricediscount;
+            $form_vendor_product->gp_promotion = $request->gp_promotion;
+            $form_vendor_product->pricemember = $request->pricemember;
+            $form_vendor_product->gp_member = $request->gp_member;
+            $form_vendor_product->pricestaff = $request->pricestaff;
+            $form_vendor_product->gp_staff = $request->gp_staff;
+            $form_vendor_product->pricerabbit = $request->pricerabbit;
+            $form_vendor_product->gp_rabbit = $request->gp_rabbit;
+            $form_vendor_product->priceqr = $request->priceqr;
+            $form_vendor_product->gp_qr = $request->gp_qr;
+            $form_vendor_product->product_perunit = $request->product_perunit;
+            $form_vendor_product->vatrate = $request->vatrate;
+            $form_vendor_product->pricesp1 = $request->pricesp1;
+            $form_vendor_product->gp_sp1 = $request->gp_sp1;
+            $form_vendor_product->pricesp2 = $request->pricesp2;
+            $form_vendor_product->gp_sp2 = $request->gp_sp2;
+            $form_vendor_product->pricesp3 = $request->pricesp3;
+            $form_vendor_product->gp_sp3 = $request->gp_sp3;
+            $form_vendor_product->pricesp4 = $request->pricesp4;
+            $form_vendor_product->gp_sp4 = $request->gp_sp4;
+            $form_vendor_product->pricesp5 = $request->pricesp5;
+            $form_vendor_product->gp_sp5 = $request->gp_sp5;
+            $form_vendor_product->priceedc = $request->priceedc;
+            $form_vendor_product->gp_edc = $request->gp_edc;
+            $form_vendor_product->campaign_code = $request->campaign_code;
+            $form_vendor_product->campaign_startdate = Carbon::parse($request->campaign_startdate . ' ' . $request->campaign_starttime)->format('Y-m-d H:i:s');
+            $form_vendor_product->campaign_enddate = Carbon::parse($request->campaign_enddate . ' ' . $request->campaign_endtime)->format('Y-m-d H:i:s');
+            $form_vendor_product->typediscount = '0';
+            $form_vendor_product->discountamt = '0';
+            $form_vendor_product->cur_discount = '0';
+            $form_vendor_product->def_discount = '0';
+            $form_vendor_product->use_discount = '0';
+            $form_vendor_product->activeflag = 1;
+            if ($form_vendor_product->save()) {
                 Log::channel('activity')->notice(session('auth_user.user_id') . ' created vendor product: ' . $form_vendor_product['product_id'], [
                     'vendor_id' => $form_vendor_product['vendor_id'],
                     'branch_id' => $form_vendor_product['branch_id'],
@@ -189,8 +100,20 @@ class VendorProductController extends Controller
                     'created_at' => now()->toDateTimeString(),
                     'created_by' => session('auth_user.user_id'),
                 ]);
-                return response()->json(['message' => __('menu.save_is_failed')]);
+                return response()->json(['success' => false, 'message' => __('menu.save_is_failed')]);
             }
+        } catch (\Exception $e) {
+            Log::channel('activity')->error(session('auth_user.user_id') . ' failed to create vendor product', [
+                'vendor_id' => $form_vendor_product['vendor_id'],
+                'branch_id' => $form_vendor_product['branch_id'],
+                'product_id' => $form_vendor_product['product_id'],
+                'product_seq' => $form_vendor_product['product_seq'],
+                'message' => $e->getMessage(),
+                'action' => 'failed',
+                'created_at' => now()->toDateTimeString(),
+                'created_by' => session('auth_user.user_id'),
+            ]);
+            return response()->json(['success' => false, 'message' => __('menu.save_is_failed')]);
         }
     }
     public function update(Request $request, $product_seq)
@@ -308,6 +231,9 @@ class VendorProductController extends Controller
                     'updated_by' => session('auth_user.user_id'),
                 ]);
                 sweetalert()
+                    ->showConfirmButton(false)
+                    ->timer(5000)
+                    ->title('Success')
                     ->success(__('menu.edit_is_success'));
                 return redirect()->back();
             } else {
@@ -321,13 +247,20 @@ class VendorProductController extends Controller
                     'updated_by' => session('auth_user.user_id'),
                 ]);
                 sweetalert()
+                    ->showConfirmButton(false)
+                    ->timer(5000)
+                    ->title('Error')
                     ->error(__('menu.edit_is_failed'));
                 return redirect()->back();
             }
         }
         // ❌ ถ้ามี และไม่เท่ากับของตัวเอง (แปลว่าซ้ำของคนอื่น) → error
         elseif (in_array($form_vendor_edit['product_seq'], $all_seq)) {
-            sweetalert()->error(__('vendor_product.product_seq_unique'));
+            sweetalert()
+                ->showConfirmButton(false)
+                ->timer(5000)
+                ->title('Error')
+                ->error(__('vendor_product.product_seq_unique'));
             return redirect()->back();
         }
 
@@ -350,6 +283,9 @@ class VendorProductController extends Controller
                 'updated_by' => session('auth_user.user_id'),
             ]);
             sweetalert()
+                ->showConfirmButton(false)
+                ->timer(5000)
+                ->title('Success')
                 ->success(__('menu.edit_is_success'));
             return redirect()->back();
         } else {
@@ -363,6 +299,9 @@ class VendorProductController extends Controller
                 'updated_by' => session('auth_user.user_id'),
             ]);
             sweetalert()
+                ->showConfirmButton(false)
+                ->timer(5000)
+                ->title('Error')
                 ->error(__('menu.edit_is_failed'));
             return redirect()->back();
         }

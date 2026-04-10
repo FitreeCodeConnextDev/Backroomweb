@@ -169,73 +169,73 @@
         </div>
     </div>
 </section>
-<link href="https://cdn.jsdelivr.net/npm/tom-select@2.4.3/dist/css/tom-select.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/tom-select@2.4.3/dist/js/tom-select.complete.min.js"></script>
-<script type="module">
-    new TomSelect('#productdetail_id', {
-        plugins: ['dropdown_input'],
-    });
-    $(document).ready(function() {
-        // เมื่อคลิกปุ่มที่มี id="saveButton"
-        $('#compoButton2').on('click', function(e) {
-            e.preventDefault(); // หยุดการทำงานของ submit แบบปกติ
+@push('scripts')
+    <script type="module">
+        new TomSelect('#productdetail_id', {
+            plugins: ['dropdown_input'],
+        });
+        $(document).ready(function() {
+            // เมื่อคลิกปุ่มที่มี id="saveButton"
+            $('#compoButton2').on('click', function(e) {
+                e.preventDefault(); // หยุดการทำงานของ submit แบบปกติ
 
-            // ใช้ FormData เพื่อจับข้อมูลจากฟอร์ม
-            var formData = new FormData($('#vendor_product_form1')[0]);
+                // ใช้ FormData เพื่อจับข้อมูลจากฟอร์ม
+                var formData = new FormData($('#vendor_product_form1')[0]);
 
-            // ส่งข้อมูลไปยัง Route ที่กำหนดโดยใช้ Ajax
-            $.ajax({
-                url: '{{ route('insert_product_component') }}', // URL ที่จะส่งข้อมูลไป
-                type: 'POST', // ใช้ Method POST
-                data: formData, // ข้อมูลที่ส่งไป
-                processData: false, // บอกว่าไม่ต้องแปลงข้อมูล
-                contentType: false, // บอกว่าไม่ต้องตั้ง Content-Type
-                success: function(response) {
-                    // เมื่อส่งข้อมูลสำเร็จ
-                    Swal.fire({
-                        text: `{{ __('menu.edit_is_success') }}`,
-                        icon: 'success',
-                        showConfirmButton: false,
-                        timer: 3000,
-                    });
+                // ส่งข้อมูลไปยัง Route ที่กำหนดโดยใช้ Ajax
+                $.ajax({
+                    url: '{{ route('insert_product_component') }}', // URL ที่จะส่งข้อมูลไป
+                    type: 'POST', // ใช้ Method POST
+                    data: formData, // ข้อมูลที่ส่งไป
+                    processData: false, // บอกว่าไม่ต้องแปลงข้อมูล
+                    contentType: false, // บอกว่าไม่ต้องตั้ง Content-Type
+                    success: function(response) {
+                        // เมื่อส่งข้อมูลสำเร็จ
+                        Swal.fire({
+                            text: `{{ __('menu.edit_is_success') }}`,
+                            icon: 'success',
+                            showConfirmButton: false,
+                            timer: 3000,
+                        });
 
-                    // ปิด Modal
-                    $('#vendor_product_component').addClass('hidden');
+                        // ปิด Modal
+                        $('#vendor_product_component').addClass('hidden');
 
-                    // หากต้องการรีเฟรชข้อมูล หรือทำอะไรก่อนปิดฟอร์ม
-                    window.location.reload(); // รีโหลดหน้า (ถ้าต้องการ)
-                },
-                error: function(xhr, status, error) {
-                    let errorMessage = `{{ __('menu.is_failed') }}`;
+                        // หากต้องการรีเฟรชข้อมูล หรือทำอะไรก่อนปิดฟอร์ม
+                        window.location.reload(); // รีโหลดหน้า (ถ้าต้องการ)
+                    },
+                    error: function(xhr, status, error) {
+                        let errorMessage = `{{ __('menu.is_failed') }}`;
 
-                    // Check if the error is a validation error
-                    if (xhr.responseJSON && xhr.responseJSON.errors) {
-                        // Gather all validation errors and display them
-                        let errorList = '';
-                        for (let field in xhr.responseJSON.errors) {
-                            errorList +=
-                                `<li>${xhr.responseJSON.errors[field].join(', ')}</li>`;
+                        // Check if the error is a validation error
+                        if (xhr.responseJSON && xhr.responseJSON.errors) {
+                            // Gather all validation errors and display them
+                            let errorList = '';
+                            for (let field in xhr.responseJSON.errors) {
+                                errorList +=
+                                    `<li>${xhr.responseJSON.errors[field].join(', ')}</li>`;
+                            }
+                            errorMessage = `<ul>${errorList}</ul>`;
                         }
-                        errorMessage = `<ul>${errorList}</ul>`;
-                    }
 
-                    // Show error message with the validation errors
-                    Swal.fire({
-                        title: `{{ __('menu.save_is_failed') }}`, // Failure title
-                        html: errorMessage, // Show validation error list
-                        icon: 'error',
-                        confirmButtonText: 'ตกลง'
-                    });
-                    // เมื่อเกิดข้อผิดพลาด
-                    // alert('เกิดข้อผิดพลาด: ' + error);
-                    // console.log(xhr.responseText); // แสดงข้อผิดพลาดใน console
-                }
+                        // Show error message with the validation errors
+                        Swal.fire({
+                            title: `{{ __('menu.save_is_failed') }}`, // Failure title
+                            html: errorMessage, // Show validation error list
+                            icon: 'error',
+                            confirmButtonText: 'ตกลง'
+                        });
+                        // เมื่อเกิดข้อผิดพลาด
+                        // alert('เกิดข้อผิดพลาด: ' + error);
+                        // console.log(xhr.responseText); // แสดงข้อผิดพลาดใน console
+                    }
+                });
+            });
+
+            // ปิด Modal เมื่อคลิกปุ่มปิด
+            $('[data-modal-hide="vendor_product_component"]').on('click', function() {
+                $('#vendor_product_component').addClass('hidden');
             });
         });
-
-        // ปิด Modal เมื่อคลิกปุ่มปิด
-        $('[data-modal-hide="vendor_product_component"]').on('click', function() {
-            $('#vendor_product_component').addClass('hidden');
-        });
-    });
-</script>
+    </script>
+@endpush

@@ -54,6 +54,7 @@ Route::middleware(['auth_user'])->group(function () {
         Route::get('/checkPermiss', [AuthController::class, 'checkPermiss'])->name('checkPermiss');
 
         Route::resource('/vendor-page', VendorController::class);
+        
         Route::post('/vendor_user', [VendorController::class, 'vendor_user'])->name('vendor_user');
         Route::put('/vendor_user_delete/{user_id}/{vendor_id}', [VendorController::class, 'vendor_user_delete'])->name('vendor_user_delete');
 

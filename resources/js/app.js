@@ -20,7 +20,3 @@ window.TomSelect = TomSelect;
 
 
 window.Swal = Swal;
-// Provide common global aliases for code that expects different swal globals
-window.swal = Swal;
-window.sweetAlert = Swal;
-window.SweetAlert2 = Swal;

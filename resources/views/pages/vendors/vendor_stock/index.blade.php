@@ -47,32 +47,34 @@
         </div>
     </div>
 </div>
-{{-- <input type="text" id="vendor_name" value="{{ $vendor_name }}" class=" sr-only "> --}}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.1/xlsx.full.min.js"></script>
-<script>
-    document.getElementById("exportButton").addEventListener("click", function() {
-        // เรียกตาราง HTML
-        var table = document.getElementById("stock_table");
-        const itemName = this.getAttribute('data-id'); // ดึงข้อมูลจาก data-id
+@push('scripts')
+    {{-- <input type="text" id="vendor_name" value="{{ $vendor_name }}" class=" sr-only "> --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.1/xlsx.full.min.js"></script>
+    <script>
+        document.getElementById("exportButton").addEventListener("click", function() {
+            // เรียกตาราง HTML
+            var table = document.getElementById("stock_table");
+            const itemName = this.getAttribute('data-id'); // ดึงข้อมูลจาก data-id
 
-        // แปลงตารางเป็น JSON
-        var wb = XLSX.utils.table_to_book(table, {
-            sheet: "Sheet 1"
-        });
+            // แปลงตารางเป็น JSON
+            var wb = XLSX.utils.table_to_book(table, {
+                sheet: "Sheet 1"
+            });
 
-        // ตั้งค่าฟอร์แมตในคอลัมน์จำนวน (คอลัมน์ที่ 3) ให้เป็นทศนิยม 2 ตำแหน่ง
-        var range = XLSX.utils.decode_range(wb.Sheets["Sheet 1"]['!ref']); // หาช่วงข้อมูลทั้งหมด
-        for (var row = range.s.r + 1; row <= range.e.r; row++) {
-            var cell = wb.Sheets["Sheet 1"][XLSX.utils.encode_cell({
-                r: row,
-                c: 2
-            })]; // เข้าถึงคอลัมน์ที่ 3 (จำนวน)
-            if (cell) {
-                cell.z = '#,##0.00'; // ตั้งค่าฟอร์แมตเป็นทศนิยม 2 ตำแหน่ง
+            // ตั้งค่าฟอร์แมตในคอลัมน์จำนวน (คอลัมน์ที่ 3) ให้เป็นทศนิยม 2 ตำแหน่ง
+            var range = XLSX.utils.decode_range(wb.Sheets["Sheet 1"]['!ref']); // หาช่วงข้อมูลทั้งหมด
+            for (var row = range.s.r + 1; row <= range.e.r; row++) {
+                var cell = wb.Sheets["Sheet 1"][XLSX.utils.encode_cell({
+                    r: row,
+                    c: 2
+                })]; // เข้าถึงคอลัมน์ที่ 3 (จำนวน)
+                if (cell) {
+                    cell.z = '#,##0.00'; // ตั้งค่าฟอร์แมตเป็นทศนิยม 2 ตำแหน่ง
+                }
             }
-        }
 
-        // ดาวน์โหลดไฟล์ Excel
-        XLSX.writeFile(wb, "Stock_" + itemName + ".xlsx"); // แก้ไขการประกอบชื่อไฟล์
-    });
-</script>
+            // ดาวน์โหลดไฟล์ Excel
+            XLSX.writeFile(wb, "Stock_" + itemName + ".xlsx"); // แก้ไขการประกอบชื่อไฟล์
+        });
+    </script>
+@endpush
