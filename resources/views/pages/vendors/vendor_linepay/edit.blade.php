@@ -120,7 +120,7 @@
                 </div>
                 <div class="mt-6">
                     <label for="amount_use" class="label_input"> {{ __('vendor.amount_use') }} </label>
-                    <input type="text" class="input_text" name="amount_use" id="amount_use"
+                    <input type="number" class="input_text" name="amount_use" id="amount_use"
                         value="{{ $vendor_linepay->amount_use ?? '' }}">
                 </div>
                 <div class="mt-6">
