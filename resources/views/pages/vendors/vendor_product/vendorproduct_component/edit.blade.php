@@ -1,4 +1,3 @@
-@vite(['resources/css/app.css', 'resources/js/app.js'])
 <section>
     @php
         $search_compo = request()->get('search_compo', '');
@@ -28,7 +27,8 @@
                         ->orWhere('product_desc', 'like', '%' . $search_compo . '%');
                 }
             })
-            ->paginate(10);
+            ->paginate(10)
+            ->appends(['search_compo' => $search_compo]);
 
     @endphp
     {{-- Product info จะมี unit ดึง join unit_info เพื่อแสดงชื่อ --}}
@@ -64,12 +64,12 @@
                     @foreach ($vendor_product_detail as $vpd)
                         @php
                             $product_detail_names = DB::table('product_info')
-                                ->select('product_desc as product_name')
+                                ->select('product_desc as product_name', 'unit_id')
                                 ->where('product_id', $vpd->productdetail_id)
                                 ->first(); // Use first() instead of get()
                             $product_unit = DB::table('unit_info')
                                 ->select('unit_name')
-                                ->where('unit_id', $vpd->unit_id)
+                                ->where('unit_id', $product_detail_names->unit_id)
                                 ->first();
                         @endphp
                         <tr>
@@ -144,7 +144,8 @@
 
                         </div>
                         <div>
-                            <label for="product_id" class="label_input"> {{ __('vendor_product.product_component') }}
+                            <label for="productdetail_id" class="label_input">
+                                {{ __('vendor_product.product_component') }}
                             </label>
                             <select class="input_text" name="productdetail_id" id="productdetail_id" required>
                                 <option selected disabled> {{ __('vendor_product.select_component') }} </option>
@@ -153,6 +154,10 @@
                                         {{ $pro_duct->product_desc }}</option>
                                 @endforeach
                             </select>
+                        </div>
+                        <div>
+                            <label for="unit_id" class="label_input"> {{ __('vendor_product.unit_id') }} </label>
+                            <input type="text" id="unit_name" class="input_text" required readonly>
                         </div>
                         <div>
                             <label for="qty" class="label_input"> {{ __('vendor_product.qty') }} </label>
@@ -170,6 +175,34 @@
     </div>
 </section>
 @push('scripts')
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function() {
+            const productSelect = document.getElementById('productdetail_id');
+
+            productSelect.addEventListener('change', function(event) {
+                const productdetail_id = event.target.value;
+
+                if (productdetail_id) {
+                    // ส่งคำขอไปยัง Laravel Route
+                    fetch(`/get-unitProductdetail/${productdetail_id}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.error) {
+                                // ถ้าข้อผิดพลาดเกิดขึ้น เช่น Product ไม่เจอ
+                                console.error(data.error);
+                                return;
+                            }
+
+                            // เติมค่าให้กับ input fields ตามที่ได้รับจาก Controller
+                            document.getElementById('unit_name').value = data.unit_name;
+                        })
+                        .catch(error => {
+                            console.error('Error fetching product details:', error);
+                        });
+                }
+            });
+        });
+    </script>
     <script type="module">
         new TomSelect('#productdetail_id', {
             plugins: ['dropdown_input'],

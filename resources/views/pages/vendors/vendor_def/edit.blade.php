@@ -1,5 +1,3 @@
-@vite(['resources/css/app.css', 'resources/js/app.js'])
-
 @php
     $vendor_func = DB::table('vendor_info')
         ->select('vendor_id', 'vendor_function')

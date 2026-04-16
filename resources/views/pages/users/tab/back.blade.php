@@ -152,13 +152,52 @@
         </div>
         {{-- PaymentType ทะเบียนข้อมูลประเภทชำระเงิน --}}
         {{-- Report Permissions --}}
-        <div class="flex items-center mb-6">
+        <div class="flex items-center mb-6"> {{-- daily --}}
             <input type="hidden" name="back_21" id="default-checkbox" value="0">
             <input id="back_21" name="back_21" type="checkbox" value="1"
                 @if (isset($back_permiss_edit) && $back_permiss_edit[20] == 1) checked @endif class="checkbox_input">
             <label for="back_21" class="label_checkbox">
                 {{ __('users.back_21') }} </label>
         </div>
+        <div class="flex items-center mb-6"> {{-- vendor --}}
+            <input type="hidden" name="back_22" id="default-checkbox" value="0">
+            <input id="back_22" name="back_22" type="checkbox" value="1"
+                @if (isset($back_permiss_edit) && $back_permiss_edit[21] == 1) checked @endif class="checkbox_input">
+            <label for="back_22" class="label_checkbox">
+                {{ __('users.back_22') }} </label>
+        </div>
+        <div class="flex items-center mb-6"> {{-- item --}}
+            <input type="hidden" name="back_24" id="default-checkbox" value="0">
+            <input id="back_24" name="back_24" type="checkbox" value="1"
+                @if (isset($back_permiss_edit) && $back_permiss_edit[23] == 1) checked @endif class="checkbox_input">
+            <label for="back_24" class="label_checkbox">
+                {{ __('users.back_24') }} </label>
+        </div>
+        <div class="flex items-center mb-6"> {{-- paymenttype --}}
+            <input type="hidden" name="back_25" id="default-checkbox" value="0">
+            <input id="back_25" name="back_25" type="checkbox" value="1"
+                @if (isset($back_permiss_edit) && $back_permiss_edit[24] == 1) checked @endif class="checkbox_input">
+            <label for="back_25" class="label_checkbox">
+                {{ __('users.back_25') }} </label>
+        </div>
         {{-- Report Permissions --}}
+        {{-- Stock --}}
+        <div class="flex items-center mb-6">
+            <input type="hidden" name="back_40" id="default-checkbox" value="0">
+            <input id="back_40" name="back_40" type="checkbox" value="1"
+                @if (isset($back_permiss_edit) && $back_permiss_edit[39] == 1) checked @endif class="checkbox_input">
+            <label for="back_40" class="label_checkbox">
+                {{ __('users.back_40') }} </label>
+        </div>
+        {{-- Stock --}}
+        {{-- Vendor Expense --}}
+        <div class="flex items-center mb-6">
+            <input type="hidden" name="back_41" id="default-checkbox" value="0">
+            <input id="back_41" name="back_41" type="checkbox" value="1"
+                @if (isset($back_permiss_edit) && $back_permiss_edit[40] == 1) checked @endif class="checkbox_input">
+            <label for="back_41" class="label_checkbox">
+                {{ __('users.back_41') }} </label>
+        </div>
+        {{-- Vendor Expense --}}
     </div>
 </div>

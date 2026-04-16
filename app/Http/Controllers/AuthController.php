@@ -137,7 +137,7 @@ class AuthController extends Controller
         } else if ($user_back[16] == 1) {
             return redirect()->route('payment_type.index');
         } else {
-            return redirect()->route('chart_daily');
+            return redirect()->route('charts.daily');
         }
     }
     public function logout()

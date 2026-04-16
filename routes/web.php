@@ -54,7 +54,7 @@ Route::middleware(['auth_user'])->group(function () {
         Route::get('/checkPermiss', [AuthController::class, 'checkPermiss'])->name('checkPermiss');
 
         Route::resource('/vendor-page', VendorController::class);
-        
+
         Route::post('/vendor_user', [VendorController::class, 'vendor_user'])->name('vendor_user');
         Route::put('/vendor_user_delete/{user_id}/{vendor_id}', [VendorController::class, 'vendor_user_delete'])->name('vendor_user_delete');
 
@@ -68,6 +68,7 @@ Route::middleware(['auth_user'])->group(function () {
 
         Route::resource('vendor-product', VendorProductController::class);
         Route::post('/vendor-product/insert-component', [VendorProductController::class, 'insert_product_component'])->name('insert_product_component');
+
         Route::put('/vendor-product/{product_seq}/{vendor_id}/{branch_id}', [VendorProductController::class, 'destroy_product'])->name('vendor-product.destroy_product');
         Route::post('/vendor-product-promotion-insert', [VendorProductController::class, 'insert_promo'])->name('vendor_promotion_insert');
         Route::put('/vendorproduct-delete-promotion/{time_seq}/{vendor_id}/{branch_id}', [VendorProductController::class, 'del_promo'])->name('vendorproduct_promotion_delete');
@@ -79,6 +80,7 @@ Route::middleware(['auth_user'])->group(function () {
 
 
         Route::get('/get-product-details/{product_id}', [VendorProductController::class, 'getProductDetails']);
+        Route::get('/get-unitProductdetail/{productdetail_id}', [VendorProductController::class, 'get_unitProductdetail']);
 
         Route::get('/vendor-page/{vendor_id}/{pages_search}', [VendorProductController::class, 'vendor_product_info_search'])->name('vendor_product_info_search');
         Route::get('/vendor-page/{vendor_id}', [VendorProductController::class, 'vendor_product_info_search_show'])->name('vendor_product_info_search_show');

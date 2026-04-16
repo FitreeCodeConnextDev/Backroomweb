@@ -1,12 +1,5 @@
 {{-- Permiss --}}
 @php
-    $user_id = session('auth_user.user_id');
-    $user_info = DB::table('user_info')
-        ->select('back_permiss')
-        ->where('user_id', $user_id)
-        ->where('activeflag', 1)
-        ->first();
-    $user_back = str_split($user_info->back_permiss);
     $branch_name = DB::table('branch_info')
         ->select('branch_name')
         ->where('branch_id', session('auth_user.branch_id'))
@@ -132,7 +125,7 @@
 
                 {{-- กางออกอัตโนมัติถ้า $isHomeActive เป็น true --}}
                 <ul id="back_end_dev" class="{{ $isHomeActive ? '' : 'hidden' }} py-2 space-y-2">
-                    @if ($user_back[0] == 1)
+                    @if (App\Helpers\PermissionHelper::checkUserPermission('back', null, 0))
                         <li>
                             <div class=" bg-white border-b border-gray-200 ">
                                 <a href="{{ route('vendor-page.index') }}"
@@ -142,7 +135,7 @@
                             </div>
                         </li>
                     @endif
-                    @if ($user_back[1] == 1)
+                    @if (App\Helpers\PermissionHelper::checkUserPermission('back', null, 1))
                         <li>
                             <div class=" bg-white border-b border-gray-200 ">
                                 <a href="{{ route('member.index') }}"
@@ -152,7 +145,7 @@
                             </div>
                         </li>
                     @endif
-                    @if ($user_back[2] == 1)
+                    @if (App\Helpers\PermissionHelper::checkUserPermission('back', null, 2))
                         <li>
                             <div class=" bg-white border-b border-gray-200 ">
                                 <a href=" {{ route('products-groups.index') }} "
@@ -162,7 +155,7 @@
                             </div>
                         </li>
                     @endif
-                    @if ($user_back[3] == 1)
+                    @if (App\Helpers\PermissionHelper::checkUserPermission('back', null, 3))
                         <li>
                             <div class=" bg-white border-b border-gray-200 ">
                                 <a href="{{ route('vendor-promotion.index') }}"
@@ -172,7 +165,7 @@
                             </div>
                         </li>
                     @endif
-                    @if ($user_back[4] == 1)
+                    @if (App\Helpers\PermissionHelper::checkUserPermission('back', null, 4))
                         <li>
                             <div class=" bg-white border-b border-gray-200 ">
                                 <a href="{{ route('card-promotion.index') }}"
@@ -182,7 +175,7 @@
                             </div>
                         </li>
                     @endif
-                    @if ($user_back[5] == 1)
+                    @if (App\Helpers\PermissionHelper::checkUserPermission('back', null, 5))
                         <li>
                             <div class=" bg-white border-b border-gray-200 ">
                                 <a href=" {{ route('users.index') }} "
@@ -192,7 +185,7 @@
                             </div>
                         </li>
                     @endif
-                    @if ($user_back[6] == 1)
+                    @if (App\Helpers\PermissionHelper::checkUserPermission('back', null, 6))
                         <li>
                             <div class=" bg-white border-b border-gray-200 ">
                                 <a href="{{ route('branch.index') }}"
@@ -210,7 +203,7 @@
                             </a>
                         </div>
                     </li> --}}
-                    @if ($user_back[8] == 1)
+                    @if (App\Helpers\PermissionHelper::checkUserPermission('back', null, 8))
                         <li>
                             <div class=" bg-white border-b border-gray-200 ">
                                 <a href="{{ route('card-type.index') }}"
@@ -220,7 +213,7 @@
                             </div>
                         </li>
                     @endif
-                    @if ($user_back[9] == 1)
+                    @if (App\Helpers\PermissionHelper::checkUserPermission('back', null, 9))
                         <li>
                             <div class=" bg-white border-b border-gray-200 ">
                                 <a href="{{ route('products.index') }}"
@@ -238,7 +231,7 @@
                             </a>
                         </div>
                     </li> --}}
-                    @if ($user_back[11] == 1)
+                    @if (App\Helpers\PermissionHelper::checkUserPermission('back', null, 11))
                         <li>
                             <div class=" bg-white border-b border-gray-200 ">
                                 <a href="{{ route('staff.index') }}"
@@ -248,7 +241,7 @@
                             </div>
                         </li>
                     @endif
-                    @if ($user_back[12] == 1)
+                    @if (App\Helpers\PermissionHelper::checkUserPermission('back', null, 12))
                         <li>
                             <div class=" bg-white border-b border-gray-200 ">
                                 <a href="{{ route('product-units.index') }}"
@@ -258,7 +251,7 @@
                             </div>
                         </li>
                     @endif
-                    @if ($user_back[13] == 1)
+                    @if (App\Helpers\PermissionHelper::checkUserPermission('back', null, 13))
                         <li>
                             <div class=" bg-white border-b border-gray-200 ">
                                 <a href="{{ route('product-sap.index') }}"
@@ -268,7 +261,7 @@
                             </div>
                         </li>
                     @endif
-                    @if ($user_back[14] == 1)
+                    @if (App\Helpers\PermissionHelper::checkUserPermission('back', null, 14))
                         <li>
                             <div class=" bg-white border-b border-gray-200 ">
                                 <a href="{{ route('coupons.index') }}"
@@ -278,7 +271,7 @@
                             </div>
                         </li>
                     @endif
-                    @if ($user_back[15] == 1)
+                    @if (App\Helpers\PermissionHelper::checkUserPermission('back', null, 15))
                         <li>
                             <div class=" bg-white border-b border-gray-200 ">
                                 <a href="{{ route('payment-group.index') }}"
@@ -289,7 +282,7 @@
                         </li>
                     @endif
 
-                    @if ($user_back[16] == 1)
+                    @if (App\Helpers\PermissionHelper::checkUserPermission('back', null, 16))
                         <li>
                             <div class=" bg-white border-b border-gray-200 ">
                                 <a href="{{ route('payment_type.index') }}"
@@ -347,7 +340,7 @@
                     </svg>
                 </button>
                 <ul id="import" class="{{ $isImportActive ? '' : 'hidden' }} py-2 space-y-2">
-                    @if ($user_back[0] == 1)
+                    @if (App\Helpers\PermissionHelper::checkUserPermission('back', null, 1))
                         <li>
                             <div class=" bg-white border-b border-gray-200 ">
                                 <a href="{{ route('import.vendors') }}"
@@ -365,7 +358,7 @@
                             </div>
                         </li>
                     @endif
-                    @if ($user_back[9] == 1)
+                    @if (App\Helpers\PermissionHelper::checkUserPermission('back', null, 9))
                         <li>
                             <div class=" bg-white border-b border-gray-200 ">
                                 <a href="{{ route('import.product') }}"
@@ -375,7 +368,7 @@
                             </div>
                         </li>
                     @endif
-                    @if ($user_back[4] == 1)
+                    @if (App\Helpers\PermissionHelper::checkUserPermission('back', null, 4))
                         <li>
                             <div class=" bg-white border-b border-gray-200 ">
                                 <a href="{{ route('import.user') }}"
@@ -425,22 +418,23 @@
         </ul>
 
         {{-- หมวดหมู่: Report --}}
-        @if ($user_back[20] == 1)
-            @php $isReportActive = request()->routeIs('report.*'); @endphp
-            <ul class="space-y-2 font-medium">
-                <li>
-                    <button type="button"
-                        class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 {{ $isReportActive ? 'bg-gray-50' : '' }}"
-                        aria-controls="report" data-collapse-toggle="report">
-                        <span
-                            class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">{{ __('report.report_title') }}</span>
-                        <svg class="w-3 h-3 transition-transform {{ $isReportActive ? 'rotate-180' : '' }}"
-                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                stroke-width="2" d="m1 1 4 4 4-4" />
-                        </svg>
-                    </button>
-                    <ul id="report" class="{{ $isReportActive ? '' : 'hidden' }} py-2 space-y-2">
+
+        @php $isReportActive = request()->routeIs('report.*'); @endphp
+        <ul class="space-y-2 font-medium">
+            <li>
+                <button type="button"
+                    class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 {{ $isReportActive ? 'bg-gray-50' : '' }}"
+                    aria-controls="report" data-collapse-toggle="report">
+                    <span
+                        class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">{{ __('report.report_title') }}</span>
+                    <svg class="w-3 h-3 transition-transform {{ $isReportActive ? 'rotate-180' : '' }}"
+                        aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="m1 1 4 4 4-4" />
+                    </svg>
+                </button>
+                <ul id="report" class="{{ $isReportActive ? '' : 'hidden' }} py-2 space-y-2">
+                    @if (App\Helpers\PermissionHelper::checkUserPermission('back', null, 20))
                         <li>
                             <div class=" bg-white border-b border-gray-200 ">
                                 <a href="{{ route('report.index') }}"
@@ -449,6 +443,8 @@
                                 </a>
                             </div>
                         </li>
+                    @endif
+                    @if (App\Helpers\PermissionHelper::checkUserPermission('back', null, 21))
                         <li>
                             <div class=" bg-white border-b border-gray-200 ">
                                 <a href="{{ route('report.vendor') }}"
@@ -457,6 +453,8 @@
                                 </a>
                             </div>
                         </li>
+                    @endif
+                    @if (App\Helpers\PermissionHelper::checkUserPermission('back', null, 22))
                         <li>
                             <div class=" bg-white border-b border-gray-200 ">
                                 <a href="{{ route('report.item') }}"
@@ -465,6 +463,8 @@
                                 </a>
                             </div>
                         </li>
+                    @endif
+                    @if (App\Helpers\PermissionHelper::checkUserPermission('back', null, 23))
                         <li>
                             <div class=" bg-white border-b border-gray-200 ">
                                 <a href="{{ route('report.payment') }}"
@@ -473,11 +473,22 @@
                                 </a>
                             </div>
                         </li>
-                        {{-- ... เมนูอื่นๆ ในกลุ่ม Report ... --}}
-                    </ul>
-                </li>
-            </ul>
-        @endif
+                    @endif
+                    @if (App\Helpers\PermissionHelper::checkUserPermission('back', null, 24))
+                        <li>
+                            <div class=" bg-white border-b border-gray-200 ">
+                                <a href="{{ route('report.payment') }}"
+                                    class="flex items-center w-full p-2 mb-2 text-gray-900 transition duration-75 hover:bg-gray-100 rounded-lg pl-5 group {{ request()->routeIs('report.payment') ? 'active_menu' : 'text-gray-500' }}">
+                                    <span class="ms-3"> {{ __('report.payment_type_report') }} </span>
+                                </a>
+                            </div>
+                        </li>
+                    @endif
+                    {{-- ... เมนูอื่นๆ ในกลุ่ม Report ... --}}
+                </ul>
+            </li>
+        </ul>
+
 
         <div class=" mt-3 "></div>
         @php $isOrtherActive = request()->routeIs(['other.*' , 'stock-info.*']); @endphp
@@ -495,23 +506,26 @@
                     </svg>
                 </button>
                 <ul id="orther" class="{{ $isOrtherActive ? '' : 'hidden' }} py-2 space-y-2">
-
-                    <li>
-                        <div class=" bg-white border-b border-gray-200 ">
-                            <a href="{{ route('stock-info.index') }}"
-                                class="flex items-center w-full p-2 mb-2 text-gray-900 transition duration-75 hover:bg-gray-100 rounded-lg pl-5 group {{ request()->routeIs('stock-info.*') ? 'active_menu' : 'text-gray-500' }}">
-                                <span class="ms-3"> {{ __('menu.stock_title') }} </span>
-                            </a>
-                        </div>
-                    </li>
-                    <li>
-                        <div class=" bg-white border-b border-gray-200 ">
-                            <a href="{{ route('other.expensevendor_other_index') }}"
-                                class="flex items-center w-full p-2 mb-2 text-gray-900 transition duration-75 hover:bg-gray-100 rounded-lg pl-5 group {{ request()->routeIs('other.expensevendor_*') ? 'active_menu' : 'text-gray-500' }}">
-                                <span class="ms-3"> {{ __('expense_vendor.expense_vendor') }} </span>
-                            </a>
-                        </div>
-                    </li>
+                    @if (App\Helpers\PermissionHelper::checkUserPermission('back', null, 39))
+                        <li>
+                            <div class=" bg-white border-b border-gray-200 ">
+                                <a href="{{ route('stock-info.index') }}"
+                                    class="flex items-center w-full p-2 mb-2 text-gray-900 transition duration-75 hover:bg-gray-100 rounded-lg pl-5 group {{ request()->routeIs('stock-info.*') ? 'active_menu' : 'text-gray-500' }}">
+                                    <span class="ms-3"> {{ __('menu.stock_title') }} </span>
+                                </a>
+                            </div>
+                        </li>
+                    @endif
+                    @if (App\Helpers\PermissionHelper::checkUserPermission('back', null, 40))
+                        <li>
+                            <div class=" bg-white border-b border-gray-200 ">
+                                <a href="{{ route('other.expensevendor_other_index') }}"
+                                    class="flex items-center w-full p-2 mb-2 text-gray-900 transition duration-75 hover:bg-gray-100 rounded-lg pl-5 group {{ request()->routeIs('other.expensevendor_*') ? 'active_menu' : 'text-gray-500' }}">
+                                    <span class="ms-3"> {{ __('expense_vendor.expense_vendor') }} </span>
+                                </a>
+                            </div>
+                        </li>
+                    @endif
                 </ul>
             </li>
 

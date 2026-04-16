@@ -46,8 +46,8 @@
                 <section class="mt-2 w-48">
                     <label for="vendor_function_4" class="label_input">{{ __('vendor.def_4') }}</label>
                     <select name="vendor_function_4" id="vendor_function_4" class="input_text" disabled>
-                        <option value=" " @if ($vendor_split_f['func_4'] == null) selected @else disabled hidden @endif>
-                            ไม่ได้เลือก</option>
+                        <option value="0" @if ($vendor_split_f['func_4'] == 0) selected @endif>
+                            {{ __('product.non_select') }}</option>
                         <option value="1" @if ($vendor_split_f['func_4'] == 1) selected @endif>1</option>
                         <option value="2" @if ($vendor_split_f['func_4'] == 2) selected @endif>2</option>
                         <option value="3" @if ($vendor_split_f['func_4'] == 3) selected @endif>3</option>
@@ -63,9 +63,9 @@
                 <section class="mt-2 w-48">
                     <label for="vendor_function_5" class="label_input">{{ __('vendor.def_5') }}</label>
                     <select name="vendor_function_5" id="vendor_function_5" class="input_text" disabled>
-                        <option value=" "
-                            @if ($vendor_split_f['func_5'] == null) selected @else disabled hidden @endif>
-                            ไม่ได้เลือก</option>
+                        <option value="0" @if ($vendor_split_f['func_5'] == 0) selected @endif>
+                            {{ __('product.non_select') }}
+                        </option>
                         <option value="1" @if ($vendor_split_f['func_5'] == 1) selected @endif>1</option>
                         <option value="2" @if ($vendor_split_f['func_5'] == 2) selected @endif>2</option>
                         <option value="3" @if ($vendor_split_f['func_5'] == 3) selected @endif>3</option>

@@ -127,10 +127,10 @@
                     <label for="product_id" class="label_input"> {{ __('vendor.product_id') }} </label>
                     <select name="product_id" class="input_text" id="product_id">
                         <option value="" selected> {{ __('vendor.select_product') }} </option>
-                        @foreach ($product_info as $item)
-                            <option value="{{ $item->product_id }}" @if ($vendor_linepay->product_id == $item->product_id) selected @endif>
-                                {{ $item->product_desc }}
-                            </option>
+                        @foreach ($product_info as $product)
+                            <option value="{{ $product->product_id }}"
+                                @if (isset($vendor_linepay->product_id) && $vendor_linepay->product_id == $product->product_id) selected @endif>
+                                {{ $product->product_desc }}</option>
                         @endforeach
                     </select>
                 </div>

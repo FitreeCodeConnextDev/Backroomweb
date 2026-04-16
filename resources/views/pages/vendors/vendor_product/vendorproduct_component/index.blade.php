@@ -10,7 +10,8 @@
                     ->orWhere('product_desc', 'like', '%' . $search_compo . '%');
             }
         })
-        ->paginate(10);
+        ->paginate(10)
+        ->appends(['search_compo' => $search_compo]);
 @endphp
 <div class="grid grid-cols-1 gap-3">
     <div class="overflow-x-auto">
@@ -37,12 +38,12 @@
                 @foreach ($vendor_product_detail as $vpd)
                     @php
                         $product_detail_names = DB::table('product_info')
-                            ->select('product_desc as product_name')
+                            ->select('product_desc as product_name', 'unit_id')
                             ->where('product_id', $vpd->productdetail_id)
                             ->first(); // Use first() instead of get()
                         $product_unit = DB::table('unit_info')
                             ->select('unit_name')
-                            ->where('unit_id', $vpd->unit_id)
+                            ->where('unit_id', $product_detail_names->unit_id)
                             ->first();
                     @endphp
                     <tr>

@@ -29,11 +29,11 @@
                     </section>
                     <section class="mt-2">
                         <label for="invoice_addr" class="label_input"> {{ __('vendor.invoice_addr') }} </label>
-                        <textarea name="invoiceaddr2" class="input_text" disabled>{{ $vendor_invoice->invoiceaddr1 }} {{ $vendor_invoice->invoiceaddr2 }}</textarea>
+                        <textarea name="" class="input_text" disabled>{{ $vendor_invoice->invoiceaddr1 }} {{ $vendor_invoice->invoiceaddr2 }}</textarea>
                     </section>
                     <section class="mt-2">
                         <label for="invoiceaddr2" class="label_input"> {{ __('vendor.invoice_addr') }} </label>
-                        <textarea name="invoiceaddr2" class="input_text" disabled>{{ $vendor_invoice->invoiceaddr2 }}</textarea>
+                        <textarea name="invoiceaddr2" class="input_text" disabled></textarea>
                     </section>
                     <section class=" mt-2">
                         <label for="invoiceduedate" class="label_input"> {{ __('vendor.invoice_duedate') }} /

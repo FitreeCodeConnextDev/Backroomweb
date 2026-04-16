@@ -78,6 +78,7 @@ return [
     'select_products' => 'เลือกสินค้า',
     'select_component' => 'เลือกส่วนประกอบ',
     'product_component' => 'ส่วนประกอบสินค้า',
+    'unit_id' => 'หน่วย',
 
 
     'vendor_id_required' => 'โปรดกรอกรหัสร้านค้า',

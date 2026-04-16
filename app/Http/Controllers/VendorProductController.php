@@ -28,6 +28,27 @@ class VendorProductController extends Controller
             'product_group' => $product->product_group,
         ]);
     }
+    public function get_unitProductdetail($productdetail_id)
+    {
+        $product_detail_names = DB::table('product_info')
+            ->select('product_desc as product_name', 'unit_id')
+            ->where('product_id', $productdetail_id)
+            ->first(); // Use first() instead of get()
+
+        if (!$product_detail_names) {
+            return response()->json(['error' => 'Product not found'], 404);
+        }
+        $product_unit = DB::table('unit_info')
+            ->select('unit_name')
+            ->where('unit_id', $product_detail_names->unit_id)
+            ->first();
+        if (!$product_unit) {
+            return response()->json(['error' => 'Product unit not found'], 404);
+        }
+        return response()->json([
+            'unit_name' => $product_unit->unit_name,
+        ]);
+    }
 
     public function store(VendorProductRequest $request)
     {

@@ -4,11 +4,7 @@
 {{-- @dd($stock_data) --}}
 
 @php
-    $stock_data = DB::table('stock_info')
-        ->select('product_id', 'product_desc', 'cur_balance')
-        ->where('vendor_id', $vendor_id)
-        ->get();
-
+    $stock_data = DB::table('stock_info')->where('vendor_id', $vendor_id)->get();
 @endphp
 <div class=" border border-gray-200 rounded-lg p-5">
     <div class="grid grid-cols-1 gap-1">
@@ -36,10 +32,19 @@
                 {{-- @dd($stock_data) --}}
                 <tbody class="overflow-y-auto max-h-96">
                     @foreach ($stock_data as $item)
+                        @php
+                            $total_stock =
+                                $item->cur_balance +
+                                $item->in_stock -
+                                $item->sale -
+                                $item->miss -
+                                $item->damage -
+                                $item->out_stock;
+                        @endphp
                         <tr>
                             <td> {{ $item->product_id }} </td>
                             <td> {{ $item->product_desc }} </td>
-                            <td> {{ $item->cur_balance }} </td>
+                            <td> {{ number_format($total_stock, 2) }} </td>
                         </tr>
                     @endforeach
                 </tbody>
