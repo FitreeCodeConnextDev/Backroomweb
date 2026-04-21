@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\PermissionHelper;
+use App\Http\Requests\BranchRequest;
+use App\Models\BranchModel;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -40,139 +42,90 @@ class BranchController extends Controller
                 ->error(__('menu.is_permission_denied'));
             return redirect()->back();
         }
-        return view('pages.branch.create');
+        $close_batch = DB::table('closeendday')
+            ->select('batch', 'businessdate', 'batchdate')
+            ->orderBy('batch', 'desc')
+            ->limit(1)
+            ->get();
+        return view('pages.branch.create', compact('close_batch'));
     }
-    public function store(Request $request)
+    public function store(BranchRequest $request)
     {
-        $validateData = $request->validate([
-            'branch_id' => 'required|max:6|unique:branch_info,branch_id',
-            'branch_name' => 'required',
-            'online' => 'required',
-            'branch_addr1' => 'required',
-            'branch_addr2' => 'nullable',
-            'branch_tel' => 'required',
-            'tax_id' => 'required',
-            'tax_name' => 'required',
-            'tax_branchseq' => 'nullable',
-            'tax_addr1' => 'required',
-            'tax_addr2' => 'nullable',
-            'tax_name_e' => 'nullable',
-            'tax_addr1_e' => 'nullable',
-            'tax_addr2_e' => 'nullable',
-            'ipaddress' => 'nullable',
-            'batchno' => 'required',
-            'businessdate' => 'required',
-            'deposit' => 'required',
-            'vatrate' => 'required',
-            'message1' => 'nullable',
-            'message2' => 'nullable',
-            'message3' => 'nullable',
-            'message4' => 'nullable',
-        ], [
-            'branch_id.required' => __('branch.branch_id_required'),
-            'branch_id.max' => __('branch.branch_id_max'),
-            'branch_id.unique' => __('branch.branch_id_unique'),
-            'branch_name.required' => __('branch.branch_name_required'),
-            'online.required' => __('branch.online_required'),
-            'branch_addr1.required' => __('branch.branch_addr1_required'),
-            'branch_tel.required' => __('branch.branch_tel_required'),
-            'tax_id.required' => __('branch.tax_id_required'),
-            'tax_name.required' => __('branch.tax_name_required'),
-            'tax_addr1.required' => __('branch.tax_addr1_required'),
-            'batchno.required' => __('branch.batchno_required'),
-            'businessdate.required' => __('branch.businessdate_required'),
-            'deposit.required' => __('branch.deposit_required'),
-            'vatrate.required' => __('branch.vatrate_required'),
-        ]);
-
-        if (isset($validateData)) {
-            $insert_branch = DB::table('branch_info')
+        try {
+            $branch = new BranchModel();
+            $branch->branch_id = $request->branch_id;
+            $branch->branch_name = $request->branch_name;
+            $branch->online = $request->online;
+            $branch->branch_addr1 = $request->branch_addr1;
+            $branch->branch_addr2 = $request->branch_addr2;
+            $branch->branch_tel = $request->branch_tel;
+            $branch->tax_id = $request->tax_id;
+            $branch->tax_name = $request->tax_name;
+            $branch->tax_addr1 = $request->tax_addr1;
+            $branch->tax_addr2 = $request->tax_addr2;
+            $branch->tax_name_e = $request->tax_name_e;
+            $branch->tax_addr1_e = $request->tax_addr1_e;
+            $branch->tax_addr2_e = $request->tax_addr2_e;
+            $branch->tax_branchseq = $request->tax_branchseq;
+            $branch->ipaddress = $request->ipaddress;
+            $branch->batchno = $request->batchno;
+            $branch->businessdate = $request->businessdate;
+            $branch->batchdate = $request->batchdate;
+            $branch->message_1 = $request->message_1;
+            $branch->message_2 = $request->message_2;
+            $branch->message_3 = $request->message_3;
+            $branch->message_4 = $request->message_4;
+            $branch->activeflag = 1;
+            $branch->save();
+            DB::table('system_info')
                 ->insert([
-                    'branch_id' => $validateData['branch_id'],
-                    'branch_name' => $validateData['branch_name'],
-                    'online' => $validateData['online'],
-                    'branch_addr1' => $validateData['branch_addr1'],
-                    'branch_addr2' => $validateData['branch_addr2'],
-                    'branch_tel' => $validateData['branch_tel'],
-                    'tax_id' => $validateData['tax_id'],
-                    'tax_name' => $validateData['tax_name'],
-                    'tax_branchseq' => $validateData['tax_branchseq'],
-                    'tax_addr1' => $validateData['tax_addr1'],
-                    'tax_addr2' => $validateData['tax_addr2'],
-                    'tax_name_e' => $validateData['tax_name_e'],
-                    'tax_addr1_e' => $validateData['tax_addr1_e'],
-                    'tax_addr2_e' => $validateData['tax_addr2_e'],
-                    'ipaddress' => $validateData['ipaddress'],
-                    'batchno' => $validateData['batchno'],
-                    'businessdate' => Carbon::parse($validateData['businessdate'])->format('Y-m-d H:i:s'),
-                    'activeflag' => 1,
-                    'message_1' => $validateData['message1'],
-                    'message_2' => $validateData['message2'],
-                    'message_3' => $validateData['message3'],
-                    'message_4' => $validateData['message4'],
-                ]);
-            $inser_system = DB::table('system_info')
-                ->insert([
-                    'branch_id' => $validateData['branch_id'],
+                    'branch_id' => $request->branch_id,
                     'expire_card' => 0,
                     'expire_membercard' => 0,
                     'expire_staffcard' => 0,
                     'useonly_branch' => 'Y',
                     'expire_checkby' => 1,
                     'lengthcard' => 9,
-                    'deposit' => $validateData['deposit'],
+                    'deposit' => $request->deposit,
                     'balance_amt' => 0,
                     'balance_point' => 0,
                     'balancedebt_amt' => 0,
                     'balancedebt_point' => 0,
-                    'vatrate' => $validateData['vatrate'],
+                    'vatrate' => $request->vatrate,
                     'erp_file1' => null,
                     'erp_file2' => null,
                     'erp_branch' => null,
                     'erp_drive' => null,
                     'postvendor' => '000000',
                 ]);
-            if ($insert_branch && $inser_system) {
-                Log::channel('activity')->notice(session('auth_user.user_id') . ' created a new branch: ' . $validateData['branch_name'] . json_encode([
-                    'branch_id' => $validateData['branch_id'],
-                    'branch_name' => $validateData['branch_name'],
-                    'action' => 'create',
-                    'created_at' => Carbon::now()->toDateTimeString(),
-                    'created_by' => session('auth_user.user_id'),
-                ]));
-                flash()
-                    ->option('position', 'bottom-right')
-                    ->option('timeout', 3000)
-                    ->success(__('menu.save_is_success'));
-                return redirect()->route('branch.index');
-            } else {
-                Log::channel('activity')->error(session('auth_user.user_id') . ' failed to create a new branch: ' . $validateData['branch_name'] . json_encode([
-                    'branch_id' => $validateData['branch_id'],
-                    'branch_name' => $validateData['branch_name'],
-                    'action' => 'create',
-                    'created_at' => Carbon::now()->toDateTimeString(),
-                    'created_by' => session('auth_user.user_id'),
-                ]));
-                flash()
-                    ->option('position', 'bottom-right')
-                    ->option('timeout', 3000)
-                    ->error(__('menu.save_is_failed'));
-                return redirect()->route('branch.create');
-            }
-        } else {
-            Log::channel('activity')->error(session('auth_user.user_id') . ' failed to create a new branch due to validation errors: ' . json_encode([
+
+            Log::channel('activity')->notice(session('auth_user.user_id') . ' created branch: ' . $request->branch_name . json_encode([
+                'branch_id' => $branch->id,
+                'branch_name' => $request->branch_name,
                 'action' => 'create',
+                'details create' => $request->all(),
                 'created_at' => Carbon::now()->toDateTimeString(),
                 'created_by' => session('auth_user.user_id'),
             ]));
             flash()
                 ->option('position', 'bottom-right')
                 ->option('timeout', 3000)
-                ->error(__('menu.save_is_failed'));
-            return redirect()->route('branch.create');
+                ->success(__('menu.create_is_success'));
+            return redirect()->route('branch.index');
+        } catch (\Exception $e) {
+            Log::channel('activity')->error(session('auth_user.user_id') . ' Error creating branch: ' . $e->getMessage() . json_encode([
+                'action' => 'create',
+                'details create' => $request->all(),
+                'error' => $e->getMessage(),
+                'created_at' => Carbon::now()->toDateTimeString(),
+                'created_by' => session('auth_user.user_id'),
+            ]));
+            flash()
+                ->option('position', 'bottom-right')
+                ->option('timeout', 3000)
+                ->error(__('menu.create_is_failed'));
+            return redirect()->back();
         }
-
-        // dd($validateData);
     }
 
     public function edit($id)
@@ -204,71 +157,43 @@ class BranchController extends Controller
         return view('pages.branch.edit', compact('branch'));
     }
 
-    public function update(Request $request, $id)
+    public function update(BranchRequest $request, $id)
     {
-        $validateData = $request->validate([
-            'branch_name' => 'required',
-            'online' => 'required',
-            'branch_addr1' => 'required',
-            'branch_addr2' => 'nullable',
-            'branch_tel' => 'nullable',
-            'tax_id' => 'required',
-            'tax_name' => 'required',
-            'tax_branchseq' => 'nullable',
-            'tax_addr1' => 'required',
-            'tax_addr2' => 'nullable',
-            'tax_name_e' => 'nullable',
-            'tax_addr1_e' => 'nullable',
-            'tax_addr2_e' => 'nullable',
-            'ipaddress' => 'nullable',
-            'batchno' => 'required',
-            'businessdate' => 'required',
-            'deposit' => 'required',
-            'vatrate' => 'required',
-            'message1' => 'nullable',
-            'message2' => 'nullable',
-            'message3' => 'nullable',
-            'message4' => 'nullable',
-        ]);
-        // dd($validateData);
-
-        $branch_update = DB::table('branch_info')
-            ->where('branch_id', $id)
-            ->update([
-                'branch_name' => $validateData['branch_name'],
-                'online' => $validateData['online'],
-                'branch_addr1' => $validateData['branch_addr1'],
-                'branch_addr2' => $validateData['branch_addr2'],
-                'branch_tel' => $validateData['branch_tel'],
-                'tax_id' => $validateData['tax_id'],
-                'tax_name' => $validateData['tax_name'],
-                'tax_addr1' => $validateData['tax_addr1'],
-                'tax_addr2' => $validateData['tax_addr2'],
-                'tax_name_e' => $validateData['tax_name_e'],
-                'tax_addr1_e' => $validateData['tax_addr1_e'],
-                'tax_addr2_e' => $validateData['tax_addr2_e'],
-                'tax_branchseq' => $validateData['tax_branchseq'],
-                'ipaddress' => $validateData['ipaddress'],
-                'batchno' => $validateData['batchno'],
-                'message_1' => $validateData['message1'],
-                'message_2' => $validateData['message2'],
-                'message_3' => $validateData['message3'],
-                'message_4' => $validateData['message4'],
-            ]);
-
-        $system_info_update = DB::table('system_info')
-            ->where('branch_id', $id)
-            ->update([
-                'deposit' => $validateData['deposit'],
-                'vatrate' => $validateData['vatrate'],
-            ]);
-
-        if (isset($branch_update, $system_info_update)) {
-            Log::channel('activity')->notice(session('auth_user.user_id') . ' updated branch: ' . $validateData['branch_name'] . json_encode([
-                'branch_id' => $id,
-                'branch_name' => $validateData['branch_name'],
+        try {
+            $branch = BranchModel::where('branch_id', $id)->first();
+            $branch->branch_name = $request->branch_name;
+            $branch->online = $request->online;
+            $branch->branch_addr1 = $request->branch_addr1;
+            $branch->branch_addr2 = $request->branch_addr2;
+            $branch->branch_tel = $request->branch_tel;
+            $branch->tax_id = $request->tax_id;
+            $branch->tax_name = $request->tax_name;
+            $branch->tax_addr1 = $request->tax_addr1;
+            $branch->tax_addr2 = $request->tax_addr2;
+            $branch->tax_name_e = $request->tax_name_e;
+            $branch->tax_addr1_e = $request->tax_addr1_e;
+            $branch->tax_addr2_e = $request->tax_addr2_e;
+            $branch->tax_branchseq = $request->tax_branchseq;
+            $branch->ipaddress = $request->ipaddress;
+            $branch->batchno = $request->batchno;
+            $branch->businessdate = $request->businessdate;
+            $branch->message_1 = $request->message_1;
+            $branch->message_2 = $request->message_2;
+            $branch->message_3 = $request->message_3;
+            $branch->message_4 = $request->message_4;
+            $branch->activeflag = 1;
+            $branch->save();
+            DB::table('system_info')
+                ->where('branch_id', $id)
+                ->update([
+                    'deposit' => $request->deposit,
+                    'vatrate' => $request->vatrate,
+                ]);
+            Log::channel('activity')->notice(session('auth_user.user_id') . ' updated branch: ' . $request->branch_name . json_encode([
+                'branch_id' => $branch->id,
+                'branch_name' => $request->branch_name,
                 'action' => 'update',
-                'details update' => $validateData,
+                'details update' => $request->input(),
                 'updated_at' => Carbon::now()->toDateTimeString(),
                 'updated_by' => session('auth_user.user_id'),
             ]));
@@ -277,11 +202,11 @@ class BranchController extends Controller
                 ->option('timeout', 3000)
                 ->success(__('menu.edit_is_success'));
             return redirect()->route('branch.index');
-        } else {
-            Log::channel('activity')->error(session('auth_user.user_id') . ' failed to update branch: ' . $validateData['branch_name'] . json_encode([
-                'branch_id' => $id,
-                'branch_name' => $validateData['branch_name'],
+        } catch (\Exception $e) {
+            Log::channel('activity')->error(session('auth_user.user_id') . ' Error updating branch: ' . $e->getMessage() . json_encode([
                 'action' => 'update',
+                'details update' => $request->all(),
+                'error' => $e->getMessage(),
                 'updated_at' => Carbon::now()->toDateTimeString(),
                 'updated_by' => session('auth_user.user_id'),
             ]));
@@ -289,10 +214,10 @@ class BranchController extends Controller
                 ->option('position', 'bottom-right')
                 ->option('timeout', 3000)
                 ->error(__('menu.edit_is_failed'));
-            return redirect()->route('branch.index');
+            return redirect()->back();
         }
     }
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         if (!PermissionHelper::checkUserPermission('function', 20)) {
             Log::channel('activity')->error(session('auth_user.user_id') . ' Permission Denied: Access Branch Delete', [
@@ -306,10 +231,10 @@ class BranchController extends Controller
             return redirect()->back();
         }
 
-        $delete_branch = DB::table('branch_info')->where('branch_id', $id)
-            ->update(['activeflag' => 0]);
-
-        if (isset($delete_branch)) {
+        try {
+            $branch = BranchModel::findOrFail($id);
+            $branch->activeflag = 0;
+            $branch->save();
             Log::channel('activity')->notice(session('auth_user.user_id') . ' Deleted branch: ' . $id . json_encode([
                 'branch_id' => $id,
                 'action' => 'delete',
@@ -321,10 +246,11 @@ class BranchController extends Controller
                 ->option('timeout', 3000)
                 ->success(__('menu.delete_is_success'));
             return redirect()->route('branch.index');
-        } else {
-            Log::channel('activity')->error(session('auth_user.user_id') . ' failed to delete branch: ' . $id . json_encode([
-                'branch_id' => $id,
+        } catch (\Exception $e) {
+            Log::channel('activity')->error(session('auth_user.user_id') . ' Error deleting branch: ' . $e->getMessage() . json_encode([
                 'action' => 'delete',
+                'details delete' => $request->all(),
+                'error' => $e->getMessage(),
                 'deleted_at' => Carbon::now()->toDateTimeString(),
                 'deleted_by' => session('auth_user.user_id'),
             ]));
@@ -332,7 +258,7 @@ class BranchController extends Controller
                 ->option('position', 'bottom-right')
                 ->option('timeout', 3000)
                 ->error(__('menu.delete_is_failed'));
-            return redirect()->route('branch.index');
+            return redirect()->back();
         }
     }
 }

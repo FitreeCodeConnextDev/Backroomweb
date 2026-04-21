@@ -40,7 +40,7 @@ class VendorController extends Controller
                 })
                 ->orderBy('vendor_id', 'desc')
                 ->paginate(15);
-            return view('pages.vendors.index', compact('vendor_data', 'search'));
+            return view('pages.vendors_info.index', compact('vendor_data', 'search'));
         } else {
             $vendor_data = VendorModel::query()
                 ->where('activeflag', '=', 1)
@@ -53,7 +53,7 @@ class VendorController extends Controller
                 })
                 ->orderBy('vendor_id', 'desc')
                 ->paginate(15);
-            return view('pages.vendors.index', compact('vendor_data', 'search'));
+            return view('pages.vendors_info.index', compact('vendor_data', 'search'));
         }
     }
 
@@ -69,7 +69,7 @@ class VendorController extends Controller
             ->select('user_info.user_id', 'user_info.user_name')
             ->groupBy('user_info.user_id', 'user_info.user_name')
             ->get();
-        return view('pages.vendors.show', compact('vendor_data', 'vendor_user'));
+        return view('pages.vendors_info.show', compact('vendor_data', 'vendor_user'));
     }
 
     public function create()
@@ -103,7 +103,7 @@ class VendorController extends Controller
                 ->orderBy('term_id', 'asc')
                 ->get();
         }
-        return view('pages.vendors.create', compact('branch', 'terminal'));
+        return view('pages.vendors_info.create', compact('branch', 'terminal'));
     }
     public function store(VendorRequest $request)
     {
@@ -237,7 +237,7 @@ class VendorController extends Controller
             'page' => 'Vendor Edit Page',
             'timestamp' => Carbon::now()->toDateTimeString(),
         ]);
-        return view('pages.vendors.edit', compact('vendor_data', 'vendor_user', 'terminal'));
+        return view('pages.vendors_info.edit', compact('vendor_data', 'vendor_user', 'terminal'));
     }
     public function update(VendorRequest $request, $id)
     {
@@ -245,6 +245,7 @@ class VendorController extends Controller
             $validate_data = VendorModel::find($id);
 
             $validate_data->branch_id = $request->branch_id;
+            $validate_data->term_id = $request->term_id;
             $validate_data->term_seq = $request->term_seq;
             $validate_data->vendor_name = $request->vendor_name;
             $validate_data->vendor_food = $request->vendor_food;
@@ -265,6 +266,13 @@ class VendorController extends Controller
             $validate_data->billcount = $request->billcount;
 
             if ($validate_data->save()) {
+                DB::table('vendorproduct_info')->where('vendor_id', $id)->update([
+                    'term_id' => $request->term_id,
+                ]);
+                DB::table('vendorproductpromotion_info')->where('vendor_id', $id)->update([
+                    'term_id' => $request->term_id,
+                ]);
+
                 Log::channel('activity')->notice(session('auth_user.user_id') . ' Updated Vendor', [
                     'action' => 'update',
                     'vendor_id' => $validate_data->vendor_id,
@@ -278,7 +286,7 @@ class VendorController extends Controller
                     ->timer(5000)
                     ->title('Success')
                     ->success(__('menu.save_is_success'));
-                return redirect()->route('vendor-page.index');
+                return redirect()->route('vendor-page.show', $id);
             } else {
                 Log::channel('activity')->error(session('auth_user.user_id') . ' Failed to Update Vendor', [
                     'action' => 'update',
@@ -370,6 +378,9 @@ class VendorController extends Controller
 
                 ]);
                 sweetalert()
+                    ->timer(6000)
+                    ->showConfirmButton(false)
+                    ->title('Success')
                     ->success(__('menu.delete_is_success'));
                 return redirect()->back();
             } else {
@@ -381,6 +392,9 @@ class VendorController extends Controller
 
                 ]);
                 sweetalert()
+                    ->timer(6000)
+                    ->showConfirmButton(false)
+                    ->title('Error')
                     ->error(__('menu.delete_is_failed'));
                 return redirect()->back();
             }
@@ -395,6 +409,9 @@ class VendorController extends Controller
 
             ]);
             sweetalert()
+                ->timer(6000)
+                ->showConfirmButton(false)
+                ->title('Error')
                 ->error(__('menu.delete_is_failed') . ' ' . $e->getMessage());
             return redirect()->back();
         }
@@ -547,6 +564,8 @@ class VendorController extends Controller
                         'day_use' => $day_use,
                         'amount_use' => $form_data['amount_use'],
                         'product_id' => $form_data['product_id'],
+                        'discount' => 0,
+                        'usage' => 0,
                     ]);
                 Log::channel('activity')->notice(session('auth_user.user_id') . ' Updated Vendor Rabbit Promotion', [
                     'action' => 'update_rabbit',
@@ -638,6 +657,8 @@ class VendorController extends Controller
                         'day_use' => $day_use,
                         'amount_use' => $form_data['amount_use'],
                         'product_id' => $form_data['product_id'],
+                        'discount' => 0,
+                        'usage' => 0,
                     ]);
                 Log::channel('activity')->notice(session('auth_user.user_id') . ' Updated Vendor LinePay Promotion', [
                     'action' => 'update_linepay',
@@ -863,6 +884,9 @@ class VendorController extends Controller
 
             ]);
             sweetalert()
+                ->timer(6000)
+                ->showConfirmButton(false)
+                ->title('Success')
                 ->success(__('menu.delete_is_success'));
             return redirect()->back();
         } else {
@@ -875,6 +899,9 @@ class VendorController extends Controller
 
             ]);
             sweetalert()
+                ->timer(6000)
+                ->showConfirmButton(false)
+                ->title('Error')
                 ->error(__('menu.delete_is_failed'));
             return redirect()->back();
         }

@@ -238,10 +238,10 @@ class MemberController extends Controller
         $member_birthdate = Carbon::parse($valida_data['member_birthdate'])->format('Y-m-d');
         $member_data = DB::table('member_info')->where('member_id', $id)->first();
 
-        if ($member_data->card_no != $valida_data['card_no']) {
-            $checksum = $this->checkSum($valida_data['card_no']);
-            $valida_data['card_no'] = $valida_data['card_no'] . $checksum;
-        }
+        // if ($member_data->card_no != $valida_data['card_no']) {
+        //     $checksum = $this->checkSum($valida_data['card_no']);
+        //     $valida_data['card_no'] = $valida_data['card_no'] . $checksum;
+        // }
 
         try {
             DB::table('member_info')

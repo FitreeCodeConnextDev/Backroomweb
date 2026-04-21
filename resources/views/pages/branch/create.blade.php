@@ -71,10 +71,9 @@
                 </div>
             </div>
             <div>
-                <label for="branch_tel" class=" label_input">{{ __('branch.branch_tel') }} <span
-                        class="text-red-600 text-md">{{ __('menu.required_field') }}</span></label>
+                <label for="branch_tel" class=" label_input">{{ __('branch.branch_tel') }}</span></label>
                 <input type="text" id="branch_tel" maxlength="10" name="branch_tel" placeholder="000-000-0000"
-                    class="input_text " value="" required />
+                    class="input_text " value="" />
                 @error('branch_tel')
                     <p class="mt-2 text-sm text-red-600"><span class=" font-medium"> {{ __(__('menu.is_warning')) }} </span>
                         {{ $message }} </p>
@@ -158,20 +157,23 @@
                 @enderror
             </div>
             <div>
-                <label for="batchno" class=" label_input">{{ __('branch.batchno') }} <span class="text-red-600 text-md">{{ __('menu.required_field') }}</span></label>
-                <input type="text" id="batchno" name="batchno" placeholder="78" class="input_text" value=""
-                    required />
+                <label for="batchno" class=" label_input">{{ __('branch.batchno') }}</label>
+                <input type="text" id="batchno" name="batchno" value="{{ $close_batch['0']->batch }}" readonly
+                    class="input_text" />
             </div>
             <div>
                 <label for="businessdate" class="label_input">{{ __('branch.businessdate') }}</label>
-                <input type="date" id="businessdate" name="businessdate" class="input_text" />
+                <input type="date" id="businessdate" name="businessdate" readonly
+                    value="{{ date('Y-m-d', strtotime($close_batch['0']->businessdate)) }}" class="input_text" />
+                <input type="hidden" id="batchdate" name="batchdate" value="{{ $close_batch['0']->batchdate }}">
                 @error('businessdate')
                     <p class="mt-2 text-sm text-red-600"><span class=" font-medium"> {{ __(__('menu.is_warning')) }} </span>
                         {{ $message }} </p>
                 @enderror
             </div>
             <div>
-                <label for="deposit" class=" label_input">{{ __('branch.deposit') }} <span class="text-red-600 text-md">{{ __('menu.required_field') }}</span></label>
+                <label for="deposit" class=" label_input">{{ __('branch.deposit') }} <span
+                        class="text-red-600 text-md">{{ __('menu.required_field') }}</span></label>
                 <input type="text" id="deposit" name="deposit" placeholder="0.00" class="input_text "
                     value="0.00" required />
                 @error('deposit')
@@ -180,7 +182,8 @@
                 @enderror
             </div>
             <div>
-                <label for="vatrate" class=" label_input">{{ __('branch.vatrate') }} <span class="text-red-600 text-md">{{ __('menu.required_field') }}</span></label>
+                <label for="vatrate" class=" label_input">{{ __('branch.vatrate') }} <span
+                        class="text-red-600 text-md">{{ __('menu.required_field') }}</span></label>
                 <input type="text" id="vatrate" name="vatrate" placeholder="0.00" value="7.00"
                     class="input_text " value="" required />
                 @error('vatrate')
@@ -189,23 +192,23 @@
                 @enderror
             </div>
             <div>
-                <label for="message1" class=" label_input">{{ __('branch.message1') }}</label>
-                <input type="text" id="message1" name="message1" placeholder="..." class="input_text "
+                <label for="message_1" class=" label_input">{{ __('branch.message1') }}</label>
+                <input type="text" id="message_1" name="message_1" placeholder="..." class="input_text "
                     value="" />
             </div>
             <div>
-                <label for="message2" class=" label_input">{{ __('branch.message2') }}</label>
-                <input type="text" id="message2" name="message2" placeholder="..." class="input_text "
+                <label for="message_2" class=" label_input">{{ __('branch.message2') }}</label>
+                <input type="text" id="message_2" name="message_2" placeholder="..." class="input_text "
                     value="" />
             </div>
             <div>
-                <label for="message3" class=" label_input">{{ __('branch.message3') }}</label>
-                <input type="text" id="message3" name="message3" placeholder="..." class="input_text "
+                <label for="message_3" class=" label_input">{{ __('branch.message3') }}</label>
+                <input type="text" id="message_3" name="message_3" placeholder="..." class="input_text "
                     value="" />
             </div>
             <div>
-                <label for="message4" class=" label_input">{{ __('branch.message4') }}</label>
-                <input type="text" id="message4" name="message4" placeholder="..." class="input_text "
+                <label for="message_4" class=" label_input">{{ __('branch.message4') }}</label>
+                <input type="text" id="message_4" name="message_4" placeholder="..." class="input_text "
                     value="" />
             </div>
 
@@ -225,7 +228,7 @@
     </form>
 @endsection
 
-@section('js-scripts')
+@push('scripts')
     <script type="module">
         $(document).ready(function() {
             $('#branch_form').validate({
@@ -241,7 +244,6 @@
                         required: true
                     },
                     branch_tel: {
-                        required: true,
                         maxlength: 10,
                         number: true
                     },
@@ -296,4 +298,4 @@
             })
         });
     </script>
-@endsection
+@endpush

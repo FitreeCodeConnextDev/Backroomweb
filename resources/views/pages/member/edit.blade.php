@@ -99,14 +99,19 @@
         </div>
         <div class="my-5 flex space-x-3">
             <div>
-                <label for="card_number" class="label_input"> {{ __('member.card_no') }} </label>
-                <input type="text" class="input_text" id="card_number" maxlength="13"
+                <label for="card_no" class="label_input"> {{ __('member.card_no') }} </label>
+                <input type="text" name="card_no" class="input_text" id="card_no" maxlength="11"
                     value="{{ substr($member_data->card_no, 0, $lengthCard) ?? '' }}" readonly>
+                @error('card_no')
+                    <p class="mt-2 text-sm text-red-600 "><span class="font-medium">{{ __('menu.is_warning') }}</span>
+                        {{ $message }}
+                    </p>
+                @enderror
             </div>
             <div>
                 <label for="card_number" class="label_input"> {{ __('member.balance') }} </label>
-                <input type="text" class="input_text" id="card_number" maxlength="13" value="{{ $card_sub->net ?? '0.00' }}"
-                    readonly>
+                <input type="text" class="input_text" id="card_number" maxlength="13"
+                    value="{{ $card_sub->net ?? '0.00' }}" readonly>
             </div>
         </div>
         {{-- tab --}}

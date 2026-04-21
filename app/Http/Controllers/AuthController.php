@@ -2,12 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\UserInfoModel;
 use Carbon\Carbon;
-use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
@@ -78,6 +75,10 @@ class AuthController extends Controller
                 'action' => 'login',
                 'timestamp' => Carbon::now()->toDateTimeString(), // แปลงเป็น string
             ]));
+            UserInfoModel::where('user_id', $user_id)->update([
+                'lastlogdate' => Carbon::now()->format('Y-m-d'),
+                'lastlogtime' => Carbon::now()->toDateTimeString(),
+            ]);
             return response()->json([
                 'success' => true,
                 'message' => 'Login successful.',

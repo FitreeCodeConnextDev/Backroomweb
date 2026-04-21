@@ -65,16 +65,7 @@ class VendorProductRequest extends FormRequest
         ];
 
         if ($this->isMethod('post')) {
-            $rules['vendor_id'] = 'required';
-            $rules['branch_id'] = 'required';
-            $rules['product_seq'] = [
-                'required',
-                'numeric',
-                Rule::unique('vendorproduct_info', 'product_seq')
-                    ->where('activeflag', 1)
-                    ->where('vendor_id', $this->vendor_id)
-                    ->where('branch_id', $this->branch_id)
-            ];
+            $rules['product_seq'] = 'required|numeric|unique:vendorproduct_info,product_seq,NULL,id,vendor_id,' . $this->vendor_id . ',branch_id,' . $this->branch_id;
         }
 
         return $rules;

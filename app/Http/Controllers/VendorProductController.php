@@ -709,6 +709,9 @@ class VendorProductController extends Controller
                 'deleted_by' => session('auth_user.user_id'),
             ]);
             sweetalert()
+                ->title('Success')
+                ->timer(5000)
+                ->showConfirmButton(false)
                 ->success(__('menu.delete_is_success'));
             return redirect()->back();
         } else {
@@ -720,6 +723,9 @@ class VendorProductController extends Controller
                 'deleted_by' => session('auth_user.user_id'),
             ]);
             sweetalert()
+                ->title('Error')
+                ->timer(5000)
+                ->showConfirmButton(false)
                 ->error(__('menu.delete_is_failed'));
             return redirect()->back();
         }
@@ -800,7 +806,7 @@ class VendorProductController extends Controller
                 'updated_at' => now()->toDateTimeString(),
                 'updated_by' => session('auth_user.user_id'),
             ]);
-            return response()->json(['success' => true, 'message' => __('menu.edit_is_success')]);
+            return response()->json(['success' => true, 'message' => __('menu.save_is_success')]);
         } else {
             Log::channel('activity')->error(session('auth_user.user_id') . ' failed to update guarantee for vendor product: ' . $vendor_id, [
 
@@ -808,7 +814,7 @@ class VendorProductController extends Controller
                 'updated_at' => now()->toDateTimeString(),
                 'updated_by' => session('auth_user.user_id'),
             ]);
-            return response()->json(['success' => false, 'message' => __('menu.edit_is_failed')]);
+            return response()->json(['success' => false, 'message' => __('menu.save_is_failed')]);
         }
     }
 

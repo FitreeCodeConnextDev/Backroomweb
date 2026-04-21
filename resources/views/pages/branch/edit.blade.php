@@ -186,23 +186,23 @@
                 @enderror
             </div>
             <div>
-                <label for="message1" class=" label_input">{{ __('branch.message1') }}</label>
-                <input type="text" id="message1" name="message1" placeholder="..." class="input_text "
+                <label for="message_1" class=" label_input">{{ __('branch.message1') }}</label>
+                <input type="text" id="message_1" name="message_1" placeholder="..." class="input_text "
                     value="{{ $branch->message_1 }}" />
             </div>
             <div>
-                <label for="message2" class=" label_input">{{ __('branch.message2') }}</label>
-                <input type="text" id="message2" name="message2" placeholder="..." class="input_text "
+                <label for="message_2" class=" label_input">{{ __('branch.message2') }}</label>
+                <input type="text" id="message_2" name="message_2" placeholder="..." class="input_text "
                     value="{{ $branch->message_2 }}" />
             </div>
             <div>
-                <label for="message3" class=" label_input">{{ __('branch.message3') }}</label>
-                <input type="text" id="message3" name="message3" placeholder="..." class="input_text "
+                <label for="message_3" class=" label_input">{{ __('branch.message3') }}</label>
+                <input type="text" id="message_3" name="message_3" placeholder="..." class="input_text "
                     value="{{ $branch->message_3 }}" />
             </div>
             <div>
-                <label for="message4" class=" label_input">{{ __('branch.message4') }}</label>
-                <input type="text" id="message4" name="message4" placeholder="..." class="input_text "
+                <label for="message_4" class=" label_input">{{ __('branch.message4') }}</label>
+                <input type="text" id="message_4" name="message_4" placeholder="..." class="input_text "
                     value="{{ $branch->message_4 }}" />
             </div>
 
@@ -221,7 +221,7 @@
     </form>
 @endsection
 
-@section('js-scripts')
+@push('scripts')
     <script type="module">
         $(document).ready(function() {
             $('#branch_form').validate({
@@ -236,11 +236,6 @@
                     branch_addr1: {
                         required: true
                     },
-                    // branch_tel: {
-                    //     required: true,
-                    //     maxlength: 10,
-                    //     number: true
-                    // },
                     tax_id: {
                         required: true
                     },
@@ -253,9 +248,9 @@
                     batchno: {
                         required: true
                     },
-                    // businessdate: {
-                    //     required: true
-                    // },
+                    businessdate: {
+                        required: true
+                    },
                 },
                 messages: {
                     branch_id: {
@@ -268,11 +263,6 @@
                     branch_addr1: {
                         required: `{{ __('branch.branch_addr1_required') }}`
                     },
-                    // branch_tel: {
-                    //     required: `{{ __('branch.branch_tel_required') }}`,
-                    //     maxlength: `{{ __('branch.branch_tel_max') }}`,
-                    //     number: `{{ __('branch.branch_tel_num') }}`
-                    // },
                     tax_id: {
                         required: `{{ __('branch.tax_id_required') }}`
                     },
@@ -285,11 +275,11 @@
                     batchno: {
                         required: `{{ __('branch.batchno_required') }}`
                     },
-                    // businessdate: {
-                    //     required: `{{ __('branch.businessdate_required') }}`
-                    // },
+                    businessdate: {
+                        required: `{{ __('branch.businessdate_required') }}`
+                    },
                 }
             })
         });
     </script>
-@endsection
+@endpush
