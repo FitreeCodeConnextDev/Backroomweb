@@ -16,7 +16,7 @@
 
     <div id="daily-chart" class=" flex justify-center"></div>
 @endsection
-@section('scripts')
+@push('scripts')
     <script type="text/javascript">
         document.addEventListener("DOMContentLoaded", function() {
             let donutCharts = new ApexCharts(document.getElementById("daily-chart"), getdonutChartsOptions());
@@ -174,4 +174,4 @@
             };
         }
     </script>
-@endsection
+@endpush

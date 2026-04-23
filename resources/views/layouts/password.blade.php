@@ -1,3 +1,7 @@
+@if (session('force_password_reset'))
+    <button id="hiddenModalTrigger" data-modal-target="ChangePassword" data-modal-toggle="ChangePassword" class="hidden"
+        type="button"></button>
+@endif
 <!-- Main modal -->
 <div id="ChangePassword" tabindex="-1" aria-hidden="true"
     class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:h-full">
@@ -5,7 +9,7 @@
         <!-- Modal content -->
         <div class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
             <!-- Modal header -->
-            <div class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
+            <div class="flex justify-between items-center pb-4 mb-4 rounded border-b sm:mb-5 dark:border-gray-600">
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
                     {{ __('users.change_password') }}
                 </h3>
@@ -24,64 +28,6 @@
             <!-- Modal body -->
             <form action="{{ route('change_password') }}" method="POST">
                 @csrf
-                {{-- <div class="grid gap-4 mb-4 sm:grid-cols-1">
-                    <div>
-                        <label for="old_password" class="label_input">{{ __('users.old_password') }}</label>
-                        <div class="relative">
-                            <input type="password" name="old_password" id="old_password" class="input_text w-full"
-                                placeholder="{{ __('users.old_password') }}" required>
-                            <button type="button" onclick="togglePassword('old_password', this)"
-                                class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400">
-                                <svg class="h-5 w-5" fill="none" id="eye_icon_old_password" stroke="currentColor"
-                                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
-                                    </path>
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div>
-                        <label for="new_password" class="label_input">{{ __('users.new_password') }}</label>
-                        <div class="relative">
-                            <input type="password" name="new_password" id="new_password" class="input_text w-full"
-                                placeholder="{{ __('users.new_password') }}" required>
-                            <button type="button" onclick="togglePassword('new_password', this)"
-                                class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400">
-                                <svg class="h-5 w-5" fill="none" id="eye_icon_new_password" stroke="currentColor"
-                                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
-                                    </path>
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div>
-                        <label for="confirm_password" class="label_input">{{ __('users.confirm_password') }}</label>
-                        <div class="relative">
-                            <input type="password" name="confirm_password" id="confirm_password"
-                                class="input_text w-full" placeholder="{{ __('users.confirm_password') }}" required>
-                            <button type="button" onclick="togglePassword('confirm_password', this)"
-                                class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400">
-                                <svg class="h-5 w-5" fill="none" id="eye_icon_confirm_password" stroke="currentColor"
-                                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
-                                    </path>
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                </div> --}}
                 <div class="grid gap-4 mb-4 sm:grid-cols-1">
                     <div>
                         <label for="current_password" class="label_input">{{ __('users.old_password') }}</label>
@@ -204,4 +150,16 @@
             @endif
         });
     </script>
+    @if (session('force_password_reset'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                setTimeout(function() {
+                    const triggerButton = document.getElementById('hiddenModalTrigger');
+                    if (triggerButton) {
+                        triggerButton.click();
+                    }
+                }, 300); // ดีเลย์เล็กน้อยให้หน้าเว็บโหลดเสร็จ
+            });
+        </script>
+    @endif
 @endpush

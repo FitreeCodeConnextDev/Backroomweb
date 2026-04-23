@@ -66,7 +66,7 @@
         <div id="column-chart" class=" flex justify-center"></div>
     </div>
 @endsection
-@section('scripts')
+@push('scripts')
     {{-- <script src="{{ asset('js/charts/donutCharts.js') }}"></script> --}}
     <script type="text/javascript">
         // Data for CSV export
@@ -268,4 +268,4 @@
             };
         }
     </script>
-@endsection
+@endpush

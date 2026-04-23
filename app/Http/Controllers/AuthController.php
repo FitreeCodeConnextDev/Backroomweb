@@ -79,6 +79,22 @@ class AuthController extends Controller
                 'lastlogdate' => Carbon::now()->format('Y-m-d'),
                 'lastlogtime' => Carbon::now()->toDateTimeString(),
             ]);
+            $user = DB::table('user_info')->where('user_id', $data_user->user_id)->first();
+
+            // 2. ตรวจสอบเงื่อนไขการบังคับเปลี่ยนรหัสผ่าน
+            if ($user->needresetpass == 1) {
+
+                $startDate = Carbon::parse($user->startdate_reset);
+
+                // 2. หาจำนวนวันที่ผ่านมาจนถึงปัจจุบัน (now)
+                $daysPassed = $startDate->diffInDays(now());
+
+                // 3. ถ้าจำนวนวันที่ผ่านมา มากกว่า จำนวนวันอนุญาต (resetpass_day) ให้บังคับเปลี่ยน
+                // ตัวอย่าง: ถ้า daysPassed = 8 และ resetpass_day = 7 (8 > 7 คือเป็นจริง)
+                if ($daysPassed > $user->resetpass_day) {
+                    session(['force_password_reset' => true]);
+                }
+            }
             return response()->json([
                 'success' => true,
                 'message' => 'Login successful.',
