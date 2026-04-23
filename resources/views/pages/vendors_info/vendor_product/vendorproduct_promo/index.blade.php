@@ -187,12 +187,26 @@
                 </div>
                 <div class="grid lg:grid-cols-2 grid-cols-1 gap-2">
                     <div class="grid lg:grid-cols-2 grid-cols-1 gap-2 mt-2 border border-gray-200 rounded-md p-2">
-                        <div>
-                            <label for="priceunit" class="label_input">
-                                {{ __('vendor_product.product_priceunit') }}
-                            </label>
-                            <input type="number" id="priceunit" name="priceunit" class="input_text" step="0.01"
-                                min="0" required>
+
+                        <div class="flex justify-between">
+                            <div class="w-40">
+                                <label for="priceunit" class="label_input">
+                                    {{ __('vendor_product.product_priceunit') }}
+                                </label>
+                                <input type="number" id="priceunit_promo" name="priceunit" class="input_text"
+                                    required>
+                            </div>
+                            <div class="py-8">
+                                <button type="button" onclick="copyUnitPrices()"
+                                    class="px-3 py-2 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 ">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke-width="1.5" stroke="currentColor" class="size-4">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="m9 12.75 3 3m0 0 3-3m-3 3v-7.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                    </svg>
+
+                                </button>
+                            </div>
                         </div>
                         <div>
                             <label for="gp_normal" class="label_input">
@@ -207,7 +221,7 @@
                             <label for="pricediscount" class="label_input">
                                 {{ __('vendor_product.product_pricediscount') }}
                             </label>
-                            <input type="text" id="pricediscount" name="pricediscount" class="input_text"
+                            <input type="text" id="pricediscount_promo" name="pricediscount" class="input_text"
                                 required>
                         </div>
                         <div>
@@ -223,7 +237,8 @@
                             <label for="pricemember" class="label_input">
                                 {{ __('vendor_product.product_price_member') }}
                             </label>
-                            <input type="text" id="pricemember" name="pricemember" class="input_text" required>
+                            <input type="text" id="pricemember_promo" name="pricemember" class="input_text"
+                                required>
                         </div>
                         <div>
                             <label for="gp_member" class="label_input">
@@ -238,7 +253,8 @@
                             <label for="pricestaff" class="label_input">
                                 {{ __('vendor_product.product_price_staff') }}
                             </label>
-                            <input type="text" id="pricestaff" name="pricestaff" class="input_text" required>
+                            <input type="text" id="pricestaff_promo" name="pricestaff" class="input_text"
+                                required>
                         </div>
                         <div>
                             <label for="gp_staff" class="label_input">
@@ -253,7 +269,8 @@
                             <label for="pricerabbit" class="label_input">
                                 {{ __('vendor_product.product_price_rabbit') }}
                             </label>
-                            <input type="text" id="pricerabbit" name="pricerabbit" class="input_text" required>
+                            <input type="text" id="pricerabbit_promo" name="pricerabbit" class="input_text"
+                                required>
                         </div>
                         <div>
                             <label for="gp_rabbit" class="label_input">
@@ -268,7 +285,7 @@
                             <label for="priceqr" class="label_input">
                                 {{ __('vendor_product.product_price_qr') }}
                             </label>
-                            <input type="text" id="priceqr" name="priceqr" class="input_text" required>
+                            <input type="text" id="priceqr_promo" name="priceqr" class="input_text" required>
                         </div>
                         <div>
                             <label for="gp_qr" class="label_input">
@@ -285,7 +302,7 @@
                             <label for="pricesp1" class="label_input">
                                 {{ __('vendor_product.product_sp1') }}
                             </label>
-                            <input type="number" id="pricesp1" name="pricesp1" class="input_text" required>
+                            <input type="number" id="pricesp1_promo" name="pricesp1" class="input_text" required>
                         </div>
                         <div>
                             <label for="gp_sp1" class="label_input">
@@ -300,7 +317,7 @@
                             <label for="pricesp2" class="label_input">
                                 {{ __('vendor_product.product_sp2') }}
                             </label>
-                            <input type="number" id="pricesp2" name="pricesp2" class="input_text" required>
+                            <input type="number" id="pricesp2_promo" name="pricesp2" class="input_text" required>
                         </div>
                         <div>
                             <label for="gp_sp2" class="label_input">
@@ -315,7 +332,7 @@
                             <label for="pricesp3" class="label_input">
                                 {{ __('vendor_product.product_sp3') }}
                             </label>
-                            <input type="number" id="pricesp3" name="pricesp3" class="input_text" required>
+                            <input type="number" id="pricesp3_promo" name="pricesp3" class="input_text" required>
                         </div>
                         <div>
                             <label for="gp_sp3" class="label_input">
@@ -330,7 +347,7 @@
                             <label for="pricesp4" class="label_input">
                                 {{ __('vendor_product.product_sp4') }}
                             </label>
-                            <input type="number" id="pricesp4" name="pricesp4" class="input_text" required>
+                            <input type="number" id="pricesp4_promo" name="pricesp4" class="input_text" required>
                         </div>
                         <div>
                             <label for="gp_sp4" class="label_input">
@@ -345,7 +362,7 @@
                             <label for="pricesp5" class="label_input">
                                 {{ __('vendor_product.product_sp5') }}
                             </label>
-                            <input type="number" id="pricesp5" name="pricesp5" class="input_text" required>
+                            <input type="number" id="pricesp5_promo" name="pricesp5" class="input_text" required>
                         </div>
                         <div>
                             <label for="gp_sp5" class="label_input">
@@ -361,7 +378,7 @@
                             <label for="priceedc" class="label_input">
                                 {{ __('vendor_product.product_price_edc') }}
                             </label>
-                            <input type="number" id="priceedc" name="priceedc" class="input_text" required>
+                            <input type="number" id="priceedc_promo" name="priceedc" class="input_text" required>
                         </div>
                         <div>
                             <label for="gp_edc" class="label_input">
@@ -486,5 +503,24 @@
                 }
             });
         });
+
+        function copyPricesToFields(sourceId, suffixList) {
+            const value = document.getElementById(sourceId).value;
+            suffixList.forEach(fieldId => {
+                const element = document.getElementById(fieldId);
+                if (element) {
+                    element.value = value;
+                }
+            });
+        }
+
+        function copyUnitPrices() {
+            const fieldIds = ['priceunit_promo', 'pricediscount_promo', 'priceqr_promo', 'pricerabbit_promo',
+                'pricemember_promo',
+                'pricestaff_promo', 'pricesp1_promo', 'pricesp2_promo', 'pricesp3_promo', 'pricesp4_promo',
+                'pricesp5_promo', 'priceedc_promo'
+            ];
+            copyPricesToFields('priceunit_promo', fieldIds);
+        }
     </script>
 @endpush

@@ -59,6 +59,7 @@ return [
     'stock_product_id' => 'รหัสสินค้า',
     'stock_product_desc' => 'รายละเอียด',
     'stock_cur_balance' => 'จำนวน',
+    'stock_unit' => 'หน่วย',
 
     'vendor_promo_dis' => 'การใช้ส่วนลด/โปรโมชั่น',
     'typediscount' => 'การใช้ส่วนลด',

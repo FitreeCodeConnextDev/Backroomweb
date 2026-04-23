@@ -868,9 +868,10 @@ class VendorController extends Controller
             return response()->json(['message' => __('menu.save_is_failed')]);
         }
     }
-    public function vendor_gp_del($gp_seq, $vendor_id)
+    public function vendor_gp_del($vendor_id, $gp_seq)
     {
-        if (isset($gp_seq)) {
+
+        try {
             DB::table('vendorgp_info')
                 ->where('vendor_id', $vendor_id)
                 ->where('gp_seq', $gp_seq)
@@ -881,7 +882,6 @@ class VendorController extends Controller
                 'gp_seq' => $gp_seq,
                 'timestamp' => Carbon::now()->toDateTimeString(),
                 'action_by' => session('auth_user.user_id'),
-
             ]);
             sweetalert()
                 ->timer(6000)
@@ -889,7 +889,7 @@ class VendorController extends Controller
                 ->title('Success')
                 ->success(__('menu.delete_is_success'));
             return redirect()->back();
-        } else {
+        } catch (\Exception $e) {
             Log::channel('activity')->error(session('auth_user.user_id') . ' Failed to Delete Vendor GP', [
                 'action' => 'delete_gp',
                 'vendor_id' => $vendor_id,

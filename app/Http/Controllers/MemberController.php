@@ -65,7 +65,7 @@ class MemberController extends Controller
             'member_birthdate' => 'nullable',
             'member_addr' => 'nullable',
             'member_phone' => 'nullable|regex:/(0)[0-9]/|not_regex:/[a-z]/|min:10',
-            'card_no' => 'required|digits:11',
+            'card_no' => 'required|digits:9',
 
         ], [
             'member_id.required' => __('member.member_id_valid'),

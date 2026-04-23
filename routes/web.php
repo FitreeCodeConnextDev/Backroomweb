@@ -61,8 +61,10 @@ Route::middleware(['auth_user'])->group(function () {
         Route::put('vendor_funtion/{id}', [VendorController::class, 'vendor_function_update'])->name('vendor_function_update');
         Route::put('/vendor_promo_dis/{id}', [VendorController::class, 'vendor_promo_dis'])->name('vendor_promo_dis');
         Route::put('/vendor_rabbit/{id}', [VendorController::class, 'vendor_rabbit_update'])->name('vendor_rabbit');
+
         Route::post('/vendor_gp_insert', [VendorController::class, 'vendor_gp_insert'])->name('vendor_gp_insert');
-        Route::put('/vendor_gp_del/{vendor_id}/{gp_seq}/', [VendorController::class, 'vendor_gp_del'])->name('vendor_gp_del');
+        Route::put('/vendor_gp_del/{vendor_id}/{gp_seq}', [VendorController::class, 'vendor_gp_del'])->name('vendor_gp_del');
+
         Route::put('/vendor_invoice_update/{id}', [VendorController::class, 'vendor_invoice_update'])->name('vendor_invoice_update');
         route::put('/vendor_linepay/{id}', [VendorController::class, 'vendor_linepay_update'])->name('vendor_linepay');
 

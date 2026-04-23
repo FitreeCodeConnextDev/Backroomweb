@@ -47,12 +47,13 @@
                             <td>{{ $item->gp_min }}</td>
                             @if (!Route::is('vendor-page.show'))
                                 <td>
-                                    <form action="{{ route('vendor_gp_del', [$item->gp_seq, $item->vendor_id]) }}"
-                                        method="post" id="delete-form-{{ $item->gp_seq }}">
+                                    <form action="{{ route('vendor_gp_del', [$item->vendor_id, $item->gp_seq]) }}"
+                                        method="post" id="delete-form-{{ $item->gp_seq }}-{{ $item->gp_code }}">
                                         @csrf
                                         @method('PUT')
-                                        <button type="button" class="del-button" data-item-id="{{ $item->gp_seq }}"
-                                            data-name="{{ $item->gp_seq }}">
+                                        <button type="button" class="del-button"
+                                            data-item-id="{{ $item->gp_seq }}-{{ $item->gp_code }}"
+                                            data-name="{{ $item->gp_seq }}-{{ $item->gp_code }}">
                                             <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                                 width="24" height="24" fill="none" viewBox="0 0 24 24">
                                                 <path stroke="currentColor" stroke-linecap="round"
@@ -246,28 +247,6 @@
                     }
                 });
             });
-
-            // Delete button handler
-            $(document).on('click', '.del-button', function(e) {
-                e.preventDefault();
-                const itemId = $(this).data('item-id');
-                const form = $('#delete-form-' + itemId);
-
-                Swal.fire({
-                    title: `{{ __('menu.deleted_title') }}`,
-                    html: `{{ __('menu.deleted_text') }} <b>${itemName}</b>`,
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonText: `{{ __('menu.deleted_yes') }}`,
-                    cancelButtonText: `{{ __('menu.deleted_no') }}`,
-                    reverseButtons: true
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        form.submit();
-                    }
-                });
-            });
-
             // ปิด Modal เมื่อคลิกปุ่มปิด
             $('[data-modal-hide="vendor_gp_modal"]').on('click', function() {
                 $('#vendor_gp_modal').addClass('hidden');

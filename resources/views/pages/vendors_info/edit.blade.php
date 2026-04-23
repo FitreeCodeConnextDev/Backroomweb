@@ -172,9 +172,6 @@
 @endsection
 @push('scripts')
     @vite(['resources/js/vendor_tab.js'])
-    <script src="/js/delet_sweet.js"></script>
-    {{-- <script src="/js/vendor_tab.js"></script> --}}
-
     <script type="module">
         $('#vendor_form').validate({
             rules: {

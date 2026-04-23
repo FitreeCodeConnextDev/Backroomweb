@@ -22,7 +22,7 @@
         <div class="mb-4 grid lg:grid-cols-2 grid-cols-1 gap-6 ">
             <div>
                 <label for="staff_id" class="label_input"> {{ __('staff.staff_id') }} </label>
-                <input type="text" id="staff_id" maxlength="8" name="staff_id" class="input_text" required>
+                <input type="text" id="staff_id" maxlength="6" name="staff_id" class="input_text" required>
                 @error('staff_id')
                     <p class="mt-2 text-sm text-red-600 "><span class="font-medium"> {{ __('menu.is_warning') }} </span>
                         {{ $message }}
@@ -73,8 +73,7 @@
 
             <div>
                 <label for="staff_birthdate" class="label_input"> {{ __('staff.staff_birthdate') }} </label>
-                <input type="date" id="staff_birthdate" name="staff_birthdate"
-                    class="input_text" />
+                <input type="date" id="staff_birthdate" name="staff_birthdate" class="input_text" />
                 @error('staff_birthdate')
                     <p class="mt-2 text-sm text-red-600 "><span class="font-medium"> {{ __('menu.is_warning') }} </span>
                         {{ $message }}
@@ -130,7 +129,7 @@
                     <div class="my-5 flex space-x-3">
                         <div>
                             <label for="card_number" class="label_input"> {{ __('member.card_no') }} </label>
-                            <input type="text" name="card_no" class="input_text" id="card_number" maxlength="11">
+                            <input type="text" name="card_no" class="input_text" id="card_number" maxlength="9">
                             @error('card_no')
                                 <p class="mt-2 text-sm text-red-600 "><span
                                         class="font-medium">{{ __('menu.is_warning') }}</span>
