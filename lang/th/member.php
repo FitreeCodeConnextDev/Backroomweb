@@ -2,6 +2,7 @@
 return [
     'member_id' => 'รหัสสมาชิก',
     'member_name' => 'ชื่อสมาชิก',
+    'branch_id' => 'สาขา',
     'member_license' => 'รหัสบัตรประชาชน',
     'member_expire' => 'วันหมดอายุบัตร',
     'member_birthdate' => 'วันเดือนปีเกิด',

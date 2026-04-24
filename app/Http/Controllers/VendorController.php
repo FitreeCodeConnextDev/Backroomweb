@@ -736,13 +736,7 @@ class VendorController extends Controller
             Log::channel('activity')->notice(session('auth_user.user_id') . ' Updated Vendor Invoice Information', [
                 'action' => 'update_invoice',
                 'vendor_id' => $id,
-                'invoicename' => $invoice_form['invoicename'],
-                'invoiceaddr1' => $invoice_form['invoiceaddr1'],
-                'invoiceaddr2' => $invoice_form['invoiceaddr2'],
-                'invoiceduedate' => $invoice_form['invoiceduedate'],
-                'invoicepaydate' => $invoice_form['invoicepaydate'],
-                'invoiceprint' => $invoice_form['invoiceprint'],
-                'vendor_paymenttype' => $invoice_form['vendor_paymenttype'],
+                'form_data' => $invoice_form,
                 'timestamp' => Carbon::now()->toDateTimeString(),
                 'action_by' => session('auth_user.user_id'),
 

@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\MemberModel;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Helpers\PermissionHelper;
+use App\Http\Requests\MemberRequest;
 
 class MemberController extends Controller
 {
@@ -51,69 +53,66 @@ class MemberController extends Controller
                 ->error(__('menu.is_permission_denied'));
             return redirect()->back();
         }
-        return view('pages.member.create');
+
+        $lengthCard = DB::table('system_info')->value('lengthcard');
+        if (session('auth_user.branch_id') == 000000) {
+            $branch_id = DB::table('branch_info')->where('activeflag', 1)->select('branch_id')->get();
+        } else {
+            $branch_id = DB::table('branch_info')->where('activeflag', 1)->where('branch_id', session('auth_user.branch_id'))->select('branch_id')->get();
+        }
+        return view('pages.member.create', compact('lengthCard', 'branch_id'));
     }
 
-    public function store(Request $request)
+    public function store(MemberRequest $request)
     {
-        // dd($request->all());
-        $valida_data = $request->validate([
-            'member_id' => 'required|max:10|unique:member_info,member_id',
-            'member_name' => 'required',
-            'member_license' => 'nullable|min:13|max:13',
-            'member_expire' => 'nullable',
-            'member_birthdate' => 'nullable',
-            'member_addr' => 'nullable',
-            'member_phone' => 'nullable|regex:/(0)[0-9]/|not_regex:/[a-z]/|min:10',
-            'card_no' => 'required|digits:9',
-
-        ], [
-            'member_id.required' => __('member.member_id_valid'),
-            'member_id.max' => __('member.member_id_valid_max'),
-            'member_id.unique' => __('member.member_id_unique'),
-            'member_name.required' => __('member.member_name_valid'),
-            'member_license.required' => __('member.member_license_valid'),
-            'member_license.min' => __('member.member_license_valid_min'),
-            'member_license.max' => __('member.member_license_valid_max'),
-            'member_license.num' => __('member.member_license_valid_num'),
-            'member_expire.required' => __('member.member_expire_valid'),
-            'member_birthdate.required' => __('member.member_birthdate_valid'),
-            'member_addr.required' => __('member.member_addr_valid'),
-            'member_phone.required' => __('member.member_phone_valid'),
-            'member_phone.regex' => __('member.member_phone_valid_num'),
-            'card_no.required' => __('member.card_no_valid'),
-            'card_no.digits' => __('member.card_no_digits'),
-
-        ]);
-
-        $member_expire = Carbon::parse($valida_data['member_expire'])->format('Y-m-d');
-        $member_birthdate = Carbon::parse($valida_data['member_birthdate'])->format('Y-m-d');
-        $checksum = $this->checkSum($valida_data['card_no']);
-        $checksum_card_no = $valida_data['card_no'] = $valida_data['card_no'] . $checksum;
-
         try {
-            DB::table('member_info')->insert([
-                'member_id' => $valida_data['member_id'],
-                'member_name' => $valida_data['member_name'],
-                'member_license' => $valida_data['member_license'],
-                'member_expiredate' => $member_expire,
-                'member_birthdate' => $member_birthdate,
-                'member_addr' => $valida_data['member_addr'],
-                'member_phone' => $valida_data['member_phone'],
-                'card_no' => $checksum_card_no,
-                'activeflag' => 1
-            ]);
-            flash()
-                ->option('position', 'bottom-right')
-                ->option('timeout', 3000)
-                ->success(__('menu.save_is_success'));
-            return redirect()->route('member.index');
+            $member_expire = Carbon::parse($request->member_expiredate)->format('Y-m-d');
+            $member_birthdate = Carbon::parse($request->member_birthdate)->format('Y-m-d');
+            $checksum = $this->checkSum($request->card_no);
+            $member_card_no = $request->card_no . $checksum;
+
+            $member_info = new MemberModel();
+            $member_info->member_id = $request->member_id;
+            $member_info->member_name = $request->member_name;
+            $member_info->branch_id = $request->branch_id;
+            $member_info->member_license = $request->member_license;
+            $member_info->member_expiredate = $member_expire;
+            $member_info->member_birthdate = $member_birthdate;
+            $member_info->member_addr = $request->member_addr;
+            $member_info->member_phone = $request->member_phone;
+            $member_info->card_no = $member_card_no;
+            $member_info->activeflag = 1;
+
+            if ($member_info->save()) {
+                Log::channel('activity')->info(session('auth_user.user_id') . ' Member Inserted: ' . $request->member_name, [
+                    'member_id' => $member_info->member_id,
+                    'member_name' => $request->member_name,
+                    'created_at' => Carbon::now()->toDateTimeString(),
+                    'created_by' => session('auth_user.user_id'),
+                ]);
+                flash()
+                    ->option('position', 'bottom-right')
+                    ->option('timeout', 3000)
+                    ->success(__('menu.save_is_success'));
+                return redirect()->route('member.index');
+            } else {
+                Log::channel('activity')->error(session('auth_user.user_id') . ' Member Insert Failed: ' . $member_info->getChanges(), [
+                    'action' => 'insert',
+                    'insert detail' => $member_info->getChanges(),
+                    'error_message' => 'Insert Failed',
+                    'created_at' => Carbon::now()->toDateTimeString(),
+                    'created_by' => session('auth_user.user_id'),
+                ]);
+                flash()
+                    ->option('position', 'bottom-right')
+                    ->option('timeout', 3000)
+                    ->error(__('menu.save_is_failed'));
+                return redirect()->route('member.create');
+            }
         } catch (\Exception $e) {
-            Log::channel('activity')->error(session('auth_user.user_id') . ' Member Insert Failed: ' . $valida_data['member_name'], [
-                'member_id' => $valida_data['member_id'],
-                'member_name' => $valida_data['member_name'],
+            Log::channel('activity')->error(session('auth_user.user_id') . ' Member Insert Failed: ' . $request->member_name, [
                 'action' => 'insert',
-                'insert detail' => $valida_data,
+                'insert detail' => $request->all(),
                 'error_message' => $e->getMessage(),
                 'created_at' => Carbon::now()->toDateTimeString(),
                 'created_by' => session('auth_user.user_id'),
@@ -213,67 +212,54 @@ class MemberController extends Controller
     }
     public function update(Request $request, $id)
     {
-        $valida_data = $request->validate([
-            'member_name' => 'required',
-            'member_license' => 'nullable|min:13|max:13',
-            'member_expire' => 'nullable',
-            'member_birthdate' => 'nullable',
-            'member_addr' => 'nullable',
-            'member_phone' => 'nullable|regex:/(0)[0-9]/|not_regex:/[a-z]/|min:10',
-
-        ], [
-            'member_name.required' => __('member.member_name_valid'),
-            'member_license.required' => __('member.member_license_valid'),
-            'member_license.min' => __('member.member_license_valid_min'),
-            'member_license.max' => __('member.member_license_valid_max'),
-            'member_license.num' => __('member.member_license_valid_num'),
-            'member_expire.required' => __('member.member_expire_valid'),
-            'member_birthdate.required' => __('member.member_birthdate_valid'),
-            'member_addr.required' => __('member.member_addr_valid'),
-            'member_phone.required' => __('member.member_phone_valid'),
-            'member_phone.regex' => __('member.member_phone_valid_num'),
-
-        ]);
-        $member_expire = Carbon::parse($valida_data['member_expire'])->format('Y-m-d');
-        $member_birthdate = Carbon::parse($valida_data['member_birthdate'])->format('Y-m-d');
-        $member_data = DB::table('member_info')->where('member_id', $id)->first();
-
-        // if ($member_data->card_no != $valida_data['card_no']) {
-        //     $checksum = $this->checkSum($valida_data['card_no']);
-        //     $valida_data['card_no'] = $valida_data['card_no'] . $checksum;
-        // }
-
         try {
-            DB::table('member_info')
-                ->where('member_id', $id)
-                ->update([
-                    'member_name' => $valida_data['member_name'],
-                    'member_license' => $valida_data['member_license'],
-                    'member_expiredate' => $member_expire,
-                    'member_birthdate' => $member_birthdate,
-                    'member_addr' => $valida_data['member_addr'],
-                    'member_phone' => $valida_data['member_phone'],
+            $member_expire = Carbon::parse($request->member_expiredate)->format('Y-m-d');
+            $member_birthdate = Carbon::parse($request->member_birthdate)->format('Y-m-d');
+
+            $member_info = MemberModel::find($id);
+            $member_info->member_name = $request->member_name;
+            $member_info->branch_id = $request->branch_id;
+            $member_info->member_license = $request->member_license;
+            $member_info->member_expiredate = $member_expire;
+            $member_info->member_birthdate = $member_birthdate;
+            $member_info->member_addr = $request->member_addr;
+            $member_info->member_phone = $request->member_phone;
+
+            if ($member_info->save()) {
+                Log::channel('activity')->notice(session('auth_user.user_id') . ' Member Updated: ' . $request->member_name, [
+                    'member_id' => $id,
+                    'member_name' => $request->member_name,
+                    'action' => 'update',
+                    'update detail' => $request->all(),
+                    'updated_at' => Carbon::now()->toDateTimeString(),
+                    'updated_by' => session('auth_user.user_id'),
                 ]);
-            Log::channel('activity')->notice(session('auth_user.user_id') . ' Member Updated: ' . $valida_data['member_name'], [
-                'member_id' => $id,
-                'member_name' => $valida_data['member_name'],
-                'action' => 'update',
-                'update detail' => $valida_data,
-                'updated_at' => Carbon::now()->toDateTimeString(),
-                'updated_by' => session('auth_user.user_id'),
-            ]);
-            flash()
-                ->option('position', 'bottom-right')
-                ->option('timeout', 3000)
-                ->success(__('menu.edit_is_success'));
-            return redirect()->route('member.index');
+                flash()
+                    ->option('position', 'bottom-right')
+                    ->option('timeout', 3000)
+                    ->success(__('menu.edit_is_success'));
+                return redirect()->route('member.index');
+            } else {
+                Log::channel('activity')->error(session('auth_user.user_id') . ' Member Update Failed: ' . $request->member_name, [
+                    'member_id' => $id,
+                    'member_name' => $request->member_name,
+                    'action' => 'update',
+                    'update detail' => $request->all(),
+                    'updated_at' => Carbon::now()->toDateTimeString(),
+                    'updated_by' => session('auth_user.user_id'),
+                ]);
+                flash()
+                    ->option('position', 'bottom-right')
+                    ->option('timeout', 3000)
+                    ->error(__('menu.edit_is_failed'));
+                return redirect()->route('member.index');
+            }
         } catch (\Exception $e) {
-            Log::channel('activity')->error(session('auth_user.user_id') . ' Member Update Failed: ' . $valida_data['member_name'], [
+            Log::channel('activity')->error(session('auth_user.user_id') . ' Member Update Failed: ' . $request->member_name, [
                 'member_id' => $id,
-                'member_name' => $valida_data['member_name'],
+                'member_name' => $request->member_name,
                 'action' => 'update',
-                'update detail' => $valida_data,
-                'error_message' => $e->getMessage(),
+                'error' => $e->getMessage(),
                 'updated_at' => Carbon::now()->toDateTimeString(),
                 'updated_by' => session('auth_user.user_id'),
             ]);
@@ -281,7 +267,7 @@ class MemberController extends Controller
                 ->option('position', 'bottom-right')
                 ->option('timeout', 3000)
                 ->error(__('menu.edit_is_failed'));
-            return redirect()->route('member.create');
+            return redirect()->route('member.index');
         }
     }
     public function destroy($id)
@@ -299,27 +285,36 @@ class MemberController extends Controller
                 ->error(__('menu.is_permission_denied'));
             return redirect()->back();
         }
-
-
         try {
-            $delete_member = DB::table('member_info')
-                ->where('member_id', $id)
-                ->update([
-                    'activeflag' => 0,
+            $member_info = MemberModel::find($id);
+            $member_info->activeflag = 0;
+            if ($member_info->save()) {
+                Log::channel('activity')->notice(session('auth_user.user_id') . ' Member Deleted: ' . $id, [
+                    'member_id' => $id,
+                    'action' => 'delete',
+                    'deleted_at' => Carbon::now()->toDateTimeString(),
+                    'deleted_by' => session('auth_user.user_id'),
                 ]);
-            Log::channel('activity')->notice(session('auth_user.user_id') . ' Member Deleted: ' . $id, [
-                'member_id' => $id,
-                'action' => 'delete',
-                'deleted_at' => Carbon::now()->toDateTimeString(),
-                'deleted_by' => session('auth_user.user_id'),
-            ]);
-            flash()
-                ->option('position', 'bottom-right')
-                ->option('timeout', 3000)
-                ->success(__('menu.delete_is_success'));
-            return redirect()->route('member.index');
+                flash()
+                    ->option('position', 'bottom-right')
+                    ->option('timeout', 3000)
+                    ->success(__('menu.delete_is_success'));
+                return redirect()->route('member.index');
+            } else {
+                Log::channel('activity')->error(session('auth_user.user_id') . ' Member Delete Failed: ' . $id, [
+                    'member_id' => $id,
+                    'action' => 'delete',
+                    'deleted_at' => Carbon::now()->toDateTimeString(),
+                    'deleted_by' => session('auth_user.user_id'),
+                ]);
+                flash()
+                    ->option('position', 'bottom-right')
+                    ->option('timeout', 3000)
+                    ->error(__('menu.delete_is_failed'));
+                return redirect()->route('member.index');
+            }
         } catch (\Exception $e) {
-            log::channel('activity')->error(session('auth_user.user_id') . ' Member Delete Failed: ' . $id, [
+            Log::channel('activity')->error(session('auth_user.user_id') . ' Member Delete Failed: ' . $id, [
                 'member_id' => $id,
                 'action' => 'delete',
                 'deleted_at' => Carbon::now()->toDateTimeString(),

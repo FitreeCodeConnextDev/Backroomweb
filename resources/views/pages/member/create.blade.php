@@ -49,6 +49,18 @@
                     </p>
                 @enderror
             </div>
+            @if (session('auth_user.branch_id') == '000000')
+                <div>
+                    <label for="branch" class="label_input"> {{ __('member.branch_id') }} </label>
+                    <select class="input_text" name="branch_id" id="branch_id" required>
+                        @foreach ($branch_id as $branch)
+                            <option value="{{ $branch->branch_id }}">{{ $branch->branch_id }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            @else
+                <input type="hidden" name="branch_id" value="{{ session('auth_user.branch_id') }}">
+            @endif
             <div>
                 <label for="member_expire" class="label_input">{{ __('member.member_expire') }}</label>
                 <input type="date" id="member_expire" name="member_expire" class="input_text" />
