@@ -22,7 +22,7 @@
         <div class="mb-4 grid lg:grid-cols-2 grid-cols-1 gap-6 ">
             <div>
                 <label for="staff_id" class="label_input"> {{ __('staff.staff_id') }} </label>
-                <input type="text" id="staff_id" maxlength="6" name="staff_id" class="input_text" required>
+                <input type="text" id="staff_id" maxlength="10" name="staff_id" class="input_text" required>
                 @error('staff_id')
                     <p class="mt-2 text-sm text-red-600 "><span class="font-medium"> {{ __('menu.is_warning') }} </span>
                         {{ $message }}
@@ -60,6 +60,18 @@
                     </p>
                 @enderror
             </div>
+            @if (session('auth_user.branch_id') == '000000')
+                <div>
+                    <label for="branch" class="label_input"> {{ __('member.branch_id') }} </label>
+                    <select class="input_text" name="branch_id" id="branch_id" required>
+                        @foreach ($branch_id as $branch)
+                            <option value="{{ $branch->branch_id }}">{{ $branch->branch_id }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            @else
+                <input type="hidden" name="branch_id" value="{{ session('auth_user.branch_id') }}">
+            @endif
             <div>
                 <label for="staff_expiredate" class="label_input"> {{ __('staff.staff_expiredate') }} </label>
                 <input type="date" pattern="\d{2}/\d{2}/\d{4}" id="staff_expiredate" name="staff_expiredate"
@@ -105,9 +117,9 @@
                 @enderror
             </div>
             <div>
-                <label for="staff_limit" class="label_input"> {{ __('staff.staff_limit') }} </label>
-                <input type="number" id="staff_limit" value="0" name="staff_limit" class="input_text" />
-                @error('staff_limit')
+                <label for="credit_limit" class="label_input"> {{ __('staff.staff_limit') }} </label>
+                <input type="number" id="credit_limit" value="0" name="credit_limit" class="input_text" />
+                @error('credit_limit')
                     <p class="mt-2 text-sm text-red-600 "><span class="font-medium"> {{ __('menu.is_warning') }} </span>
                         {{ $message }}
                     </p>
@@ -129,7 +141,8 @@
                     <div class="my-5 flex space-x-3">
                         <div>
                             <label for="card_number" class="label_input"> {{ __('member.card_no') }} </label>
-                            <input type="text" name="card_no" class="input_text" id="card_number" maxlength="9">
+                            <input type="text" name="card_no" class="input_text" id="card_number"
+                                maxlength="{{ $lengthCard }}">
                             @error('card_no')
                                 <p class="mt-2 text-sm text-red-600 "><span
                                         class="font-medium">{{ __('menu.is_warning') }}</span>

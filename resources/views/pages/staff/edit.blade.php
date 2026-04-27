@@ -65,6 +65,19 @@
                     </p>
                 @enderror
             </div>
+            @if (session('auth_user.branch_id') == '000000')
+                <div>
+                    <label for="branch" class="label_input"> {{ __('member.branch_id') }} </label>
+                    <select class="input_text" name="branch_id" id="branch_id" required>
+                        @foreach ($branch_id as $branch)
+                            <option value="{{ $branch->branch_id }}" @if ($staff_data->branch_id == $branch->branch_id) selected @endif>
+                                {{ $branch->branch_id }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            @else
+                <input type="hidden" name="branch_id" value="{{ $staff_data->branch_id }}">
+            @endif
             <div>
                 <label for="staff_expiredate" class="label_input"> {{ __('staff.staff_expiredate') }} </label>
                 <input type="date" id="staff_expiredate" name="staff_expiredate" class="input_text"
@@ -111,10 +124,10 @@
                 @enderror
             </div>
             <div>
-                <label for="staff_limit" class="label_input"> {{ __('staff.staff_limit') }} </label>
-                <input type="number" id="staff_limit" value="{{ $staff_data->credit_limit }}" name="staff_limit"
+                <label for="credit_limit" class="label_input"> {{ __('staff.staff_limit') }} </label>
+                <input type="number" id="credit_limit" value="{{ $staff_data->credit_limit }}" name="credit_limit"
                     class="input_text" />
-                @error('staff_limit')
+                @error('credit_limit')
                     <p class="mt-2 text-sm text-red-600 "><span class="font-medium"> {{ __('menu.is_warning') }} </span>
                         {{ $message }}
                     </p>

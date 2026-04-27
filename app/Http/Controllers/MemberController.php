@@ -81,6 +81,10 @@ class MemberController extends Controller
             $member_info->member_addr = $request->member_addr;
             $member_info->member_phone = $request->member_phone;
             $member_info->card_no = $member_card_no;
+            $member_info->issue_date = Carbon::now()->toDateTimeString();
+            $member_info->credit_amt = 0;
+            $member_info->credit_limit = 0;
+            $member_info->lastpayment_amt = 0;
             $member_info->activeflag = 1;
 
             if ($member_info->save()) {
@@ -207,8 +211,13 @@ class MemberController extends Controller
             'timestamp' => Carbon::now()->toDateTimeString(),
         ]);
         $lengthCard = DB::table('system_info')->value('lengthcard');
+        if (session('auth_user.branch_id') == 000000) {
+            $branch_id = DB::table('branch_info')->where('activeflag', 1)->select('branch_id')->get();
+        } else {
+            $branch_id = DB::table('branch_info')->where('activeflag', 1)->where('branch_id', session('auth_user.branch_id'))->select('branch_id')->get();
+        }
 
-        return view('pages.member.edit', compact('member_data', 'card_sub', 'use_card_member_daily', 'use_card_member_backup', 'lengthCard'));
+        return view('pages.member.edit', compact('member_data', 'card_sub', 'use_card_member_daily', 'use_card_member_backup', 'lengthCard', 'branch_id'));
     }
     public function update(Request $request, $id)
     {

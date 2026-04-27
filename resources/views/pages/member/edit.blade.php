@@ -1,6 +1,6 @@
 @extends('layouts.createpage')
 @section('title_page')
-    {{ __('menu.member_add') }}
+    {{ __('menu.member_edit') }}
 @endsection
 @section('breadcrumb-index')
     <a href="{{ route('member.index') }}" class="first_bc_a" id="cancel_button">
@@ -50,6 +50,20 @@
                     </p>
                 @enderror
             </div>
+            @if (session('auth_user.branch_id') == '000000')
+                <div>
+                    <label for="branch" class="label_input"> {{ __('member.branch_id') }} </label>
+                    <select class="input_text" name="branch_id" id="branch_id" required>
+                        @foreach ($branch_id as $branch)
+                            <option value="{{ $branch->branch_id }}"
+                                {{ $member_data->branch_id == $branch->branch_id ? 'selected' : '' }}>
+                                {{ $branch->branch_id }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            @else
+                <input type="hidden" name="branch_id" value="{{ $member_data->branch_id }}">
+            @endif
             <div>
                 <label for="member_expire" class="label_input">{{ __('member.member_expire') }}</label>
                 <input type="date" pattern="\d{2}/\d{2}/\d{4}" id="member_expire" name="member_expire"
