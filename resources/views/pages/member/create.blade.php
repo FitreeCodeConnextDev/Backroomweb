@@ -87,7 +87,7 @@
             </div> --}}
             <div>
                 <label for="member_addr" class="label_input">{{ __('member.member_addr') }}</label>
-                <textarea id="member_addr" name="member_addr" rows="4" class="textarea_input" placeholder=" Lorem"></textarea>
+                <textarea id="member_addr" name="member_addr" rows="4" class="textarea_input"></textarea>
                 @error('member_addr')
                     <p class="mt-2 text-sm text-red-600 "><span class="font-medium">{{ __('menu.is_warning') }}</span>
                         {{ $message }}

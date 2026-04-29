@@ -308,7 +308,7 @@
                     .finally(() => {
                         // Re-enable submit button and restore original text
                         saveButton.disabled = false;
-                        saveButton.innerHTML = document.querySelector('button.submit_btn').textContent;
+                        saveButton.innerHTML = document.querySelector('button.grey_btn').textContent;
                     });
             }
         });

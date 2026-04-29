@@ -47,6 +47,9 @@ return [
     'txn_date_th' => 'วันที่',
     'term_id_th' => 'เครื่อง',
     'ref_name_th' => 'ร้านค้า',
+    'issue_date_th' => 'วันที่ออกบัตร',
+    'lastuse_date_th' => 'วันที่ใช้บัตรล่าสุด',
+    'lastadjust_date_th' => 'วันที่เติมล่าสุด',
     'amount_th' => 'จำนวนเงิน',
 
     'empty_data' => 'ไม่มีข้อมูล',

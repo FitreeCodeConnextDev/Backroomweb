@@ -175,7 +175,7 @@
                         </thead>
                         <tbody>
 
-                            @if ($use_card_staff_daily->isEmpty())
+                            @if ($use_card_staff->isEmpty())
                                 <tr>
                                     <td>{{ __('staff.empty_data') }}</td>
                                     <td>{{ __('staff.empty_data') }}</td>
@@ -183,12 +183,12 @@
                                     <td>{{ __('staff.empty_data') }}</td>
                                 </tr>
                             @else
-                                @foreach ($use_card_staff_daily as $item)
+                                @foreach ($use_card_staff as $item)
                                     <tr>
-                                        <td>{{ $item->txndate }}</td>
+                                        <td>{{ date('d/m/Y H:i', strtotime($item->txndate)) }}</td>
                                         <td>{{ $item->term_id }}</td>
-                                        <td>{{ $item->ref_name }}</td>
-                                        <td>{{ $item->total }}</td>
+                                        <td>{{ $item->vendor_name }}</td>
+                                        <td>{{ $item->amount }}</td>
                                     </tr>
                                 @endforeach
                             @endif
@@ -200,26 +200,23 @@
                     <table class="table-data" id="use_card_backup">
                         <thead>
                             <tr>
-                                <th>{{ __('staff.txn_date_th') }}</th>
-                                <th>{{ __('staff.term_id_th') }}</th>
-                                <th>{{ __('staff.ref_name_th') }}</th>
-                                <th>{{ __('staff.amount_th') }}</th>
+                                <th>{{ __('member.issue_date_th') }}</th>
+                                <th>{{ __('member.lastuse_date_th') }}</th>
+                                <th>{{ __('member.lastadjust_date_th') }}</th>
                             </tr>
                         </thead>
-                        @if ($use_card_staff_backup->isEmpty())
+                        @if ($staff_card_detail->isEmpty())
                             <tr>
-                                <td>{{ __('staff.empty_data') }}</td>
                                 <td>{{ __('staff.empty_data') }}</td>
                                 <td>{{ __('staff.empty_data') }}</td>
                                 <td>{{ __('staff.empty_data') }}</td>
                             </tr>
                         @else
-                            @foreach ($use_card_staff_backup as $item)
+                            @foreach ($staff_card_detail as $item)
                                 <tr>
-                                    <td>{{ $item->txndate }}</td>
-                                    <td>{{ $item->term_id }}</td>
-                                    <td>{{ $item->ref_name }}</td>
-                                    <td>{{ $item->total }}</td>
+                                    <td>{{ date('d/m/Y H:i', strtotime($item->issuedate)) }}</td>
+                                    <td>{{ date('d/m/Y H:i', strtotime($item->lastusedate)) }}</td>
+                                    <td>{{ date('d/m/Y H:i', strtotime($item->lastadjustdate)) }}</td>
                                 </tr>
                             @endforeach
                         @endif

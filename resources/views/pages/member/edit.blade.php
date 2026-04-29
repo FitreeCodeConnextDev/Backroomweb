@@ -168,10 +168,10 @@
                             @else
                                 @foreach ($use_card_member_daily as $item)
                                     <tr>
-                                        <td>{{ $item->txndate }}</td>
+                                        <td>{{ date('d/m/Y H:i', strtotime($item->txndate)) }}</td>
                                         <td>{{ $item->term_id }}</td>
                                         <td>{{ $item->vendor_name }}</td>
-                                        <td>{{ $item->amount }}</td>
+                                        <td>{{ number_format($item->amount, 2) }}</td>
                                     </tr>
                                 @endforeach
                             @endif
@@ -182,14 +182,13 @@
                     <table class="table-data" id="use_card_backup">
                         <thead>
                             <tr>
-                                <th>{{ __('member.txn_date_th') }}</th>
-                                <th>{{ __('member.term_id_th') }}</th>
-                                <th>{{ __('member.ref_name_th') }}</th>
-                                <th>{{ __('member.amount_th') }}</th>
+                                <th>{{ __('member.issue_date_th') }}</th>
+                                <th>{{ __('member.lastuse_date_th') }}</th>
+                                <th>{{ __('member.lastadjust_date_th') }}</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @if ($use_card_member_backup->isEmpty())
+                            @if ($use_card_backup->isEmpty())
                                 <tr>
                                     <td>{{ __('member.empty_data') }}</td>
                                     <td>{{ __('member.empty_data') }}</td>
@@ -197,12 +196,11 @@
                                     <td>{{ __('member.empty_data') }}</td>
                                 </tr>
                             @else
-                                @foreach ($use_card_member_backup as $item)
+                                @foreach ($use_card_backup as $item)
                                     <tr>
-                                        <td>{{ $item->txndate }}</td>
-                                        <td>{{ $item->term_id }}</td>
-                                        <td>{{ $item->vendor_name }}</td>
-                                        <td>{{ $item->amount }}</td>
+                                        <td>{{ date('d/m/Y H:i', strtotime($item->issuedate)) }}</td>
+                                        <td>{{ date('d/m/Y H:i', strtotime($item->lastusedate)) }}</td>
+                                        <td>{{ date('d/m/Y H:i', strtotime($item->lastadjustdate)) }}</td>
                                     </tr>
                                 @endforeach
                             @endif
@@ -259,28 +257,7 @@
                     member_name: {
                         required: true
                     },
-                    // member_license: {
-                    //     required: true,
-                    //     minlength: 13,
-                    //     maxlength: 13,
-                    //     number: true
-                    // },
-                    // member_expire: {
-                    //     required: true,
-                    //     date: true,
-                    // },
-                    // member_birthdate: {
-                    //     required: true
-                    // },
-                    // member_phone: {
-                    //     required: true,
-                    //     minlength: 10,
-                    //     maxlength: 10,
-                    //     number: true
-                    // },
-                    // member_addr: {
-                    //     required: true
-                    // }
+
                 },
                 messages: {
                     member_id: {
@@ -288,24 +265,7 @@
                         maxlength: `{{ __('member.member_id_valid_max') }}`
                     },
                     member_name: `{{ __('member.member_name_valid') }}`,
-                    // member_license: {
-                    //     required: `{{ __('member.member_license_valid') }}`,
-                    //     minlength: `{{ __('member.member_license_valid_min') }}`,
-                    //     maxlength: `{{ __('member.member_license_valid_max') }}`,
-                    //     number: `{{ __('member.member_license_valid_num') }}`
-                    // },
-                    // member_expire: {
-                    //     required: `{{ __('member.member_expire_valid') }}`,
-                    //     date: `{{ __('member.member_expire_valid_date') }}`
-                    // },
-                    // member_birthdate: `{{ __('member.member_birthdate_valid') }}`,
-                    // member_phone: {
-                    //     required: `{{ __('member.member_phone_valid') }}`,
-                    //     minlength: `{{ __('member.member_phone_valid_min') }}`,
-                    //     maxlength: `{{ __('member.member_phone_valid_max') }}`,
-                    //     number: `{{ __('member.member_phone_valid_num') }}`
-                    // },
-                    // member_addr: `{{ __('member.member_addr_valid') }}`
+
                 }
             })
         });

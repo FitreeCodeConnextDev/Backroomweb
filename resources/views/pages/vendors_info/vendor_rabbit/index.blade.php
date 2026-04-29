@@ -25,15 +25,19 @@
         $day_use = '';
     }
 @endphp
+<section class="border border-gray-200 rounded-lg p-5">
+    <form action="{{ route('vendor_rabbit', ['id' => $vendor_id]) }}" class="tabs_form" method="post">
+        @csrf
+        @method('PUT')
+        @if (!Route::is('vendor-page.show'))
+            <div class="mt-3 flex justify-start">
+                <button class="grey_btn saveButton">{{ __('menu.button.update') }}</button>
+            </div>
+        @endif
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-3">
 
-<section>
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-3">
-
-        <div class=" mt-3 border border-gray-200 rounded-lg p-5">
-            <h1 class=" text-xl font-semibold"> {{ __('vendor.vendor_rabbit') }} </h1>
-            <form action="{{ route('vendor_rabbit', ['id' => $vendor_id]) }}" class="tabs_form" method="post">
-                @csrf
-                @method('PUT')
+            <div class=" mt-3 border border-gray-200 rounded-lg p-5">
+                <h1 class=" text-xl font-semibold"> {{ __('vendor.vendor_rabbit') }} </h1>
                 <div>
                     <div class=" mt-4 grid grid-col grid-cols-2 gap-2">
                         <div>
@@ -86,52 +90,52 @@
                     <div class=" grid grid-flow-col grid-rows-4 gap-2 ">
                         <section class="mt-2">
                             <input id="default-checkbox" type="hidden" name="monday" value="0">
-                            <input id="monday" type="checkbox" name="monday" value="1"
+                            <input id="monday_rabbit" type="checkbox" name="monday" value="1"
                                 @if (isset($day_use['monday']) && $day_use['monday'] == 1) checked @endif class="checkbox_input"
                                 @if (Route::is('vendor-page.show')) disabled @endif>
-                            <label for="monday" class="label_checkbox">{{ __('vendor.mon_day') }}</label>
+                            <label for="monday_rabbit" class="label_checkbox">{{ __('vendor.mon_day') }}</label>
                         </section>
                         <section class="mt-2">
                             <input id="default-checkbox" type="hidden" name="tuesday" value="0">
-                            <input id="tuesday" type="checkbox" name="tuesday" value="1"
+                            <input id="tuesday_rabbit" type="checkbox" name="tuesday" value="1"
                                 @if (isset($day_use['tuesday']) && $day_use['tuesday'] == 1) checked @endif class="checkbox_input"
                                 @if (Route::is('vendor-page.show')) disabled @endif>
-                            <label for="tuesday" class="label_checkbox">{{ __('vendor.tue_day') }}</label>
+                            <label for="tuesday_rabbit" class="label_checkbox">{{ __('vendor.tue_day') }}</label>
                         </section>
                         <section class="mt-2">
                             <input id="default-checkbox" type="hidden" name="wednesday" value="0">
-                            <input id="wednesday" type="checkbox" name="wednesday" value="1"
+                            <input id="wednesday_rabbit" type="checkbox" name="wednesday" value="1"
                                 @if (isset($day_use['wednesday']) && $day_use['wednesday'] == 1) checked @endif class="checkbox_input"
                                 @if (Route::is('vendor-page.show')) disabled @endif>
-                            <label for="wednesday" class="label_checkbox">{{ __('vendor.wed_day') }}</label>
+                            <label for="wednesday_rabbit" class="label_checkbox">{{ __('vendor.wed_day') }}</label>
                         </section>
                         <section class="mt-2">
                             <input id="default-checkbox" type="hidden" name="thursday" value="0">
-                            <input id="thursday" type="checkbox" name="thursday" value="1"
+                            <input id="thursday_rabbit" type="checkbox" name="thursday" value="1"
                                 @if (isset($day_use['thursday']) && $day_use['thursday'] == 1) checked @endif class="checkbox_input"
                                 @if (Route::is('vendor-page.show')) disabled @endif>
-                            <label for="thursday" class="label_checkbox">{{ __('vendor.thu_day') }}</label>
+                            <label for="thursday_rabbit" class="label_checkbox">{{ __('vendor.thu_day') }}</label>
                         </section>
                         <section class="mt-2">
                             <input id="default-checkbox" type="hidden" name="friday" value="0">
-                            <input id="friday" type="checkbox" name="friday" value="1"
+                            <input id="friday_rabbit" type="checkbox" name="friday" value="1"
                                 @if (isset($day_use['friday']) && $day_use['friday'] == 1) checked @endif class="checkbox_input"
                                 @if (Route::is('vendor-page.show')) disabled @endif>
-                            <label for="friday" class="label_checkbox">{{ __('vendor.fri_day') }}</label>
+                            <label for="friday_rabbit" class="label_checkbox">{{ __('vendor.fri_day') }}</label>
                         </section>
                         <section class="mt-2">
                             <input id="default-checkbox" type="hidden" name="saturday" value="0">
-                            <input id="saturday" type="checkbox" name="saturday" value="1"
+                            <input id="saturday_rabbit" type="checkbox" name="saturday" value="1"
                                 @if (isset($day_use['saturday']) && $day_use['saturday'] == 1) checked @endif class="checkbox_input"
                                 @if (Route::is('vendor-page.show')) disabled @endif>
-                            <label for="saturday" class="label_checkbox">{{ __('vendor.sat_day') }}</label>
+                            <label for="saturday_rabbit" class="label_checkbox">{{ __('vendor.sat_day') }}</label>
                         </section>
                         <section class="mt-2">
                             <input id="default-checkbox" type="hidden" name="sunday" value="0">
-                            <input id="sunday" type="checkbox" name="sunday" value="1"
+                            <input id="sunday_rabbit" type="checkbox" name="sunday" value="1"
                                 @if (isset($day_use['sunday']) && $day_use['sunday'] == 1) checked @endif class="checkbox_input"
                                 @if (Route::is('vendor-page.show')) disabled @endif>
-                            <label for="sunday" class="label_checkbox">{{ __('vendor.sun_day') }}</label>
+                            <label for="sunday_rabbit" class="label_checkbox">{{ __('vendor.sun_day') }}</label>
                         </section>
                     </div>
                     <div class="mt-6">
@@ -153,13 +157,7 @@
                         </select>
                     </div>
                 </div>
-                @if (!Route::is('vendor-page.show'))
-                    <div class="mt-4">
-                        <button class="submit_btn saveButton">{{ __('menu.button.save') }}</button>
-                    </div>
-                @endif
-            </form>
+            </div>
         </div>
-    </div>
-
+    </form>
 </section>

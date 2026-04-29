@@ -732,13 +732,14 @@ class VendorProductController extends Controller
     }
     public function del_promo_print($vendor_id, $promo_seq)
     {
-        $delete_data = DB::table('vendorpromotionprint_info')
-            ->where([
-                'vendor_id' => $vendor_id,
-                'promo_seq' => $promo_seq,
-            ])
-            ->delete();
-        if ($delete_data) {
+        try {
+            DB::table('vendorpromotionprint_info')
+                ->where([
+                    'vendor_id' => $vendor_id,
+                    'promo_seq' => $promo_seq,
+                ])
+                ->delete();
+
             Log::channel('activity')->notice(session('auth_user.user_id') . ' deleted vendor promotion print: ' . $promo_seq, [
                 'vendor_id' => $vendor_id,
                 'promo_seq' => $promo_seq,
@@ -747,17 +748,22 @@ class VendorProductController extends Controller
                 'deleted_by' => session('auth_user.user_id'),
             ]);
             sweetalert()
+                ->title('Success')
+                ->timer(5000)
+                ->showConfirmButton(false)
                 ->success(__('menu.delete_is_success'));
             return redirect()->back();
-        } else {
+        } catch (\Exception $e) {
             Log::channel('activity')->error(session('auth_user.user_id') . ' failed to delete vendor promotion print: ' . $promo_seq, [
                 'vendor_id' => $vendor_id,
                 'promo_seq' => $promo_seq,
                 'action' => 'failed',
-                'deleted_at' => now()->toDateTimeString(),
-                'deleted_by' => session('auth_user.user_id'),
+                'error' => $e->getMessage(),
             ]);
             sweetalert()
+                ->title('Error')
+                ->timer(5000)
+                ->showConfirmButton(false)
                 ->error(__('menu.delete_is_failed'));
             return redirect()->back();
         }

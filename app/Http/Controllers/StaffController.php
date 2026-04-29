@@ -156,46 +156,27 @@ class StaffController extends Controller
             ->where('d.card_no', $staff_data->card_no)
             ->whereraw('d.txndate >= c.issuedate')
             ->where('d.txntype', '<>', '02');
-        $use_card_staff_daily = db::table('sale_terminal_daily as t')
-            ->join('cardsub_info as c', 't.card_no', '=', 'c.card_no')
-            ->leftjoin('vendor_info as v', 't.vendor_id', '=', 'v.vendor_id')
+        $use_card_staff = DB::table('sale_terminal_daily as a')
+            ->join('vendor_info as b', 'a.vendor_id', '=', 'b.vendor_id')
             ->select(
-                't.txndate',
-                't.vendor_id as term_id',
-                db::raw("cast(v.vendor_name as varchar(100)) as ref_name"),
-                't.amount as total'
+                'a.txndate',
+                'a.term_id',
+                'b.vendor_name',
+                'a.amount'
             )
-            ->where('t.card_no', $staff_data->card_no)
-            ->whereraw('t.txndate >= c.issuedate')
-            ->where('t.void_flag', '0')
-            ->unionall($use_card) // นำ query แรกมา union all
-            ->orderby('txndate', 'desc') // เรียงลำดับจากวันที่ล่าสุด
+            ->where('a.card_no', $staff_data->card_no)
+            ->where('a.void_flag', '0')
+            ->orderBy('a.txndate', 'desc')
             ->get();
-        $use_card_backup = db::table('sale_card_backup as d')
-            ->join('cardsub_info as c', 'd.card_no', '=', 'c.card_no')
+        $staff_card_detail = DB::table('cardsub_info')
+
             ->select(
-                'd.txndate',
-                'd.clientno as term_id',
-                db::raw("cast('cashier' as varchar(100)) as ref_name"),
-                db::raw("(d.sale_amt + d.adj_amt) as total")
+                'issuedate',
+                'lastusedate',
+                'lastadjustdate',
             )
-            ->where('d.card_no', $staff_data->card_no)
-            ->whereraw('d.txndate >= c.issuedate')
-            ->where('d.txntype', '<>', '02');
-        $use_card_staff_backup = db::table('sale_terminal_backup as t')
-            ->join('cardsub_info as c', 't.card_no', '=', 'c.card_no')
-            ->leftjoin('vendor_info as v', 't.vendor_id', '=', 'v.vendor_id')
-            ->select(
-                't.txndate',
-                't.vendor_id as term_id',
-                db::raw("cast(v.vendor_name as varchar(100)) as ref_name"),
-                't.amount as total'
-            )
-            ->where('t.card_no', $staff_data->card_no)
-            ->whereraw('t.txndate >= c.issuedate')
-            ->where('t.void_flag', '0')
-            ->unionall($use_card_backup) // นำ query แรกมา union all
-            ->orderby('txndate', 'desc') // เรียงลำดับจากวันที่ล่าสุด
+            ->where('card_no', $staff_data->card_no)
+            ->orderBy('issuedate', 'desc')
             ->get();
 
         // dd($use_card_staff_backup);
@@ -214,7 +195,7 @@ class StaffController extends Controller
         } else {
             $branch_id = DB::table('branch_info')->where('activeflag', 1)->where('branch_id', session('auth_user.branch_id'))->select('branch_id')->get();
         }
-        return view('pages.staff.edit', compact('staff_data', 'card_sub', 'use_card_staff_daily', 'use_card_staff_backup', 'lengthCard', 'branch_id'));
+        return view('pages.staff.edit', compact('staff_data', 'card_sub', 'use_card_staff', 'staff_card_detail', 'lengthCard', 'branch_id'));
     }
 
     public function update(StaffRequest $request, $id)

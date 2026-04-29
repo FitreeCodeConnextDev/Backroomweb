@@ -141,25 +141,24 @@
                     <label for="description1" class="label_input">
                         {{ __('vendor_product.vendorproduct_text1') }}
                     </label>
-                    <input type="text" id="description1" name="description1" class="input_text" required>
+                    <input type="text" id="description1" name="description1" class="input_text">
                 </div>
                 <div class="mb-2">
                     <label for="description2" class="label_input">
                         {{ __('vendor_product.vendorproduct_text2') }}
                     </label>
-                    <input type="text" id="description2" name="description2" class="input_text" required>
+                    <input type="text" id="description2" name="description2" class="input_text">
                 </div>
                 <div class="mb-2">
                     <label for="barcode" class="label_input"> {{ __('vendor_product.vendorproduct_barcode') }}
                     </label>
-                    <input type="text" id="barcode" name="barcode" class="input_text" required>
+                    <input type="text" id="barcode" name="barcode" class="input_text">
                 </div>
                 <div>
                     <label for="amount_check" class="label_input">
                         {{ __('vendor_product.vendorproduct_amoute_check') }}
                     </label>
-                    <input type="number" id="amount_check" name="amount_check" value="0" class="input_text"
-                        required>
+                    <input type="number" id="amount_check" name="amount_check" value="0" class="input_text">
                 </div>
                 <div class="mt-4">
                     <h3 class=" font-normal text-base"> {{ __('vendor_product.vendorproduct_use_card') }} </h3>
@@ -219,15 +218,25 @@
 </div>
 @push('scripts')
     <script type="module">
-        $(document).ready(function() {
-            // เมื่อคลิกปุ่มที่มี id="saveButton"
+        $(document).ready(function() { // Set up CSRF token for all Ajax requests
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            // Form submission handler
             $('#save_promo_print').on('click', function(e) {
-                e.preventDefault(); // หยุดการทำงานของ submit แบบปกติ
+                e.preventDefault();
 
-                // ใช้ FormData เพื่อจับข้อมูลจากฟอร์ม
+                // Validate all required fields before submission
+                if (!$('#insert_promo_print')[0].checkValidity()) {
+                    $('#insert_promo_print')[0].reportValidity();
+                    return;
+                }
+
+                // Get form data
                 var formData = new FormData($('#insert_promo_print')[0]);
-
-                // ส่งข้อมูลไปยัง Route ที่กำหนดโดยใช้ Ajax
                 $.ajax({
                     url: '{{ route('insert_promo_print') }}', // URL ที่จะส่งข้อมูลไป
                     type: 'POST', // ใช้ Method POST
@@ -245,7 +254,7 @@
                         });
 
                         // ปิด Modal
-                        $('#vedor_product_info').addClass('hidden');
+                        $('#vendor_product_promo_print_modal').addClass('hidden');
 
                         // หากต้องการรีเฟรชข้อมูล หรือทำอะไรก่อนปิดฟอร์ม
                         window.location.reload(); // รีโหลดหน้า (ถ้าต้องการ)
@@ -269,15 +278,15 @@
                             title: `{{ __('menu.save_is_failed') }}`, // Failure title
                             html: errorMessage, // Show validation error list
                             icon: 'error',
-                            confirmButtonText: `{{ __('menu.button.confirm') }}`
+                            confirmButtonText: '{{ __('menu.button.confirm') }}'
                         });
                     }
                 });
             });
 
             // ปิด Modal เมื่อคลิกปุ่มปิด
-            $('[data-modal-hide="vedor_product_info"]').on('click', function() {
-                $('#vedor_product_info').addClass('hidden');
+            $('[data-modal-hide="vendor_product_promo_print_modal"]').on('click', function() {
+                $('#vendor_product_promo_print_modal').addClass('hidden');
             });
         });
     </script>

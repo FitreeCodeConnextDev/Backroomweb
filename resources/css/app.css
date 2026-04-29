@@ -94,7 +94,7 @@ h1.text-title {
 }
 
 table.table-data {
-    @apply w-full text-sm text-left text-gray-500;
+    @apply w-full text-sm text-left text-gray-500 border rounded-xl border-gray-200;
 }
 
 thead {
@@ -210,6 +210,22 @@ button.submit_btn {
 
 button.cancel_btn {
     @apply text-white focus:outline-none bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center mt-2;
+}
+
+.grey_btn {
+    @apply px-3 py-2 text-sm font-medium text-center text-white bg-gray-700 rounded-lg hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300;
+}
+
+.grey_btn:hover {
+    @apply text-white bg-gray-800;
+}
+
+button.purple_btn {
+    @apply px-3 py-2 text-sm font-medium text-center text-white bg-purple-700 rounded-lg hover:bg-purple-800 focus:ring-4 focus:outline-none focus:ring-purple-300;
+}
+
+.purple_btn:hover {
+    @apply text-white bg-purple-900;
 }
 
 /* End Create Page */

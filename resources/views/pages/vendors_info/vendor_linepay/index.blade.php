@@ -24,14 +24,20 @@
         $day_use = '';
     }
 @endphp
-<section>
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-3">
-        <div class=" mt-3 border border-gray-200 rounded-lg p-5">
-            <h1 class=" text-xl font-semibold"> {{ __('vendor.vendor_linepay') }} </h1>
-            <form action="{{ route('vendor_linepay', ['id' => $vendor_id]) }}" class="tabs_form" method="post">
-                @csrf
-                @method('PUT')
-                <div>
+<section class="border border-gray-200 rounded-lg p-5">
+    <form action="{{ route('vendor_linepay', ['id' => $vendor_id]) }}" class="tabs_form" method="post">
+        @csrf
+        @method('PUT')
+
+        @if (!Route::is('vendor-page.show'))
+            <div class="mt-3 flex justify-start">
+                <button class="grey_btn saveButton">{{ __('menu.button.update') }}</button>
+            </div>
+        @endif
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-3">
+            <div class=" mt-3 border border-gray-200 rounded-lg p-5">
+                <h1 class=" text-xl font-semibold"> {{ __('vendor.vendor_linepay') }} </h1>
+                <div class="w-full h-auto">
                     <div class=" mt-4 grid grid-col grid-cols-2 gap-2">
                         <div>
                             <label for="start_date" class="label_input"> {{ __('vendor.start_date') }} </label>
@@ -150,13 +156,7 @@
                         </select>
                     </div>
                 </div>
-                @if (!Route::is('vendor-page.show'))
-                    <div class="mt-4">
-                        <button class="submit_btn saveButton">{{ __('menu.button.save') }}</button>
-                    </div>
-                @endif
-
-            </form>
+            </div>
         </div>
-    </div>
+    </form>
 </section>

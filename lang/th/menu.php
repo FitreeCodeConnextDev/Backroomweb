@@ -150,6 +150,7 @@ return [
         'button.back' => 'ย้อนกลับ',
         'button.search' => 'ค้นหา',
         'button.save' => 'บันทึก',
+        'button.update' => 'ปรับปรุง',
         'button.cancel' => 'ยกเลิก',
         'button.confirm' => 'ตกลง',
         'button.reset' => 'รีเซ็ต',
