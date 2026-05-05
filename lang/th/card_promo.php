@@ -1,4 +1,4 @@
-<?php 
+<?php
 return [
     'promo_code' => 'รหัส Promotion',
     'promo_desc' => 'รายละเอียด',
@@ -44,7 +44,15 @@ return [
     'choose_day' => 'เลือกวัน',
     'type_date' => 'กรอกวันที่หมดอายุ',
     'choose_emp' => 'เลือก',
-    
+
+    'use_sp' => 'ราคา Promotion',
+    'promo_price' => 'ราคา Promotion',
+    'promo_price_1' => 'ราคาพิเศษ 1',
+    'promo_price_2' => 'ราคาพิเศษ 2',
+    'promo_price_3' => 'ราคาพิเศษ 3',
+    'promo_price_4' => 'ราคาพิเศษ 4',
+    'promo_price_5' => 'ราคาพิเศษ 5',
+
     'promo_code_valid' => 'โปรดกรอกรหัส Promotion',
     'promo_code_max' => 'โปรดกรอกรหัส Promotion ไม่เกิน 10 อักขระ',
     'promo_code_unique' => 'รหัส Promotion ซ้ำ',
@@ -62,17 +70,17 @@ return [
     'adj_amt_valid' => 'โปรดกรอกจำนวนเงิน การเพิ่มมูลค่า',
     'adjget_amt_valid' => 'โปรดกรอกจำนวนเงินที่ได้รับ การเพิ่มมูลค่า',
     'adjget_point_valid' => 'โปรดกรอกจำนวนแต้มที่ได้รับ การเพิ่มมูลค่า',
-    'promo_topup_verify_required' =>'โปรดเลือกการเพิ่มมูลค่าเฉพาะตามเงื่อนไข',
-    'mon_day_required' =>'โปรดเลือกวันจันทร์',
-    'tue_day_required' =>'โปรดเลือกวันอังคาร',
-    'wed_day_required' =>'โปรดเลือกวันพุธ',
-    'thu_day_required' =>'โปรดเลือกวันพฤหัส',
-    'fri_day_required' =>'โปรดเลือกวันศุกร์',
-    'sat_day_required' =>'โปรดเลือกวันเสาร์',
-    'sun_day_required' =>'โปรดเลือกวันอาทิตย์',
-    'expire_day_required' =>'โปรดกรอกอายุบัตร',
-    'piority_required' =>'โปรดกรอกลำดับการตัดเงินบนบัตร',
-    'deposit_required' =>'โปรดกรอกค่ามัดจำ',
-    'expire_checkby_required' =>'โปรดเลือกวิธีการนับวัน',
+    'promo_topup_verify_required' => 'โปรดเลือกการเพิ่มมูลค่าเฉพาะตามเงื่อนไข',
+    'mon_day_required' => 'โปรดเลือกวันจันทร์',
+    'tue_day_required' => 'โปรดเลือกวันอังคาร',
+    'wed_day_required' => 'โปรดเลือกวันพุธ',
+    'thu_day_required' => 'โปรดเลือกวันพฤหัส',
+    'fri_day_required' => 'โปรดเลือกวันศุกร์',
+    'sat_day_required' => 'โปรดเลือกวันเสาร์',
+    'sun_day_required' => 'โปรดเลือกวันอาทิตย์',
+    'expire_day_required' => 'โปรดกรอกอายุบัตร',
+    'piority_required' => 'โปรดกรอกลำดับการตัดเงินบนบัตร',
+    'deposit_required' => 'โปรดกรอกค่ามัดจำ',
+    'expire_checkby_required' => 'โปรดเลือกวิธีการนับวัน',
     ''
 ];

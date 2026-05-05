@@ -47,22 +47,6 @@
                 <input type="date" id="end_date" name="end_date" class="input_text"
                     value="{{ date('Y-m-d', strtotime($card_promo->end_date)) }}" />
             </div>
-            {{-- <div>
-                <label for="countries" class="label_input ">ใช้ราคา</label>
-                <select id="countries"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full">
-                    <option selected>ราคาโปรโมชั่น</option>
-                    <option value="US">ราคาพิเศษ #1</option>
-                </select>
-            </div>
-            <div>
-                <label for="countries" class="label_input ">แสดงข้อมูล KIOSK </label>
-                <select id="countries"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full">
-                    <option value="" selected>ไม่แสดง</option>
-                    <option value="#">แสดง</option>
-                </select>
-            </div> --}}
             <div>
                 <label for="start_time" class=" label_input">{{ __('card_promo.start_time') }}</label>
                 <div class="relative">
@@ -296,6 +280,23 @@
                         <input type="date" id="expire_date"
                             value="{{ date('Y-m-d', strtotime($card_promo_expire->expire_date)) }}" name="expire_date"
                             class="input_text" />
+                    </div>
+                    <div>
+                        <label for="use_sp" class=" label_input"> {{ __('card_promo.use_sp') }} </label>
+                        <select name="use_sp" class="input_text" id="use_sp_input">
+                            <option value="0" @if ($card_promo_expire->use_sp == 0) selected @endif>
+                                {{ __('card_promo.promo_price') }} </option>
+                            <option value="1" @if ($card_promo_expire->use_sp == 1) selected @endif>
+                                {{ __('card_promo.promo_price_1') }}</option>
+                            <option value="2" @if ($card_promo_expire->use_sp == 2) selected @endif>
+                                {{ __('card_promo.promo_price_2') }}</option>
+                            <option value="3" @if ($card_promo_expire->use_sp == 3) selected @endif>
+                                {{ __('card_promo.promo_price_3') }}</option>
+                            <option value="4" @if ($card_promo_expire->use_sp == 4) selected @endif>
+                                {{ __('card_promo.promo_price_4') }}</option>
+                            <option value="5" @if ($card_promo_expire->use_sp == 5) selected @endif>
+                                {{ __('card_promo.promo_price_5') }}</option>
+                        </select>
                     </div>
                 </div>
             </div>

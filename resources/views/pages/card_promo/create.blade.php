@@ -353,6 +353,17 @@
                         <label for="expire_date" class=" label_input"> {{ __('card_promo.type_date') }} </label>
                         <input type="date" id="expire_date" value=" " name="expire_date" class="input_text" />
                     </div>
+                    <div>
+                        <label for="use_sp" class=" label_input"> {{ __('card_promo.use_sp') }} </label>
+                        <select name="use_sp" class="input_text" id="use_sp_input">
+                            <option value="0" selected>{{ __('card_promo.promo_price') }} </option>
+                            <option value="1">{{ __('card_promo.promo_price_1') }}</option>
+                            <option value="2">{{ __('card_promo.promo_price_2') }}</option>
+                            <option value="3">{{ __('card_promo.promo_price_3') }}</option>
+                            <option value="4">{{ __('card_promo.promo_price_4') }}</option>
+                            <option value="5">{{ __('card_promo.promo_price_5') }}</option>
+                        </select>
+                    </div>
                 </div>
             </div>
         </div>

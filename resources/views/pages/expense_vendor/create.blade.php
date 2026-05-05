@@ -1,19 +1,19 @@
 @extends('layouts.createpage')
 @section('title_page')
-    {{ __('expense_vendor.expense_vendor_title') }}
+    {{ __('menu.expense') }}
 @endsection
 @section('breadcrumb-index')
     <a href="{{ route('expense_vendor.index') }}" class="first_bc_a">
-        {{ __('expense_vendor.expense_vendor_title') }}
+        {{ __('menu.expense') }}
     </a>
 @endsection
 @section('breadcrumb-create-page')
     <a href="#" class="second_bc_a">
-        {{ __('expense_vendor.expense_vendor_add') }}
+        {{ __('menu.expense_add') }}
     </a>
 @endsection
 @section('page_title')
-    {{ __('expense_vendor.expense_vendor_add') }}
+    {{ __('menu.expense_add') }}
 @endsection
 @php
     $maxExpCode = DB::table('expensevendor_info')->max('exp_code');

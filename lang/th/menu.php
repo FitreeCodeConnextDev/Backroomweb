@@ -129,6 +129,12 @@ return [
         'stock_edit' => 'แก้ไขสินค้าใน Stock',
         'stock_delete' => 'ลบสินค้าใน Stock',
 
+        'expense' => 'ข้อมูลค่าใช้จ่าย',
+        'expense_add' => 'เพิ่มค่าใช้จ่าย',
+        'expense_edit' => 'แก้ไขค่าใช้จ่าย',
+        'expense_delete' => 'ลบค่าใช้จ่าย',
+
+
         'expense_vendor_title' => 'บันทึกค่าใช้จ่ายร้านค้า',
         'expense_vendor_add' => 'เพิ่มค่าใช้จ่ายร้านค้า',
         'expense_vendor_edit' => 'แก้ไขค่าใช้จ่ายร้านค้า',

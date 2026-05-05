@@ -8,8 +8,11 @@
         ->orderBy('product_seq', 'asc')
         ->get();
     $vendorpromo = DB::table('vendorpromotionprint_info')
-        ->join('product_info', 'vendorpromotionprint_info.product_id', '=', 'product_info.product_id')
-        ->where('vendor_id', $vendor_id)
+        ->leftJoin('product_info', 'vendorpromotionprint_info.product_id', '=', 'product_info.product_id')
+        ->where('vendorpromotionprint_info.vendor_id', $vendor_id)
+        ->where(function ($query) {
+            $query->whereNotNull('product_info.product_id')->orWhere('vendorpromotionprint_info.product_id', '*');
+        })
         ->when($search, function ($query) use ($search) {
             $query->where(function ($subQuery) use ($search) {
                 $subQuery
@@ -59,7 +62,7 @@
                 <tbody>
                     @foreach ($vendorpromo as $vpr)
                         <tr>
-                            <td> {{ $vpr->product_desc }} </td>
+                            <td> {{ $vpr->product_desc ?? __('vendor_product.non_select_product') }} </td>
                             <td> {{ date('d/m/Y', strtotime($vpr->start_date)) }} </td>
                             <td> {{ date('d/m/Y', strtotime($vpr->valid_date)) }} </td>
                             <td> {{ $vpr->description1 }} </td>
@@ -119,6 +122,7 @@
                         {{-- <input type="text" id="product_id" name="product_id" class="input_text" > --}}
                         <select class="input_text" name="product_id" id="product_id_2">
                             <option selected disabled> {{ __('vendor_product.select_products') }} </option>
+                            <option value="*">{{ __('vendor_product.non_select_product') }}</option>
                             @foreach ($vendor_product as $product)
                                 <option value="{{ $product->product_id }}">({{ $product->product_id }})
                                     {{ $product->product_desc }}</option>

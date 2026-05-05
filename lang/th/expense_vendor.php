@@ -29,7 +29,7 @@ return [
 
     'expense_table_title' => 'บันทึกค่าใช้จ่ายร้านค้า',
     'vendor_name_desc' => 'ชื่อร้านค้า',
-    'exp_code_desc' => 'รหัสค่าใช้จ่าย',    
+    'exp_code_desc' => 'รหัสค่าใช้จ่าย',
     'start_no_desc' => 'เลขที่เริ่มต้น',
     'end_no_desc' => 'เลขที่สิ้นสุด',
     'price_rate_desc' => 'ราคาต่อหน่วย',

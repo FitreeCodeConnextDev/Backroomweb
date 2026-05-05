@@ -297,7 +297,7 @@
                         <div class=" bg-white border-b border-gray-200 ">
                             <a href="{{ route('expense_vendor.index') }}"
                                 class="flex items-center w-full p-2 mb-2 text-gray-900 transition duration-75 hover:bg-gray-100 rounded-lg pl-5 group {{ request()->routeIs('expense_vendor*') ? 'active_menu' : 'text-gray-500' }}">
-                                <span class="ms-3"> {{ __('expense_vendor.expense_vendor_title') }} </span>
+                                <span class="ms-3"> {{ __('menu.expense') }} </span>
                             </a>
                         </div>
                     </li>

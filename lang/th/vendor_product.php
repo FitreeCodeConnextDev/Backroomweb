@@ -165,6 +165,7 @@ return [
     'non_unit' => 'ไม่มีหน่วย',
     'ten_rows' => '10 แถว',
     'all_rows' => 'ทั้งหมด',
+    'non_select_product' => 'ไม่ระบุสินค้า',
 
     'choose_vendor' => 'เลือกร้านค้า',
     'clone_vendor' => 'ร้านค้า ต้นทาง',

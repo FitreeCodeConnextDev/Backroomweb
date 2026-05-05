@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\PermissionHelper;
 use App\Http\Requests\CardPromotionRequest;
+use App\Models\PromoCardModel;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -80,6 +81,7 @@ class PromotionCardController extends Controller
             'priority' => 'required',
             'deposit' => 'required',
             'expire_checkby' => 'required',
+            'use_sp' => 'required',
 
         ], [
             'promo_code.required' => __('card_promo.promo_code_valid'),
@@ -111,6 +113,7 @@ class PromotionCardController extends Controller
             'piority' => __('card_promo.piority_required'),
             'deposit' => __('card_promo.deposit_required'),
             'expire_checkby' => __('card_promo.expire_checkby_required'),
+            'use_sp' => __('card_promo.use_sp_required'),
 
         ]);
 
@@ -138,43 +141,45 @@ class PromotionCardController extends Controller
             'sun_day' => $validate_data['sun_day'],
         ];
         $days_use = implode($days_split);
+        try {
+            $promotion_info = new PromoCardModel();
+            $promotion_info->promo_code = $validate_data['promo_code'];
+            $promotion_info->promo_desc = $validate_data['promo_desc'];
+            $promotion_info->start_date = $start_date;
+            $promotion_info->start_time = $start_datetime;
+            $promotion_info->end_date = $end_date;
+            $promotion_info->end_time = $end_datetime;
+            $promotion_info->buy_amt = $validate_data['buy_amt'];
+            $promotion_info->get_amt = $validate_data['get_amt'];
+            $promotion_info->get_point = $validate_data['get_point'];
+            $promotion_info->adj_amt = $validate_data['adj_amt'];
+            $promotion_info->adjget_amt = $validate_data['adjget_amt'];
+            $promotion_info->adjget_point = $validate_data['adjget_point'];
+            $promotion_info->activeflag = 1;
+            $promotion_info->promo_seq = $validate_data['promo_seq'];
+            $promotion_info->promo_topup_verify = $validate_data['promo_topup_verify'];
+            $promotion_info->expense_owner = $validate_data['expense_owner'];
+            $promotion_info->req_refno = $validate_data['req_refno'];
+            $promotion_info->day_use = $days_use;
+            $promotion_info->save();
+            $expire_opt = [
+                'expire_weekday' => $request->input('expire_weekday') ?? null,
+                'expire_date' => $request->input('expire_date') ?? null,
+            ];
 
-        // dd($validate_data, $start_datetime, $end_datetime, $days_use);
+            DB::table('promotionexpire_info')
+                ->insert([
+                    'promo_code' => $validate_data['promo_code'],
+                    'expire_day' => $validate_data['expire_day'],
+                    'priority' => $validate_data['priority'],
+                    'deposit' => $validate_data['deposit'],
+                    'expire_checkby' => $validate_data['expire_checkby'],
+                    'expire_weekday' => $expire_opt['expire_weekday'],
+                    'expire_date' => $expire_opt['expire_date'],
+                    'use_sp' => $validate_data['use_sp'],
+                ]);
 
-        $card_promo_insert = DB::table('promotion_info')
-            ->insert([
-                'promo_code' => $validate_data['promo_code'],
-                'promo_desc' => $validate_data['promo_desc'],
-                'promo_seq' => $validate_data['promo_seq'],
-                'start_date' => $start_date,
-                'start_time' => $start_datetime,
-                'end_date' => $end_date,
-                'end_time' => $end_datetime,
-                'expense_owner' => $validate_data['expense_owner'],
-                'req_refno' => $validate_data['req_refno'],
-                'buy_amt' => $validate_data['buy_amt'],
-                'get_amt' => $validate_data['get_amt'],
-                'get_point' => $validate_data['get_point'],
-                'adj_amt' => $validate_data['adj_amt'],
-                'adjget_amt' => $validate_data['adjget_amt'],
-                'adjget_point' => $validate_data['adjget_point'],
-                'promo_topup_verify' => $validate_data['promo_topup_verify'],
-                'day_use' => $days_use,
-                'activeflag' => 1
-            ]);
-        $expire_indsert = DB::table('promotionexpire_info')
-            ->insert([
-                'promo_code' => $validate_data['promo_code'],
-                'expire_day' => $validate_data['expire_day'],
-                'priority' => $validate_data['priority'],
-                'deposit' => $validate_data['deposit'],
-                'expire_checkby' => $validate_data['expire_checkby'],
-                'expire_weekday' => $expire_opt['expire_weekday'],
-                'expire_date' => $expire_opt['expire_date'],
-            ]);
-
-        if (isset($card_promo_insert, $expire_indsert)) {
-            Log::channel('activity')->notice(session('auth_user.user_id') . 'Created new card promotion: ' . $validate_data['promo_code'], [
+            Log::channel('activity')->info(session('auth_user.user_id') . 'Card promotion created successfully: ' . $validate_data['promo_code'], [
                 'promo_code' => $validate_data['promo_code'],
                 'promo_desc' => $validate_data['promo_desc'],
                 'action' => 'create',
@@ -186,11 +191,12 @@ class PromotionCardController extends Controller
                 ->option('timeout', 3000)
                 ->success(__('menu.save_is_success'));
             return redirect()->route('card-promotion.index');
-        } else {
+        } catch (\Exception $e) {
             Log::channel('activity')->error(session('auth_user.user_id') . 'Failed to create card promotion: ' . $validate_data['promo_code'], [
                 'promo_code' => $validate_data['promo_code'],
                 'promo_desc' => $validate_data['promo_desc'],
                 'action' => 'create',
+                'error' => $e->getMessage(),
                 'Created At' => Carbon::now()->toDateTimeString(),
                 'Created By' => session('auth_user.user_id'),
             ]);
@@ -278,6 +284,7 @@ class PromotionCardController extends Controller
             'priority' => 'required',
             'deposit' => 'required',
             'expire_checkby' => 'required',
+            'use_sp' => 'required',
 
         ], [
             'promo_code.required' => __('card_promo.promo_code_valid'),
@@ -309,6 +316,7 @@ class PromotionCardController extends Controller
             'piority' => __('card_promo.piority_required'),
             'deposit' => __('card_promo.deposit_required'),
             'expire_checkby' => __('card_promo.expire_checkby_required'),
+            'use_sp' => __('card_promo.use_sp_required'),
 
         ]);
 
@@ -324,50 +332,45 @@ class PromotionCardController extends Controller
 
         $days_use = implode($days_split);
 
-        $start_date = Carbon::parse($validate_data['start_date'])->format('Y-m-d');
-        $end_date = Carbon::parse($validate_data['end_date'])->format('Y-m-d');
 
-        // Combine the date with the time and convert to datetime format (Y-m-d H:i:s)
-        $start_datetime = Carbon::parse($start_date . ' ' . $validate_data['start_time'])->format('Y-m-d H:i:s');
-        $end_datetime = Carbon::parse($end_date . ' ' . $validate_data['end_time'])->format('Y-m-d H:i:s');
-        $card_promo_update = DB::table('promotion_info')
-            ->where('promo_code', '=', $id)
-            ->update([
-                'promo_desc' => $validate_data['promo_desc'],
-                'promo_seq' => $validate_data['promo_seq'],
-                'start_date' => $start_date,
-                'start_time' => $start_datetime,
-                'end_date' => $end_date,
-                'end_time' => $end_datetime,
-                'expense_owner' => $validate_data['expense_owner'],
-                'req_refno' => $validate_data['req_refno'],
-                'buy_amt' => $validate_data['buy_amt'],
-                'get_amt' => $validate_data['get_amt'],
-                'get_point' => $validate_data['get_point'],
-                'adj_amt' => $validate_data['adj_amt'],
-                'adjget_amt' => $validate_data['adjget_amt'],
-                'adjget_point' => $validate_data['adjget_point'],
-                'promo_topup_verify' => $validate_data['promo_topup_verify'],
-                'day_use' => $days_use,
-            ]);
+        try {
 
-        $expire_opt = [
-            'expire_weekday' => $request->input('expire_weekday') ?? null,
-            'expire_date' => $request->input('expire_date') ?? null,
-        ];
+            $promotion_info = PromoCardModel::find($id);
+            $promotion_info->promo_desc = $validate_data['promo_desc'];
+            $promotion_info->start_date = Carbon::parse($validate_data['start_date'])->format('Y-m-d H:i:s');
+            $promotion_info->start_time = Carbon::parse($validate_data['start_date']    . ' ' . $validate_data['start_time'])->format('Y-m-d H:i:s');
+            $promotion_info->end_date = Carbon::parse($validate_data['end_date'])->format('Y-m-d H:i:s');
+            $promotion_info->end_time = Carbon::parse($validate_data['end_date'] . ' ' . $validate_data['end_time'])->format('Y-m-d H:i:s');
+            $promotion_info->buy_amt = $validate_data['buy_amt'];
+            $promotion_info->get_amt = $validate_data['get_amt'];
+            $promotion_info->get_point = $validate_data['get_point'];
+            $promotion_info->adj_amt = $validate_data['adj_amt'];
+            $promotion_info->adjget_amt = $validate_data['adjget_amt'];
+            $promotion_info->adjget_point = $validate_data['adjget_point'];
+            $promotion_info->promo_seq = $validate_data['promo_seq'];
+            $promotion_info->promo_topup_verify = $validate_data['promo_topup_verify'];
+            $promotion_info->expense_owner = $validate_data['expense_owner'];
+            $promotion_info->req_refno = $validate_data['req_refno'];
+            $promotion_info->day_use = $days_use;
 
-        $card_expire_update = DB::table('promotionexpire_info')
-            ->where('promo_code', '=', $id)
-            ->update([
-                'expire_day' => $validate_data['expire_day'],
-                'priority' => $validate_data['priority'],
-                'deposit' => $validate_data['deposit'],
-                'expire_checkby' => $validate_data['expire_checkby'],
-                'expire_weekday' => $expire_opt['expire_weekday'],
-                'expire_date' => $expire_opt['expire_date'],
-            ]);
 
-        if (isset($card_promo_update, $card_expire_update)) {
+            $expire_opt = [
+                'expire_weekday' => $request->input('expire_weekday') ?? null,
+                'expire_date' => $request->input('expire_date') ?? null,
+            ];
+
+            DB::table('promotionexpire_info')
+                ->where('promo_code', '=', $id)
+                ->update([
+                    'expire_day' => $validate_data['expire_day'],
+                    'priority' => $validate_data['priority'],
+                    'deposit' => $validate_data['deposit'],
+                    'expire_checkby' => $validate_data['expire_checkby'],
+                    'expire_weekday' => $expire_opt['expire_weekday'],
+                    'expire_date' => $expire_opt['expire_date'],
+                    'use_sp' => $validate_data['use_sp'],
+                ]);
+            $promotion_info->save();
             Log::channel('activity')->notice(session('auth_user.user_id') . 'Updated card promotion: ' . $id, [
                 'promo_code' => $id,
                 'promo_desc' => $validate_data['promo_desc'],
@@ -381,12 +384,10 @@ class PromotionCardController extends Controller
                 ->option('timeout', 3000)
                 ->success(__('menu.edit_is_success'));
             return redirect()->route('card-promotion.index');
-        } else {
+        } catch (\Exception $e) {
             Log::channel('activity')->error(session('auth_user.user_id') . 'Failed to update card promotion: ' . $id, [
                 'promo_code' => $id,
-                'promo_desc' => $validate_data['promo_desc'],
-                'action' => 'update',
-                'update detail' => $validate_data,
+                'error' => $e->getMessage(),
                 'Updated At' => Carbon::now()->toDateTimeString(),
                 'Updated By' => session('auth_user.user_id'),
             ]);
@@ -394,7 +395,7 @@ class PromotionCardController extends Controller
                 ->option('position', 'bottom-right')
                 ->option('timeout', 3000)
                 ->error(__('menu.edit_is_failed'));
-            return redirect()->route('card-promotion.edit');
+            return redirect()->route('card-promotion.edit', $id);
         }
     }
 
@@ -411,15 +412,10 @@ class PromotionCardController extends Controller
                 ->error(__('menu.is_permission_denied'));
             return redirect()->back();
         }
-        $card_promo_delete = DB::table('promotion_info')
-            ->where('promo_code', '=', $id)
-            ->update([
-                'activeflag' => 0,
-            ]);
-        // $card_promo_expire_delete = DB::table('promotionexpire_info')
-        // ->where('promo_code', '=', $id)
-        // ->delete();
-        if (isset($card_promo_delete)) {
+        try {
+            $promotion_info = PromoCardModel::find($id);
+            $promotion_info->activeflag = 0;
+            $promotion_info->save();
             Log::channel('activity')->notice(session('auth_user.user_id') . 'Deleted card promotion: ' . $id, [
                 'promo_code' => $id,
                 'action' => 'delete',
@@ -431,7 +427,7 @@ class PromotionCardController extends Controller
                 ->option('timeout', 3000)
                 ->success(__('menu.delete_is_success'));
             return redirect()->route('card-promotion.index');
-        } else {
+        } catch (\Exception $e) {
             Log::channel('activity')->error(session('auth_user.user_id') . 'Failed to delete card promotion: ' . $id, [
                 'promo_code' => $id,
                 'action' => 'delete',

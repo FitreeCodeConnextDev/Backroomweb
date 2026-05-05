@@ -1,10 +1,10 @@
 @extends('layouts.indexpage')
 
 @section('title_page')
-    {{ __('expense_vendor.expense_vendor_title') }}
+    {{ __('menu.expense') }}
 @endsection
 @section('index-title')
-    {{ __('expense_vendor.expense_vendor_title') }}
+    {{ __('menu.expense') }}
 @endsection
 @section('add-button')
     <div>
