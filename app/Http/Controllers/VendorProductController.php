@@ -984,4 +984,74 @@ class VendorProductController extends Controller
             return back()->with('clone_error',  __('vendor_product.clone_failed_product_exists'));
         }
     }
+
+    public function clone_product_detail(Request $request)
+    {
+        $product_vendor_id = $request->input('product_vendor_id');
+        $clone_vendor_id = $request->input('clone_vendor_id');
+        if ($clone_vendor_id == null) {
+
+            return back()->with('clone_error', __('vendor_product.clone_failed_no_target_vendor'));
+        }
+
+        try {
+            $product_detail_to_clone = DB::table('productdetail_info')
+                ->where('vendor_id', $product_vendor_id)
+                ->get();
+
+            if ($product_detail_to_clone->isEmpty()) {
+                return back()->with('clone_error', __('vendor_product.clone_failed_no_products'));
+            }
+            $existing_product_detail_ids = DB::table('productdetail_info')
+                ->where('vendor_id', $clone_vendor_id)
+                ->pluck('product_id')
+                ->toArray();
+
+            DB::transaction(function () use ($product_detail_to_clone, $clone_vendor_id, $existing_product_detail_ids) {
+                foreach ($product_detail_to_clone as $product) {
+
+                    // 4. เช็คเรื่องซ้ำ: ถ้าไม่มี product_id นี้ในรายการสินค้าที่ active ของปลายทาง ให้ทำการ Insert
+                    if (!in_array($product->product_id, $existing_product_detail_ids)) {
+                        $new_product = (array) $product;
+
+                        // อัปเดตข้อมูลเป็นของ Vendor ใหม่
+                        $new_product['vendor_id'] = $clone_vendor_id;
+
+                        DB::table('productdetail_info')->insert($new_product);
+                    } else {
+                        Log::channel('activity')->warning(session('auth_user.user_id') . ' attempted to clone product that already exists in target vendor: ' . $product->product_id, [
+                            'source_vendor_id' => $product->vendor_id,
+                            'target_vendor_id' => $clone_vendor_id,
+                            'product_id' => $product->product_id,
+                            'action' => 'clone_skipped',
+                            'cloned_at' => now()->toDateTimeString(),
+                            'cloned_by' => session('auth_user.user_id'),
+                        ]);
+                        return back()->with('clone_error', __('vendor_product.clone_productdetail_failed'));
+                    }
+                }
+            });
+            Log::channel('activity')->notice(session('auth_user.user_id') . ' cloned productdetail from vendor ' . $product_vendor_id . ' to vendor ' . $clone_vendor_id, [
+                'source_vendor_id' => $product_vendor_id,
+                'target_vendor_id' => $clone_vendor_id,
+                'action' => 'cloned',
+                'cloned_at' => now()->toDateTimeString(),
+                'cloned_by' => session('auth_user.user_id'),
+            ]);
+
+            return back()->with('clone_success', __('vendor_product.clone_productdetail_success'));
+        } catch (\Exception $e) {
+
+            Log::channel('activity')->error(session('auth_user.user_id') . ' failed to clone products from vendor ' . $product_vendor_id . ' to vendor ' . $clone_vendor_id, [
+                'source_vendor_id' => $product_vendor_id,
+                'target_vendor_id' => $clone_vendor_id,
+                'action' => 'clone_error',
+                'error_message' => $e->getMessage(),
+                'cloned_at' => now()->toDateTimeString(),
+                'cloned_by' => session('auth_user.user_id'),
+            ]);
+
+            return back()->with('clone_error',  __('vendor_product.clone_productdetail_failed'));
+        }
+    }
 }

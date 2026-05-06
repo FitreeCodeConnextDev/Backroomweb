@@ -177,6 +177,11 @@ return [
     'clone_failed_product_exists' => 'โคลนสินค้าล้มเหลว หรือร้านค้าเป้าหมายมีสินค้าบางรายการที่ตรงกับร้านค้าเดิมอยู่แล้ว',
     'clone_failed_no_target_vendor' => 'โปรดเลือก Vendor ปลายทางสำหรับการโคลนสินค้า',
 
+    'clone_productdetail' => 'โคลนส่วนประกอบสินค้า',
+    'clone_productdetail_success' => 'โคลนส่วนประกอบสินค้าสำเร็จ',
+    'clone_productdetail_failed' => 'โคลนส่วนประกอบสินค้าไม่สำเร็จ',
+    'clone_failed_no_productdetail' => 'ไม่พบรายการส่วนประกอบสินค้า',
+
 
 
 ];

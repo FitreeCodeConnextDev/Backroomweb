@@ -28,14 +28,26 @@
         })
         ->paginate(10)
         ->appends(['productdetail_search' => $search]);
+    $vendor_clone_id = DB::table('vendor_info')
+        ->where('vendor_id', '!=', $vendor_id)
+        ->where('activeflag', '=', 1)
+        ->select('vendor_id', 'vendor_name')
+        ->orderBy('vendor_id', 'asc')
+        ->get();
 @endphp
 <div class="grid grid-cols-1 gap-3">
     @if (!Route::is('vendor-page.show'))
-        <div class=" flex justify-self-end">
+        <div class=" flex justify-self-end space-x-2">
             <button type="button" data-modal-target="vendor_product_detail" data-modal-toggle="vendor_product_detail"
                 class="modal_button_add" type="button">
                 {{ __('menu.button.add') }}
             </button>
+            <div>
+                <button data-modal-target="clone_product_detail" data-modal-toggle="clone_product_detail"
+                    class="modal_button_clone" type="button">
+                    Clone
+                </button>
+            </div>
         </div>
     @endif
     <div class="overflow-x-auto">
@@ -171,6 +183,53 @@
                         </button>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+    <div id="clone_product_detail" tabindex="-1" aria-hidden="true"
+        class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+        <div class="relative p-4 w-full max-w-md max-h-full">
+            <!-- Modal content -->
+            <div class="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
+                <!-- Modal header -->
+                <div
+                    class="flex items-center justify-between p-4 md:p-5 border-b rounded dark:border-gray-600 border-gray-200">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                        {{ __('vendor_product.clone_productdetail') }}
+                    </h3>
+                    <button type="button"
+                        class="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                        data-modal-hide="clone_product_detail">
+                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 14 14">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                        </svg>
+                        <span class="sr-only">Close modal</span>
+                    </button>
+                </div>
+                <!-- Modal body -->
+                <div class="p-4 md:p-5">
+                    <form class="space-y-4" action="{{ route('vendor_product_clone_product_detail') }}"
+                        method="POST">
+                        @csrf
+                        <div>
+                            <input type="hidden" name="product_vendor_id" id="product_vendor_id"
+                                value="{{ $vendor_id }}">
+                            <label for="clone_vendor_id" class="label_input">
+                                {{ __('vendor_product.clone_vendor') }}</label>
+                            <select name="clone_vendor_id" id="clone_vendor_id" class="input_text">
+                                <option value=" ">{{ __('vendor_product.choose_vendor') }}</option>
+                                @foreach ($vendor_clone_id as $vendorclone)
+                                    <option value="{{ $vendorclone->vendor_id }}">
+                                        {{ $vendorclone->vendor_name }} ({{ $vendorclone->vendor_id }})
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <button type="submit" class="submit_btn">{{ __('menu.button.confirm') }}</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

@@ -88,6 +88,7 @@ Route::middleware(['auth_user'])->group(function () {
         Route::get('/vendor-page/{vendor_id}', [VendorProductController::class, 'vendor_product_info_search_show'])->name('vendor_product_info_search_show');
 
         Route::post('/vendor-product-cloneproduct', [VendorProductController::class, 'clone_product'])->name('vendor_product_clone_product');
+        Route::post('/vendor-product-cloneproduct-detail', [VendorProductController::class, 'clone_product_detail'])->name('vendor_product_clone_product_detail');
 
 
         Route::resource('/member', MemberController::class);
