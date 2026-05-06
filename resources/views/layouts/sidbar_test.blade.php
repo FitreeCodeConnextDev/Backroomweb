@@ -454,22 +454,12 @@
                             </div>
                         </li>
                     @endif
-                    @if (App\Helpers\PermissionHelper::checkUserPermission('back', null, 22))
+                    @if (App\Helpers\PermissionHelper::checkUserPermission('back', null, 23))
                         <li>
                             <div class=" bg-white border-b border-gray-200 ">
                                 <a href="{{ route('report.item') }}"
                                     class="flex items-center w-full p-2 mb-2 text-gray-900 transition duration-75 hover:bg-gray-100 rounded-lg pl-5 group {{ request()->routeIs('report.item') ? 'active_menu' : 'text-gray-500' }}">
                                     <span class="ms-3"> {{ __('report.item_report') }} </span>
-                                </a>
-                            </div>
-                        </li>
-                    @endif
-                    @if (App\Helpers\PermissionHelper::checkUserPermission('back', null, 23))
-                        <li>
-                            <div class=" bg-white border-b border-gray-200 ">
-                                <a href="{{ route('report.payment') }}"
-                                    class="flex items-center w-full p-2 mb-2 text-gray-900 transition duration-75 hover:bg-gray-100 rounded-lg pl-5 group {{ request()->routeIs('report.payment') ? 'active_menu' : 'text-gray-500' }}">
-                                    <span class="ms-3"> {{ __('report.payment_type_report') }} </span>
                                 </a>
                             </div>
                         </li>
