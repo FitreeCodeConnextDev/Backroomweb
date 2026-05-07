@@ -419,8 +419,9 @@
 
         {{-- หมวดหมู่: Report --}}
 
-        @php $isReportActive = request()->routeIs('report.*'); @endphp
+
         <ul class="space-y-2 font-medium">
+            @php $isReportActive = request()->routeIs('report.*'); @endphp
             <li>
                 <button type="button"
                     class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 {{ $isReportActive ? 'bg-gray-50' : '' }}"
@@ -479,9 +480,8 @@
             </li>
         </ul>
 
-
         <div class=" mt-3 "></div>
-        @php $isOrtherActive = request()->routeIs(['other.*' , 'stock-info.*']); @endphp
+        @php $isOrtherActive = request()->routeIs(['other.*' , 'stock-info.*', 'restore_index', 'clear_index']); @endphp
         <ul class="space-y-2 font-medium">
             <li>
                 <button type="button"
@@ -515,6 +515,30 @@
                                 </a>
                             </div>
                         </li>
+                    @endif
+                    @if (App\Helpers\PermissionHelper::checkUserPermission('back', null, 41))
+                        <div>
+                            <li>
+                                <div class=" bg-white border-b border-gray-200 ">
+                                    <a href="{{ route('restore_index') }}"
+                                        class="flex items-center w-full p-2 mb-2 text-gray-900 transition duration-75 hover:bg-gray-100 rounded-lg pl-5 group {{ request()->routeIs('restore_index') ? 'active_menu' : 'text-gray-500' }}">
+                                        <span class="ms-3"> {{ __('menu.restore') }} </span>
+                                    </a>
+                                </div>
+                            </li>
+                        </div>
+                    @endif
+                    @if (App\Helpers\PermissionHelper::checkUserPermission('back', null, 42))
+                        <div>
+                            <li>
+                                <div class=" bg-white border-b border-gray-200 ">
+                                    <a href="{{ route('clear_index') }}"
+                                        class="flex items-center w-full p-2 mb-2 text-gray-900 transition duration-75 hover:bg-gray-100 rounded-lg pl-5 group {{ request()->routeIs('clear_index') ? 'active_menu' : 'text-gray-500' }}">
+                                        <span class="ms-3"> {{ __('menu.clear_data') }} </span>
+                                    </a>
+                                </div>
+                            </li>
+                        </div>
                     @endif
                 </ul>
             </li>

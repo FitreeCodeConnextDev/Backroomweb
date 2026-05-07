@@ -177,6 +177,10 @@ class PromotionCardController extends Controller
                     'expire_weekday' => $expire_opt['expire_weekday'],
                     'expire_date' => $expire_opt['expire_date'],
                     'use_sp' => $validate_data['use_sp'],
+                    'add_point' => 'N',
+                    'redeem_point' => 0,
+                    'gprate_back' => 0,
+                    'change_gp' => 0
                 ]);
 
             Log::channel('activity')->info(session('auth_user.user_id') . 'Card promotion created successfully: ' . $validate_data['promo_code'], [

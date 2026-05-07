@@ -10,7 +10,7 @@
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('logo/CodeConnextLogo.png') }}">
 
 </head>
-@include('layouts.sidbar_test')
+@include('layouts.sidebar')
 
 <body>
 

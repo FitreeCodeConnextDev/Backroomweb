@@ -199,5 +199,23 @@
                 {{ __('users.back_41') }} </label>
         </div>
         {{-- Vendor Expense --}}
+        {{-- Restore --}}
+        <div class="flex items-center mb-6">
+            <input type="hidden" name="back_42" id="default-checkbox" value="0">
+            <input id="back_42" name="back_42" type="checkbox" value="1"
+                @if (isset($back_permiss_edit) && $back_permiss_edit[41] == 1) checked @endif class="checkbox_input">
+            <label for="back_42" class="label_checkbox">
+                {{ __('users.back_42') }} </label>
+        </div>
+        {{-- Restore --}}
+        {{-- Clear --}}
+        <div class="flex items-center mb-6">
+            <input type="hidden" name="back_43" id="default-checkbox" value="0">
+            <input id="back_43" name="back_43" type="checkbox" value="1"
+                @if (isset($back_permiss_edit) && $back_permiss_edit[42] == 1) checked @endif class="checkbox_input">
+            <label for="back_43" class="label_checkbox">
+                {{ __('users.back_43') }} </label>
+        </div>
+        {{-- Clear --}}
     </div>
 </div>

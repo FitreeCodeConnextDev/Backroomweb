@@ -10,7 +10,7 @@
 </head>
 
 <body>
-    @include('layouts.sidbar_test')
+    @include('layouts.sidebar')
     <div class="p-4 sm:ml-64">
         <div class="p-4 mt-12 border-2 border-gray-200 border-dashed rounded-lg">
             <div class="pb-4 mb-4 rounded-t ">

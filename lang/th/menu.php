@@ -140,6 +140,40 @@ return [
         'expense_vendor_edit' => 'แก้ไขค่าใช้จ่ายร้านค้า',
         'expense_vendor_delete' => 'ลบค่าใช้จ่ายร้านค้า',
 
+        'restore' => 'กู้คืนข้อมูล',
+        'restore_data' => 'การกู้คืนข้อมูล',
+        'restore_success' => 'กู้คืนข้อมูลสำเร็จเรียบร้อยแล้ว',
+        'restore_fail' => 'กู้คืนข้อมูลไม่สำเร็จ',
+        'restore_detail' => 'รายละเอียดการ Restore',
+        'restore_no' => 'ลำดับ',
+        'restore_table_name' => 'ชื่อตาราง',
+        'restore_restored_count' => 'จำนวนที่ Restore (Records)',
+        'restore_total_restored' => 'รวมทั้งหมด',
+        'restore_total_restored_record' => 'รวมจำนวนที่ Restore ทั้งหมด',
+        'confirm_restore' => 'ยืนยันการกู้คืนข้อมูล?',
+        'confirm_restore_text' => 'ระบบจะทำการเปลี่ยน Activeflag กลับเป็น 1 สำหรับ Table ทั้งหมด คุณแน่ใจหรือไม่?',
+        'confirm_restore_success' => 'ยืนยันการกู้คืนข้อมูล',
+        'yes_proceed' => 'ใช่, ดำเนินการเลย!',
+        'restore_cancel' => 'ยกเลิก',
+
+        'clear_data' => 'ล้างข้อมูล',
+        'clear_data_text' => 'การล้างข้อมูล',
+        'confirm_clear_data' => 'ยืนยันการล้างข้อมูล',
+        'confirm_clear_data_text' => 'ระบบจะทำการล้างข้อมูล คุณแน่ใจหรือไม่?',
+        'clear_confirm_button' => 'ใช่, ดำเนินการเลย!',
+        'clear_cancel_button' => 'ยกเลิก',
+        'clear_success' => 'ล้างข้อมูลสำเร็จเรียบร้อยแล้ว',
+        'clear_fail' => 'ล้างข้อมูลไม่สำเร็จ',
+        'clear_no' => 'ลำดับ',
+        'clear_table_name' => 'ชื่อตาราง',
+        'clear_cleared_count' => 'จำนวนที่ล้าง',
+        'clear_total_cleared' => 'รวมทั้งหมด',
+        'clear_total_cleared_record' => 'รวมจำนวนที่ล้างทั้งหมด',
+        'clear_detail' => 'รายละเอียดการ Clear',
+        'clear_detail_text' => 'รายละเอียดการ Clear',
+
+
+
 
         // Teminal
         'terminals' => 'เครื่อง Terminal',
@@ -177,6 +211,7 @@ return [
         'is_warning' => 'คำเตือน!!!',
         'is_failed' => 'เกิดข้อผิดพลาด',
         'is_loading' => 'โปรดรอสักครู่...',
+        'is_processing' => 'กำลังประมวลผล...',
         'is_saving' => 'กำลังบันทึก...',
         'is_saved' => 'บันทึกสำเร็จ',
         'is_error' => 'เกิดข้อผิดพลาดในการบันทึกข้อมูล',

@@ -20,6 +20,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ReportItemController;
 use App\Http\Controllers\ReportPaymentController;
 use App\Http\Controllers\ReportVendorController;
+use App\Http\Controllers\RestoreController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\StockController;
@@ -210,4 +211,9 @@ Route::middleware(['auth_user'])->group(function () {
         Route::get('/get-expense-details/{exp_code}', [ExpenseVendorController::class, 'fetch_expensevendor_other'])->name('get_expense_details');
 
         Route::post('/change-password', [UsersController::class, 'changePassword'])->name('change_password');
+
+        Route::get('/restore', [RestoreController::class, 'index'])->name('restore_index');
+        Route::post('/restore-data', [RestoreController::class, 'restoreMasterData'])->name('restore_data');
+        Route::get('/clear_data', [RestoreController::class, 'clear_index'])->name('clear_index');
+        Route::post('/clear-data', [RestoreController::class, 'clearMasterData'])->name('clear_data');
 });
