@@ -177,6 +177,10 @@ return [
 
         // Teminal
         'terminals' => 'เครื่อง Terminal',
+        'terminal' => 'เครื่อง Terminal',
+        'terminal_add' => 'เพิ่มเครื่อง Terminal',
+        'terminal_edit' => 'แก้ไขเครื่อง Terminal',
+        'terminal_delete' => 'ลบเครื่อง Terminal',
 
         // Reporting
         'reporting' => 'รายงาน',

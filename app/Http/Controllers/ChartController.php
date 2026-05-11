@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class ChartController extends Controller
 {
@@ -32,7 +33,7 @@ class ChartController extends Controller
                 'total_amount' => $item->total_amount
             ];
         }
-        $data_json = json_encode($data);
+        // $data_json = json_encode($data);
 
         $sale_terminal_daily_chart['vendor_name'] = array_column($data, 'vendor_name');
         $sale_terminal_daily_chart['total_amount'] = array_column($data, 'total_amount');
@@ -103,59 +104,61 @@ class ChartController extends Controller
     }
     public function showDailyChartBackup(Request $request)
     {
-        // รับค่าจากฟอร์ม (ถ้าไม่มีค่า จะใช้ค่าดีฟอลต์)
-        $start_date = $request->input('start_date');
-        $end_date = $request->input('end_date');
-        $day_filter = DB::table('closeendday')->orderBy('batch', 'desc')->get();
-        // dd($start, $end);
+        try {
+            $start_date = $request->input('start_date');
+            $end_date = $request->input('end_date');
+            $day_filter = DB::table('closeendday')->orderBy('batch', 'desc')->get();
+            $sale_terminal_rpt = DB::table('sum_terminal_rpt')
+                ->select('vendor_id', 'vendor_name', DB::raw('SUM(amount) as total_amount'))
+                ->whereBetween('batch', [$start_date, $end_date])
+                ->groupBy('vendor_id', 'vendor_name')
+                ->orderBy('total_amount', 'DESC')
+                ->get();
 
-        // ตั้งค่าช่วงเวลาของวันที่ให้ครอบคลุมทั้งวัน
-        // $start = Carbon::parse($start_date)->startOfDay()->format('Y-m-d H:i:s');
-        // $end = Carbon::parse($end_date)->endOfDay()->format('Y-m-d H:i:s');
+            // เตรียมข้อมูลที่ส่งกลับ
+            // dd($sale_terminal_rpt);
+            $data = [];
+            foreach ($sale_terminal_rpt as $item) {
+                $data[] = [
+                    'vendor_id' => $item->vendor_id,
+                    'vendor_name' => $item->vendor_name,
+                    'total_amount' => $item->total_amount
+                ];
+            }
+            $data_json = json_encode($data);
+            // dd($data);
+            if ($sale_terminal_rpt->isEmpty()) {
+                sweetalert()
+                    ->error(__('chart.sale_not_found') . ' ' . $start_date . ' - ' . $end_date,);
+                return redirect()->back();
+            }
+            $count_data = count($sale_terminal_rpt);
+            if ($count_data > 1500) {
+                sweetalert()
+                    ->warning(__('chart.too_many_records') . ' ' . $start_date . ' - ' . $end_date);
+                return redirect()->back();
+            }
 
-        // ดึงข้อมูลจากฐานข้อมูล
-        $sale_terminal_rpt = DB::table('sum_terminal_rpt')
-            ->select('vendor_id', 'vendor_name', DB::raw('SUM(amount) as total_amount'))
-            ->whereBetween('batch', [$start_date, $end_date])
-            ->groupBy('vendor_id', 'vendor_name')
-            ->orderBy('total_amount', 'DESC')
-            ->get();
 
-        // เตรียมข้อมูลที่ส่งกลับ
-        // dd($sale_terminal_rpt);
-        $data = [];
-        foreach ($sale_terminal_rpt as $item) {
-            $data[] = [
-                'vendor_id' => $item->vendor_id,
-                'vendor_name' => $item->vendor_name,
-                'total_amount' => $item->total_amount
-            ];
-        }
-        $data_json = json_encode($data);
-        // dd($data);
-        if ($sale_terminal_rpt->isEmpty()) {
+            // เตรียมข้อมูลที่ส่งกลับ
+            $daily_chart_backup['vendor_name'] = " ";
+            $daily_chart_backup['total_amount'] = " ";
+            $daily_chart_backup['vendor_id'] = " ";
+            foreach ($data as $item) {
+                $daily_chart_backup['vendor_name'] .= '"' . $item['vendor_name'] . '"' . ', ';
+                $daily_chart_backup['total_amount'] .= $item['total_amount'] . ', ';
+                $daily_chart_backup['vendor_id'] .= $item['vendor_id'] . ', ';
+            }
+            // dd($daily_chart_backup);
+            return view('pages.charts.backupDaily', compact('data_json', 'start_date', 'end_date', 'day_filter', 'daily_chart_backup'));
+        } catch (\Exception $e) {
+            Log::channel('action')->error('error', [
+                'error' => $e->getMessage(),
+                'message' => 'Error on showDailyChartBackup'
+            ]);
             sweetalert()
                 ->error(__('chart.sale_not_found') . ' ' . $start_date . ' - ' . $end_date,);
             return redirect()->back();
         }
-        $count_data = count($sale_terminal_rpt);
-        if ($count_data > 1500) {
-            sweetalert()
-                ->warning(__('chart.too_many_records') . ' ' . $start_date . ' - ' . $end_date);
-            return redirect()->back();
-        }
-
-
-        // เตรียมข้อมูลที่ส่งกลับ
-        $daily_chart_backup['vendor_name'] = " ";
-        $daily_chart_backup['total_amount'] = " ";
-        $daily_chart_backup['vendor_id'] = " ";
-        foreach ($data as $item) {
-            $daily_chart_backup['vendor_name'] .= '"' . $item['vendor_name'] . '"' . ', ';
-            $daily_chart_backup['total_amount'] .= $item['total_amount'] . ', ';
-            $daily_chart_backup['vendor_id'] .= $item['vendor_id'] . ', ';
-        }
-        // dd($daily_chart_backup);
-        return view('pages.charts.backupDaily', compact('data_json', 'start_date', 'end_date', 'day_filter', 'daily_chart_backup'));
     }
 }

@@ -119,7 +119,8 @@ Route::middleware(['auth_user'])->group(function () {
         Route::get('/daily-charts', [ChartController::class, 'chartDaily'])->name('charts.daily');
         Route::get('/daily-backup-charts', [ChartController::class, 'chartDailyBackup'])->name('charts.backupdaily');
 
-        Route::post('/show-dailybackupchart', [ChartController::class, 'showDailyChartBackup'])->name('charts.showdailybackupchart');
+        // Route::post('/show-dailybackupchart', [ChartController::class, 'showDailyChartBackup'])->name('charts.showdailybackupchart');
+        Route::match(['get', 'post'], '/show-dailybackupchart', [ChartController::class, 'showDailyChartBackup'])->name('charts.showdailybackupchart');
 
         Route::resource('/session-main', SessionController::class);
 
@@ -216,4 +217,6 @@ Route::middleware(['auth_user'])->group(function () {
         Route::post('/restore-data', [RestoreController::class, 'restoreMasterData'])->name('restore_data');
         Route::get('/clear_data', [RestoreController::class, 'clear_index'])->name('clear_index');
         Route::post('/clear-data', [RestoreController::class, 'clearMasterData'])->name('clear_data');
+
+        Route::resource('/terminal', TerminalController::class);
 });

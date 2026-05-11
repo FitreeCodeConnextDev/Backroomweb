@@ -564,8 +564,7 @@ class VendorController extends Controller
                         'day_use' => $day_use,
                         'amount_use' => $form_data['amount_use'],
                         'product_id' => $form_data['product_id'],
-                        'discount' => 0,
-                        'usage' => 0,
+
                     ]);
                 Log::channel('activity')->notice(session('auth_user.user_id') . ' Updated Vendor Rabbit Promotion', [
                     'action' => 'update_rabbit',
@@ -590,6 +589,8 @@ class VendorController extends Controller
                         'day_use' => $day_use,
                         'amount_use' => $form_data['amount_use'],
                         'product_id' => $form_data['product_id'],
+                        'discount' => 0,
+                        'usage' => 0,
                     ]);
                 Log::channel('activity')->notice(session('auth_user.user_id') . ' Created Vendor Rabbit Promotion', [
                     'action' => 'create_rabbit',
@@ -657,8 +658,7 @@ class VendorController extends Controller
                         'day_use' => $day_use,
                         'amount_use' => $form_data['amount_use'],
                         'product_id' => $form_data['product_id'],
-                        'discount' => 0,
-                        'usage' => 0,
+
                     ]);
                 Log::channel('activity')->notice(session('auth_user.user_id') . ' Updated Vendor LinePay Promotion', [
                     'action' => 'update_linepay',
@@ -682,6 +682,8 @@ class VendorController extends Controller
                         'day_use' => $day_use,
                         'amount_use' => $form_data['amount_use'],
                         'product_id' => $form_data['product_id'],
+                        'discount' => 0,
+                        'usage' => 0,
                     ]);
                 Log::channel('activity')->notice(session('auth_user.user_id') . ' Created Vendor LinePay Promotion', [
                     'action' => 'create_linepay',

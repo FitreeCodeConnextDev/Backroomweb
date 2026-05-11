@@ -51,11 +51,14 @@ class StockController extends Controller
         $refdate_formatted = date('Y-m-d', strtotime($validatedData['refdate']));
         $products = json_decode($validatedData['products_json'], true);
 
+        // dd($products);
+
 
         if (isset($validatedData)) {
             DB::transaction(function () use ($validatedData, $products, $txndate_formatted, $refdate_formatted) {
                 // Insert Header
                 $qty_sale = count($products);
+                // dd($qty_sale);
                 DB::table('sale_adjuststocktotal_daily')->insert([
                     'txnno' => $validatedData['txnno'],
                     'txndate' => $txndate_formatted,
@@ -80,7 +83,6 @@ class StockController extends Controller
                 // Process Products
                 foreach ($products as $index => $product) {
 
-
                     // Insert Detail
                     DB::table('sale_adjuststock_daily')->insert([
                         'txnno' => $validatedData['txnno'],
@@ -94,18 +96,22 @@ class StockController extends Controller
 
                     // Update or Insert Stock Info
                     $stock_info = DB::table('stock_info')
+                        ->where('vendor_id', $validatedData['vendor_id']) // 1. เพิ่มเงื่อนไข vendor_id
                         ->where('product_id', $product['product_id'])
                         ->first();
 
                     if ($stock_info) {
 
                         $in_stock = $stock_info->in_stock + $product['qty'];
+
                         DB::table('stock_info')
+                            ->where('vendor_id', $validatedData['vendor_id']) // 2. เพิ่มเงื่อนไข vendor_id ตอนอัปเดตด้วย
                             ->where('product_id', $product['product_id'])
                             ->update([
                                 'in_stock' => $in_stock,
                                 'lastupdate' => now(),
                             ]);
+
                         Log::channel('activity')->notice('Stock transaction updated', [
                             'txnno' => $validatedData['txnno'],
                             'vendor_id' => $validatedData['vendor_id'],
@@ -115,6 +121,7 @@ class StockController extends Controller
                             'updated_at' => now(),
                         ]);
                     } else {
+
                         // Fetch product details for new stock_info entry if needed
                         $productDetails = DB::table('product_info')->where('product_id', $product['product_id'])->first();
 
@@ -134,6 +141,10 @@ class StockController extends Controller
                                 'priceunit' => $product['priceunit'],
                                 'lastupdate' => now()
                             ]);
+                        } else {
+                            // 3. ป้องกันการเงียบหาย (Silent Fail) โดยการบังคับโยน Exception หรือบันทึก Log
+                            // หากคุณต้องการให้ Transaction Rollback เมื่อข้อมูลไม่สมบูรณ์ แนะนำให้ Throw Exception
+                            throw new \Exception("ไม่พบข้อมูลสินค้า Product ID: {$product['product_id']} ในระบบ (product_info)");
                         }
                     }
                 }

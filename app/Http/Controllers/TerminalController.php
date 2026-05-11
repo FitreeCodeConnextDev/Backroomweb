@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BranchModel;
+use App\Models\TerminalModel;
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
@@ -11,38 +14,33 @@ class TerminalController extends Controller
 {
     public function index()
     {
-        try {
-
-            $sessions = session('auth_user');
-            $api = Http::post(
-                '10.10.1.7:9501/backroom/v1/terminal',
-                [
-                    'branch_id' => $sessions['branch_id'],
-                    'user_id' => $sessions['user_id']
-                ]
-            );
-    
-            $api_response = json_decode($api->body(), true);
-            $terminal_info = $api_response['terminal_info'];
-            foreach ($terminal_info as $key => $value) {
-    
-                $terminal_id = $value['term_id'];
-                $terminal_name = $value['term_name'];
-                $branch_id = $value['branch_id'];
-            }
-    
-            // dd($terminal_id);
-    
-            if (isset($api_response['Status'])) {
-                return view('pages.terminals.index', compact('terminal_info'));
-            } else {
-                return redirect()->route('teminal')->withErrors(['error' => 'Api Data is Not Ready to use']);
-            }
-        }catch (\Exception $e) {
-            $errorMessage = ' เกิดข้อผิดพลาดทางเซิร์ฟเวอร์ โปรดตรวจสอบการทำงานของเซิร์ฟเวอร์';
-            Log::error($errorMessage . ' ' . $e->getMessage());
-            return view('pages.terminals.index', ['error' => $errorMessage]);
+        $terminal_info = TerminalModel::orderBy('term_id', 'asc')->get();
+        return view('pages.terminal.index', compact('terminal_info'));
     }
-        
+
+    public function create()
+    {
+        $branch_info = DB::table('branch_info')->orderBy('branch_id', 'asc')->get();
+        // dd($branch_info);
+        return view('pages.terminal.create', compact('branch_info'));
+    }
+
+    public function store(Request $request)
+    {
+        $terminal = new TerminalModel();
+        $terminal->term_id = $request->term_id;
+        $terminal->term_name = $request->term_name;
+        $terminal->save();
+        return redirect()->route('terminal.index');
+    }
+
+    public function edit($id)
+    {
+        $branch_info = DB::table('branch_info')->orderBy('branch_id', 'asc')->get();
+        $terminal_info = TerminalModel::find($id);
+
+        $term_funtion = str_split($terminal_info->terminal_function);
+        // dd($term_funtion);
+        return view('pages.terminal.edit', compact('terminal_info', 'branch_info', 'term_funtion'));
     }
 }
