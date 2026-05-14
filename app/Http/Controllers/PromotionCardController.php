@@ -141,7 +141,9 @@ class PromotionCardController extends Controller
             'sun_day' => $validate_data['sun_day'],
         ];
         $days_use = implode($days_split);
+        DB::beginTransaction();
         try {
+
             $promotion_info = new PromoCardModel();
             $promotion_info->promo_code = $validate_data['promo_code'];
             $promotion_info->promo_desc = $validate_data['promo_desc'];
@@ -182,6 +184,7 @@ class PromotionCardController extends Controller
                     'gprate_back' => 0,
                     'change_gp' => 0
                 ]);
+            DB::commit();
 
             Log::channel('activity')->info(session('auth_user.user_id') . 'Card promotion created successfully: ' . $validate_data['promo_code'], [
                 'promo_code' => $validate_data['promo_code'],
@@ -196,6 +199,7 @@ class PromotionCardController extends Controller
                 ->success(__('menu.save_is_success'));
             return redirect()->route('card-promotion.index');
         } catch (\Exception $e) {
+            DB::rollBack();
             Log::channel('activity')->error(session('auth_user.user_id') . 'Failed to create card promotion: ' . $validate_data['promo_code'], [
                 'promo_code' => $validate_data['promo_code'],
                 'promo_desc' => $validate_data['promo_desc'],
@@ -498,6 +502,36 @@ class PromotionCardController extends Controller
                 'Created By' => session('auth_user.user_id'),
             ]);
             return response()->json(['message' => __('menu.save_is_failed')]);
+        }
+    }
+
+    public function destroy_print($id, $promo_seq)
+    {
+        try {
+            $deleted = DB::table('promotionprint_info')
+                ->where('promo_code', $id)
+                ->where('promo_seq', $promo_seq)
+                ->delete();
+            if ($deleted) {
+                Log::channel('activity')->notice(session('auth_user.user_id') . ' Deleted card promotion print successfully: ' . $id, [
+                    'promo_code' => $id,
+                    'action' => 'delete',
+                    'Deleted At' => Carbon::now()->toDateTimeString(),
+                    'Deleted By' => session('auth_user.user_id'),
+                ]);
+                return response()->json(['message' => __('menu.delete_is_success')]);
+            } else {
+                return response()->json(['message' => __('menu.delete_is_failed')]);
+            }
+        } catch (\Exception $e) {
+            Log::channel('activity')->error(session('auth_user.user_id') . ' Failed to delete card promotion print: ' . $id, [
+                'promo_code' => $id,
+                'action' => 'delete',
+                'error' => $e->getMessage(),
+                'Deleted At' => Carbon::now()->toDateTimeString(),
+                'Deleted By' => session('auth_user.user_id'),
+            ]);
+            return response()->json(['message' => __('menu.delete_is_failed')]);
         }
     }
 }

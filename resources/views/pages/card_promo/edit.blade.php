@@ -329,9 +329,26 @@
                                     <td> {{ $print->description1 }} </td>
                                     <td> {{ $print->description2 }}</td>
                                     <td> {{ $print->barcode }}</td>
-                                    <td> {{ $print->start_date }}</td>
-                                    <td> {{ $print->valid_date }}</td>
-                                    <td></td>
+                                    <td> {{ date('d-m-Y', strtotime($print->start_date)) }}</td>
+                                    <td> {{ date('d-m-Y', strtotime($print->valid_date)) }}</td>
+                                    <td>
+                                        <form method="post" id="delete-form-{{ $print->promo_code }}">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button id="del-button" class="del-button"
+                                                data-item-id="{{ $print->promo_code }}"
+                                                data-name="{{ $print->description1 }}"
+                                                data-delete-url="{{ route('card_promotion_print_destroy', ['id' => $print->promo_code, 'promo_seq' => $print->promo_seq]) }}">
+                                                <svg class="w-[16px] h-[16px]" aria-hidden="true"
+                                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                    fill="none" viewBox="0 0 24 24">
+                                                    <path stroke="currentColor" stroke-linecap="round"
+                                                        stroke-linejoin="round" stroke-width="1.6"
+                                                        d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z" />
+                                                </svg>
+                                            </button>
+                                        </form>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -468,6 +485,52 @@
         });
     </script>
     <script type="text/javascript">
+        document.addEventListener('click', function(e) {
+            const button = e.target.closest('.del-button');
+            if (button) {
+                e.preventDefault();
+                const itemId = button.getAttribute('data-item-id');
+                const itemName = button.getAttribute('data-name');
+                const deleteUrl = button.getAttribute('data-delete-url');
+
+                const swalWithBootstrapButtons = Swal.mixin({
+                    customClass: {
+                        confirmButton: "alert_confirm_btn",
+                        cancelButton: "alert_cancel_btn"
+                    },
+                    buttonsStyling: false
+                });
+
+                swalWithBootstrapButtons.fire({
+                    title: `{{ __('menu.deleted_title') }}`,
+                    html: `{{ __('menu.deleted_text') }} <b>${itemName}</b>`,
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: `{{ __('menu.deleted_yes') }}`,
+                    cancelButtonText: `{{ __('menu.deleted_no') }}`,
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        const formData = new FormData();
+                        formData.append('_token', '{{ csrf_token() }}');
+                        formData.append('_method', 'DELETE');
+                        fetch(deleteUrl, {
+                            method: 'POST',
+                            body: formData
+                        }).then(function(response) {
+                            if (response.ok || response.redirected) {
+                                window.location.reload();
+                            } else {
+                                Swal.fire('Error', 'Could not delete item.', 'error');
+                            }
+                        }).catch(function() {
+                            Swal.fire('Error', 'Network error. Please try again.', 'error');
+                        });
+                    }
+                });
+            }
+        });
+
         function handleSelectChange() {
             var selectedValue = document.getElementById("expire_checkby").value;
             var weekday = document.getElementById("weekday");

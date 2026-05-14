@@ -100,7 +100,7 @@ class MemberController extends Controller
                     ->success(__('menu.save_is_success'));
                 return redirect()->route('member.index');
             } else {
-                Log::channel('activity')->error(session('auth_user.user_id') . ' Member Insert Failed: ' . $member_info->getChanges(), [
+                Log::channel('activity')->error(session('auth_user.user_id') . ' Member Insert Failed: ', [
                     'action' => 'insert',
                     'insert detail' => $member_info->getChanges(),
                     'error_message' => 'Insert Failed',

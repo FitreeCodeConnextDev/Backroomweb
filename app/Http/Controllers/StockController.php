@@ -84,6 +84,7 @@ class StockController extends Controller
                 foreach ($products as $index => $product) {
 
                     // Insert Detail
+                    DB::beginTransaction();
                     DB::table('sale_adjuststock_daily')->insert([
                         'txnno' => $validatedData['txnno'],
                         'vendor_id' => $validatedData['vendor_id'],
@@ -93,6 +94,8 @@ class StockController extends Controller
                         'qty' => $product['qty'],
                         'priceunit' => $product['priceunit'],
                     ]);
+
+
 
                     // Update or Insert Stock Info
                     $stock_info = DB::table('stock_info')
@@ -141,9 +144,11 @@ class StockController extends Controller
                                 'priceunit' => $product['priceunit'],
                                 'lastupdate' => now()
                             ]);
+                            DB::commit();
                         } else {
                             // 3. ป้องกันการเงียบหาย (Silent Fail) โดยการบังคับโยน Exception หรือบันทึก Log
                             // หากคุณต้องการให้ Transaction Rollback เมื่อข้อมูลไม่สมบูรณ์ แนะนำให้ Throw Exception
+                            DB::rollBack();
                             throw new \Exception("ไม่พบข้อมูลสินค้า Product ID: {$product['product_id']} ในระบบ (product_info)");
                         }
                     }
@@ -158,6 +163,7 @@ class StockController extends Controller
 
             return redirect()->route('stock-info.index');
         } else {
+            DB::rollBack();
             return redirect()->back()->withErrors($validatedData)->withInput();
         }
     }

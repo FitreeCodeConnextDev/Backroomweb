@@ -107,6 +107,7 @@ Route::middleware(['auth_user'])->group(function () {
         Route::resource('/branch', BranchController::class);
         route::resource('/card-promotion', PromotionCardController::class);
         Route::post('/card-promotion_print_add/{id}', [PromotionCardController::class, 'store_print'])->name('card_promotion_print');
+        Route::delete('/card-promotion_print_destroy/{id}/{promo_seq}', [PromotionCardController::class, 'destroy_print'])->name('card_promotion_print_destroy');
         Route::resource('/card-type', CardTypeController::class);
         Route::resource('/staff', StaffController::class);
         Route::resource('/coupons', CouponController::class);

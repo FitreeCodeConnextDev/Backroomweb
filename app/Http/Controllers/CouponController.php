@@ -310,6 +310,7 @@ class CouponController extends Controller
                 $numrand = substr(str_shuffle('0123456789'), 0, 2);
                 $coupon_no = $form_data['coupon_no'] . $form_data['coupon_no_num1'] . $numrand;
 
+                DB::beginTransaction();
                 $inserted = DB::table('coupondetail_info')
                     ->insert([
                         'coupon_id' => $form_data['coupon_id'],
@@ -320,10 +321,13 @@ class CouponController extends Controller
                         'coupon_lock' => 'N',
                         'activeflag' => 1,
                     ]);
+                DB::commit();
 
                 if (!$inserted) {
+                    DB::rollBack();
                     throw new \Exception(__('menu.save_is_failed'));
                 }
+
 
                 return response()->json(['success' => true, 'message' => __('menu.save_is_success')]);
             } else {
@@ -391,21 +395,25 @@ class CouponController extends Controller
                 if (empty($data_coupon_no)) {
                     throw new \Exception(__('menu.save_is_failed'));
                 }
-
+                DB::beginTransaction();
                 $inserted = DB::table('coupondetail_info')->insert($data_coupon_no);
+                DB::commit();
 
                 if (!$inserted) {
+                    DB::rollBack();
                     throw new \Exception(__('menu.save_is_failed'));
                 }
 
                 return response()->json(['success' => true, 'message' => __('menu.save_is_success')]);
             }
         } catch (\Illuminate\Validation\ValidationException $e) {
+            DB::rollBack();
             return response()->json([
                 'success' => false,
                 'errors' => $e->errors()
             ], 422);
         } catch (\Exception $e) {
+            DB::rollBack();
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()

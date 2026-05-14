@@ -39,7 +39,6 @@
             </div>
         </div>
     </div>
-    <script src="https://jquery.com"></script>
     @vite('resources/js/app.js')
     @yield('js-scripts')
     @stack('scripts')
